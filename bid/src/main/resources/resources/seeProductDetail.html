@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> - 竞标单的产品信息 </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./framework/css/bootstrap-table.min.css">
+
+    <link rel="stylesheet" href="./framework/css/animate.css" />
+    <link rel="stylesheet" href="./framework/css/style.css" />
+</head>
+
+<body>
+<div id="bidTable">
+    <div class="animated fadeInRight" v-if="showTop">
+        <div class="panel panel-success">
+            <div class="panel-heading"><strong>选择的出价产品</strong></div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
+                    <thead class="thead-default">
+                    <tr>
+                        <th>产品编码</th>
+                        <th>产品名称</th>
+                        <th>产品规格</th>
+                        <th>产品数量</th>
+                        <th>产品单位</th>
+                        <th>起拍价(元)</th>
+                        <th>竞价阶梯(元)</th>
+                        <th>交货期限</th>
+                        <th>付款期限</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{oneProduct.code}}</td>
+                        <td>{{oneProduct.name}}</td>
+                        <td>{{oneProduct.spec}}</td>
+                        <td class="col-sm-1">{{oneProduct.number}}</td>
+                        <td>{{oneProduct.unit}}</td>
+                        <td class="col-sm-1">{{oneProduct.maxUnitPrice}}</td>
+                        <td class="col-sm-1">{{oneProduct.step}}</td>
+                        <td class="col-sm-2">
+                            {{oneProduct.endDeliveryDate}}
+                        </td>
+                        <td class="col-sm-2">
+                            {{oneProduct.endPayDate}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-7">
+                        <form class="form-horizontal" role="form" v-on:submit.prevent="disableFormSubmit">
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">剩余时间:</label>
+                                <label class="col-xs-3 control-label"><p class="pull-left">{{remaindTime}}</p></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">您的出价排名:</label>
+                                <label class="col-xs-2 control-label"><p class="pull-left">{{rank}}</p></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">{{limitPriceTip}}</label>
+                                <label class="col-xs-2 control-label"><p class="pull-left">{{limitPrice}}</p></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">请出价:</label>
+                                <div class="col-xs-5">
+                                    <input v-model="setPrice" type="text" class="form-control" placeholder="0.00" required="">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <div class="container">
+                            <h4>
+                                <span class="help-block m-b-none" style="color: indianred"><i class="fa fa-info-circle"></i>{{mainTip}}</span>
+                            </h4>
+                            <p>{{tip1}}</p>
+                            <p>{{tip2}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-6">
+                    <button @click="offer" type="button" class="btn btn-xs btn-primary" ><i class="fa fa-gavel" aria-hidden="true"></i>出价</button>
+                    <button @click="refreshInfo(2)" type="button" class="btn btn-xs btn-default" ><i class="fa fa-refresh" aria-hidden="true"></i>刷新</button>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+
+    <div class="animated fadeInUp">
+        <div class="panel panel-success">
+            <div class="panel-heading">竞标产品</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-condensed table-hover" data-show-columns="true" data-mobile-responsive="true">
+                    <thead class="thead-default">
+                    <tr>
+                        <th>序号</th>
+                        <th>产品编码</th>
+                        <th>产品名称</th>
+                        <th>产品规格</th>
+                        <th>产品数量</th>
+                        <th>产品单位</th>
+                        <th>起拍价(元)</th>
+                        <th>竞价阶梯(元)</th>
+                        <th>交货期限</th>
+                        <th>付款期限</th>
+                        <th v-if="showOptsion"><strong>操作</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(product, index) in productList">
+                        <td>{{index + 1}}</td>
+                        <td>{{product.code}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.spec}}</td>
+                        <td class="col-sm-1">{{product.number}}</td>
+                        <td>{{product.unit}}</td>
+                        <td class="col-sm-1">{{product.maxUnitPrice}}</td>
+                        <td class="col-sm-1">{{product.step}}</td>
+                        <td class="col-sm-2">
+                            {{product.endDeliveryDate}}
+                        </td>
+                        <td class="col-sm-2">
+                            {{product.endPayDate}}
+                        </td>
+                        <td class="col-sm-1" v-if="showOptsion" @click="clickPriceOpt(index)"><a><strong>出价</strong></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="./framework/js/bootstrap-table.min.js"></script>
+<script src="./framework/js/bootstrap-table-zh-CN.js"></script>
+<script src="./framework/js/plugins/layer/layer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- 自定义js -->
+<script src="./myjs/utils.js"></script>
+
+<script>
+    var haha = new Vue({
+        el: '#bidTable',
+        data: {
+            mark: '', //竞标单标记
+            productList: [],
+            showOptsion: false,//默认不显示
+
+            limitPriceTip: '',
+            limitPrice: '暂无数据',
+
+            mainTip: '',
+            tip1: '',
+            tip2: '',
+
+            showTop: false,
+            oneProduct: {},//选择出价的产品
+
+            remaindTime: '',
+            timer: null,
+            endTime: '',
+
+            rank: '暂无数据',
+            setPrice: '',
+
+        },
+
+        methods: {
+            //必须禁掉form默认的submit
+            disableFormSubmit: function () {
+                return false;
+            },
+
+            clickPriceOpt: function (index) {
+                haha.showTop = true
+                haha.oneProduct = haha.productList[index]
+
+                haha.refreshInfo(1)
+            },
+
+            //1=自动刷新  2=点击手动刷新
+            refreshInfo: function (type) {
+                var la = (type == 2 ? true : false)
+                //获取最高或最低出价
+                var params = {
+                    bidName: sessionStorage.getItem('bidName'),
+                    productId: haha.oneProduct.productId,
+                    mark: haha.mark
+                }
+                $.ajax({
+                    url: "/bidDetails/lastBidDetail",
+                    type: "post",
+                    contentType: "application/x-www-form-urlencoded",
+                    // dataType: "json",
+                    data: params,
+                    success: function (resp) {
+                        if (resp == '' || resp == null) {
+                            haha.rank = '暂无数据'
+                            haha.limitPrice = '暂无数据'
+                        }else {
+                            if (resp.rank != null && resp.rank != '') {
+                                haha.rank = resp.rank
+                            }
+
+                            if (resp.price != null && resp.price != '') {
+                                haha.price = resp.price
+                            }
+
+                            if (resp.limitPrice != null && resp.limitPrice != '') {
+                                haha.limitPrice = resp.limitPrice
+                            }
+                        }
+                        if (la) {
+                            haha.setPrice = ''
+                            layer.msg(
+                                '数据刷新成功 !',
+                                {title: '提示框', icon: 1}
+                            );
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var status = xhr.status;
+                        layer.alert(
+                            '查询最近一次出价失败,状态码 [ ' + status + ' ]',
+                            {title: '提示框', icon: 0}
+                        );
+                    }
+                });
+                haha.computRemaindTime()
+            },
+
+            //计算剩余时间
+            computRemaindTime: function () {
+                var now = new Date()
+                var diff = new Date(haha.endTime) - now
+                if (diff <= 0) {
+                    haha.remaindTime = '竞标已结束'
+                }else {
+                    var day = Math.floor(diff / (24 * 3600 * 1000))
+                    var hour = Math.floor((diff / (3600 * 1000)) % 24)
+                    var min = Math.floor((diff / (60 * 1000)) % 60)
+                    var sec = Math.floor((diff / 1000) % 60)
+
+                    day > 0
+                        ? haha.remaindTime = `${day}天`
+                        : haha.remaindTime = `${hour}小时 ${min}分 ${sec}秒`
+                }
+            },
+
+            //出价
+            offer: function () {
+                var toPrice = true //可以出价请求
+                var price = {
+                    bidName: sessionStorage.getItem('bidName'),
+                    productId: haha.oneProduct.productId,
+                    price: haha.setPrice,
+                    mark: haha.mark
+                }
+                if(haha.setPrice != '') {
+                    //1=招标（公司卖）   2=竞标（公司买）
+                    if (haha.mark == 1) {
+                        if (typeof(haha.limitPrice) == 'string') {//第一次出价
+                            console.log('招标 第一次出价 .........')
+                            var min = haha.oneProduct.maxUnitPrice + haha.oneProduct.step
+                            if (haha.setPrice < min) {
+                                toPrice = false
+                                layer.alert(
+                                    '不能出价! 原因: 不能小于 [起拍价+竞价阶梯]',
+                                    {title: '提示框', icon: 0}
+                                );
+                            }
+                        }else {
+                            console.log('招标 非第一次出价 ......')
+                            if ((haha.setPrice - haha.limitPrice) < haha.oneProduct.step) {
+                                toPrice = false
+                                layer.alert(
+                                    '不能出价! 原因: (出价 - 最高出价) 不能小于 竞价阶梯',
+                                    {title: '提示框', icon: 0}
+                                );
+                            }
+                        }
+                    }
+                    else if (haha.mark == 2) {
+                        if (typeof(haha.limitPrice) == 'string') {//第一次出价
+                            console.log('竞标 第一次出价 .........')
+                            var max = haha.oneProduct.maxUnitPrice - haha.oneProduct.step
+                            if (haha.setPrice > max) {
+                                toPrice = false
+                                layer.alert(
+                                    '不能出价! 原因: 不能大于 [起拍价-竞价阶梯]',
+                                    {title: '提示框', icon: 0}
+                                );
+                            }
+                        }else {
+                            console.log('竞标 fei第一次出价 .........')
+                            if ((haha.limitPrice - haha.setPrice) < haha.oneProduct.step) {
+                                toPrice = false
+                                layer.alert(
+                                    '不能出价! 原因: (上次出价 - 最高出价) 不能小于 竞价阶梯价',
+                                    {title: '提示框', icon: 0}
+                                );
+                            }
+                        }
+                    }
+
+                    if (toPrice) {
+                        layer.confirm('确定出价 ' + price.price + '元 吗?', {
+                            btn: ['出价','再想想~~']
+                        }, function(){
+                            $.ajax({
+                                url: "/bidDetails",
+                                type: "post",
+                                contentType: "application/x-www-form-urlencoded",
+                                // dataType: "json",
+                                data: price,
+                                success: function (resp) {
+                                    console.log(resp)
+                                    var data = resp.data
+                                    var code = resp.code
+                                    var msg = resp.msg
+
+                                    switch (code) {
+                                        case 1001:
+                                            haha.refreshInfo() //刷新最高报价和排名
+                                            layer.alert(msg,{title: '提示框', icon: 0})
+                                            break
+                                        case 1002: layer.msg(msg, {title: '提示框', icon: 1}); break;
+                                        case 1003: layer.msg(msg, {title: '提示框', icon: 1}); break;
+                                        case 200:
+                                            haha.rank = data.rank
+                                            haha.limitPrice = data.limitPrice
+                                            haha.computRemaindTime()
+
+                                            haha.setPrice = ''
+                                            layer.msg('出价成功 !', {title: '提示框', icon: 1})
+                                            break
+                                    }
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    var status = xhr.status;
+                                    layer.alert(
+                                        '出价失败! 状态码 [ ' + status + ' ]',
+                                        {title: '提示框', icon: 0}
+                                    );
+                                }
+                            });
+                        });
+                    }
+                }else {
+                    layer.alert(
+                        '出价不能为空 !',
+                        {title: '提示框', icon: 0}
+                    );
+                }
+
+            },
+
+
+        },
+        // vue初始化完时执行
+        mounted: function () {
+            var name = utils.storage.getSession('bidName')
+            $.ajax({
+                url: "/bidding/" + name + "/bidding",
+                type: "get",
+                success: function (resp) {
+                    if (resp[0].status == 1) {
+                        haha.showOptsion = true
+//                        haha.remaindTime = haha.dateDiffFormat(resp[0].endTime)
+                        haha.endTime = resp[0].endTime
+
+                        haha.mark = resp[0].mark
+                        if (haha.mark == 1) {
+                            haha.mainTip = ' [招标] 出价提示:'
+                            haha.tip1 = '1. 第一次出价 [大于等于] 起拍价 + 竞价阶梯'
+                            haha.tip2 = '2. 非第一次出价 [大于等于] 最高出价 - 竞价阶梯'
+                            haha.limitPriceTip = '最高出价(参考): '
+                        }else if (haha.mark == 2) {
+                            haha.mainTip = ' [竞标] 出价提示:'
+                            haha.tip1 = '1. 第一次出价 [小于等于] 起拍价 - 竞价阶梯'
+                            haha.tip2 = '2. 非第一次出价 [小于等于] 最高出价 - 竞价阶梯'
+                            haha.limitPriceTip = '最低出价(参考): '
+                        }else {
+//                            haha.tip1 = '标记错误 不能出价'
+                        }
+                    }
+                    for (var i in resp) {
+                        var prod = {}
+                        var bid = resp[i]
+                        prod.productId = bid.product.productId
+                        prod.code = bid.product.code
+                        prod.name = bid.product.name
+                        prod.spec = bid.product.spec
+                        prod.number = bid.number
+                        prod.unit = bid.product.unit
+                        prod.maxUnitPrice = bid.startPrice
+                        prod.step = bid.step
+                        prod.endDeliveryDate = utils.dateFormat.timeStampToDate(bid.endDeliveryDate)
+                        prod.endPayDate = utils.dateFormat.timeStampToDate(bid.endPayDate)
+
+                        haha.productList.push(prod)
+                        prod = {}
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '查询竞标单失败,状态码 [ ' + status + ' ] ',
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        },
+        watch: {},
+        computed: {},
+    });
+
+</script>
+
+</body>
+
+</html>

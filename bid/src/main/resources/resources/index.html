@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <title>bid index</title>
+
+    <!-- Add this to <head> -->
+
+    <!--<link type="text/css" rel="stylesheet" href="./framework/css/bootstrap.min.css"/>-->
+    <!--<link type="text/css" rel="stylesheet" href="./framework/css/bootstrap-vue.css"/>-->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./framework/css/bootstrap-table.min.css">
+    <!--<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>-->
+    <!--<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>-->
+    <link rel="stylesheet" href="./framework/css/animate.css" />
+    <!--<link rel="stylesheet" href="./framework/css/style.css" />-->
+</head>
+<body>
+<div id="app">
+    <!-- 导航条 -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#example-navbar-collapse">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><strong>美心投标平台</strong></a>
+            </div>
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!--@click.native="report(0)-->
+                    <li class="active">
+                        <router-link to="/">首页</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/news">新闻中心</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/biddingNotice">招标公告</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/bidding">正在竞价</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/myBidding">我的项目</router-link>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            招标公告<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">kafka</a></li>
+                            <li><a href="#">python</a></li>
+                            <li><a href="#">netty</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">分离的链接</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">另一个分离的链接</a></li>
+                        </ul>
+                    </li>
+                    <form action="##" class="navbar-form navbar-left" rol="search">
+                        <div class="form-group">
+                            <div class="col-xs-8"><input type="text" class="form-control" placeholder="请输入关键词"/></div>
+                        </div>
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </form>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            用户中心<b class="caret"></b>
+                        </a>
+                        <!--<i class="fas fa-user"></i>-->
+                        <ul class="dropdown-menu">
+                            <li><a href="#">用户信息</a></li>
+                            <li><a href="#">注销</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-3 animated fadeInUp">
+            <div>
+                <div v-if="!loginFormToggle">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">欢迎登录</div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" v-on:submit.prevent="disableFormSubmit">
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label">供应商账号</label>
+                                    <div class="col-xs-8">
+                                        <input v-model="username" type="text" class="form-control" placeholder="username" required="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label">供应商密码</label>
+                                    <div class="col-xs-8">
+                                        <input v-model="password" type="password" class="form-control" placeholder="password" required="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button @click="login"
+                                            class="btn btn-xs btn-primary col-xs-2 col-xs-offset-8"
+                                            v-bind:class="{disabled: isSubmit}"
+                                    >登录</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!--<div class="panel-footer">作者：大漠</div>-->
+                    </div>
+                </div>
+
+                <div v-if="loginFormToggle">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            欢迎您 ! <i class="fa fa-user" aria-hidden="true"><strong>{{showName}}</strong></i>
+                            <a @click="logout" class="pull-right"><i class="fa fa-circle-o-notch" aria-hidden="true"></i> 注销 </a>
+                        </div>
+                        <div class="panel-body">
+                            <p id="time"></p>
+                            <p><i class="fa fa-handshake-o" aria-hidden="true"></i> 欢迎来到美心集团网上竞价平台 !</p>
+                        </div>
+                        <div class="panel-footer">
+                            <p class="pull-right">
+                                <p class="pull-right"><a href="#modifyPwdModal" data-toggle="modal">修改密码</a></p>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="panel panel-success">
+                <div class="panel-heading">新闻中心</div>
+                <div class="panel-body">
+                    news   .......
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 animated fadeInRight">
+            <router-view></router-view>
+        </div>
+    </div>
+
+</div>
+
+<!-- 定义所有的模态框 -->
+<div id="modals">
+    <!-- 修改用户账户的模态框 -->
+    <div class="modal fade" id="modifyPwdModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <h3 class="modal-title">修改信息 </h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="m_username" class="col-xs-3 control-label">供应商账号</label>
+                            <div class="col-xs-6">
+                                <input id="m_username" type="text" class="form-control" placeholder="username" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="m_password01" class="col-xs-3 control-label">原始密码</label>
+                            <div class="col-xs-6">
+                                <input id="m_password01" type="password" class="form-control" placeholder="password" required="">
+                            </div>
+                            <i id="modifyPWDTip" class="hidden" aria-hidden="true"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="m_password02" class="col-xs-3 control-label">新密码</label>
+                            <div class="col-xs-6">
+                                <input id="m_password02" type="password" class="form-control" placeholder="new password" required="">
+                            </div>
+                            <i id="modifyPWDTip02" class="hidden" aria-hidden="true"></i>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button id="submitPWD" type="button" class="btn btn-primary disabled" data-dismiss="modal">
+                        修改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->
+</div>
+
+
+<!--</div>-->
+<!--<div id="app">-->
+<!--<h1>Hello App!</h1>-->
+<!--<p>-->
+<!--&lt;!&ndash; 使用 router-link 组件来导航. &ndash;&gt;-->
+<!--&lt;!&ndash; 通过传入 `to` 属性指定链接. &ndash;&gt;-->
+<!--&lt;!&ndash; <router-link> 默认会被渲染成一个 `<a>` 标签 &ndash;&gt;-->
+<!--<router-link to="/foo">Go to Foo</router-link>-->
+<!--<router-link to="/bar">Go to Bar</router-link>-->
+<!--<router-link to="/user/1">Go to User</router-link>-->
+<!--</p>-->
+<!--&lt;!&ndash; 路由出口 &ndash;&gt;-->
+<!--&lt;!&ndash; 路由匹配到的组件将渲染在这里 &ndash;&gt;-->
+<!--<router-view></router-view>-->
+<!--</div>-->
+
+
+<template id="Home">
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">招投标公告</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="biddingReport00" class="table table-condensed table-hover"></table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="panel panel-primary">
+            <div class="panel-heading">正在竞价</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="biddingReport01" class="table table-condensed table-hover"></table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="panel panel-primary">
+            <div class="panel-heading">已结束..</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="biddingReport02" class="table table-condensed table-hover"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="biddingNotice">
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">招投标公告</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="biddingReportNotice" class="table table-condensed table-hover"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="bidding">
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">正在竞价</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="biddingReport" class="table table-condensed table-hover"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="myBidding">
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">正在参与的项目</div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="myBiddingReport" class="table table-condensed table-hover"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<!-- 开发环境版本，包含了用帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--<script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
+<!-- Add this after vue.js -->
+<!--<script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>-->
+<!--<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>-->
+
+<script src="./framework/js/qs.js"></script>
+<script src="./framework/js/vue-router.js"></script>
+<script src="./framework/js/polyfill.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+
+<!-- 生产环境版本，优化了尺寸和速度 -->
+<!--<script src="https://cdn.jsdelivr.net/npm/vue"></script>    -->
+<!--<script src="./framework/js/polyfill.min.js"></script>-->
+<!--<script src="./framework/js/bootstrap-vue.js"></script>-->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="./framework/js/bootstrap-table.min.js"></script>
+<script src="./framework/js/bootstrap-table-zh-CN.js"></script>
+<script src="./framework/js/plugins/layer/layer.min.js"></script>
+
+<script src="./myjs/utils.js"></script>
+<script src="./myjs/axiosSettings.js"></script>
+<script src="./myjs/report.js"></script>
+<script src="./myjs/index.js"></script>
+<script src="./myjs/modal.js"></script>
+
+<script>
+    var key = setInterval(function(){
+        var now = (new Date()).getTime()
+        $('#time').html('今天是:  ' + utils.dateFormat.timeStampToDate(now))
+    }, 1030);
+//    clearInterval(key);
+
+//    $('#m_username').val(utils.storage.getSession('username'))
+
+    //模态框拖动
+    $(document).on("show.bs.modal", ".modal", function(){
+        $(this).draggable({
+            handle: ".modal-header"   //只能点击头部拖动
+        });
+        $(this).css("overflow", "hidden"); //防止出现滚动条，出现的话，你会把滚动条一起拖着走的
+    });
+
+    //modal完全关闭时
+    $('#modifyPwdModal').on('show.bs.modal', function () {
+        $('#m_username').val(utils.storage.getSession('username'))
+    })
+
+    //modal完全关闭时
+    $('#modifyPwdModal').on('hidden.bs.modal', function () {
+        $('#m_password01').val('')
+        $('#m_password02').val('')
+        $('#modifyPWDTip').html('');
+        $('#modifyPWDTip').attr('class', 'hidden');
+
+        $('#modifyPWDTip02').html('');
+        $('#modifyPWDTip02').attr('class', 'hidden');
+
+        if (!$('#submitPWD').hasClass('disabled')) {
+            $('#submitPWD').addClass('disabled')
+        }
+    })
+
+    $('#m_password01').blur(function () {
+        console.log(11111)
+        if ($('#m_password01').val() == '') {
+            $('#modifyPWDTip').html('原始密码不能为空 !');
+            $('#modifyPWDTip').attr('class', 'fa fa-times')
+            $('#modifyPWDTip').css('color', 'red')
+        }else {
+            var userInfo = {
+                username: utils.storage.getSession('username'),
+                password: $('#m_password01').val()
+            }
+            $.ajax({
+                url: "/supplier/checkPwd",
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "json",
+                data: userInfo,
+                success: function (resp) {
+                    $('#modifyPWDTip').html(resp.msg);
+                    if(resp.code == 200) {
+                        $('#modifyPWDTip').attr('class', 'fa fa-check')
+                        $('#modifyPWDTip').css('color', 'green')
+                        if ($('#modifyPWDTip02').hasClass('fa fa-check')) {
+                            $('#submitPWD').removeClass('disabled')
+                        }
+                    }else {
+                        $('#modifyPWDTip').attr('class', 'fa fa-times')
+                        $('#modifyPWDTip').css('color', 'red')
+                        $('#submitPWD').addClass('disabled')
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '密码校验失败,状态码 [ ' + status + ' ] ,原因: ' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        }
+    })
+
+    $('#m_password02').blur(function () {
+        console.log(22222222)
+        if ($('#password02').val() == '') {
+            $('#modifyPWDTip02').html('密码不能为空 !');
+            $('#modifyPWDTip02').attr('class', 'fa fa-times')
+            $('#modifyPWDTip02').css('color', 'red')
+            if ($('#modifyPWDTip').hasClass('fa fa-check')) {
+                $('#submitPWD').removeClass('disabled')
+            }
+        }else {
+            $('#modifyPWDTip02').html('');
+            $('#modifyPWDTip02').attr('class', 'hidden')
+            if ($('#modifyPWDTip').hasClass('fa fa-check')) {
+                $('#submitPWD').removeClass('disabled')
+            }
+        }
+    })
+
+    $('#submitPWD').click(function () {
+        if (!$('#submitPWD').hasClass('disabled')) {
+            var newUser = {
+                username: $('#m_username').val(),
+                password: $('#m_password02').val()
+            }
+            $.ajax({
+                url: "/supplier/one",
+                type: "put",
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "json",
+                data: newUser,
+                success: function (count) {
+                    utils.storage.setSession('username', newUser.username)
+                    app.showName = newUser.username
+                    layer.msg('密码修改成功 !', {icon: 1});
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '修改密码失败,状态码 [ ' + status + ' ], 原因: ' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        }
+    })
+
+
+</script>
+</body>
+</html>

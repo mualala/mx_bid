@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meixin.bid.mappers.dao.BidDetailsDao" >
+
+    <select id="queryOptimalBidDetail" resultType="com.meixin.bid.entity.BidDetails">
+    SELECT * FROM (
+      SELECT *, (
+        SELECT count(DISTINCT price)
+        FROM bid_details AS b
+        WHERE a.price ${order} b.price AND b.bid_name=#{bidName} AND b.product_id=#{productId}
+      ) + 1 AS rank
+    FROM bid_details AS a
+    WHERE a.bid_name=#{bidName} AND a.product_id=#{productId}
+    ORDER BY rank) rs WHERE rs.uid=#{uid} ORDER BY rs.price ${order3}
+    LIMIT 0, 1;
+    </select>
+
+</mapper>
