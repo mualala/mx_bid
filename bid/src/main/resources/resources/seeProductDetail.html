@@ -64,20 +64,20 @@
                     <div class="col-sm-7">
                         <form class="form-horizontal" role="form" v-on:submit.prevent="disableFormSubmit">
                             <div class="form-group">
-                                <label class="col-xs-3 control-label">剩余时间:</label>
-                                <label class="col-xs-3 control-label"><p class="pull-left">{{remaindTime}}</p></label>
+                                <label class="col-xs-4 control-label">剩余时间:</label>
+                                <label class="col-xs-8 control-label"><p class="pull-left">{{remaindTime}}</p></label>
                             </div>
                             <div class="form-group">
-                                <label class="col-xs-3 control-label">您的出价排名:</label>
-                                <label class="col-xs-2 control-label"><p class="pull-left">{{rank}}</p></label>
+                                <label class="col-xs-4 control-label">您的出价排名:</label>
+                                <label class="col-xs-8 control-label"><p class="pull-left">{{rank}}</p></label>
                             </div>
                             <div class="form-group">
-                                <label class="col-xs-3 control-label">{{limitPriceTip}}</label>
-                                <label class="col-xs-2 control-label"><p class="pull-left">{{limitPrice}}</p></label>
+                                <label class="col-xs-4 control-label">{{limitPriceTip}}</label>
+                                <label class="col-xs-8 control-label"><p class="pull-left">{{limitPrice}}</p></label>
                             </div>
                             <div class="form-group">
-                                <label class="col-xs-3 control-label">请出价:</label>
-                                <div class="col-xs-5">
+                                <label class="col-xs-4 control-label">请出价:</label>
+                                <div class="col-xs-8">
                                     <input v-model="setPrice" type="text" class="form-control" placeholder="0.00" required="">
                                 </div>
                             </div>
