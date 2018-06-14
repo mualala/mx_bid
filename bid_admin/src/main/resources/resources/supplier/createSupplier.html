@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title> - 创建供应商 </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../../framework/css/animate.css" rel="stylesheet">
+    <link href="../../framework/css/style.css?v=4.1.0" rel="stylesheet">
+
+
+    <style>
+        .mark {color: red; background: white;}
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight" id="product">
+        <div class="container">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+
+                    <div class="ibox-title">
+                        <h5>创建供应商</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="form_basic.html#">选项1</a>
+                                </li>
+                                <li><a href="form_basic.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link"><i class="fa fa-times"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="username">用户账号:</label>
+                                <div class="col-sm-5">
+                                    <input id="username" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <span class="mark">*</span>
+                                <i id="errorTip" class="hidden" aria-hidden="true"></i>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="password">密码名称:</label>
+                                <div class="col-sm-5">
+                                    <input id="password" minlength="1" type="password" class="form-control" required="" aria-required="true">
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="supplierType">供应商类型:</label>
+                                <div class="col-sm-8">
+                                    <select id="supplierType" class="form-control" required>
+                                        <option value="-1" selected="selected">---请选择供应商类型---</option>
+                                    </select>
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="companyName">公司名称:</label>
+                                <div class="col-sm-8">
+                                    <input id="companyName" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="licenseNumber">营业执照号码:</label>
+                                <div class="col-sm-8">
+                                    <input id="licenseNumber" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="legal">法定代表人:</label>
+                                <div class="col-sm-8">
+                                    <input id="legal" type="text" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="name">联系人:</label>
+                                <div class="col-sm-8">
+                                    <input id="name" type="text" minlength="1" type="text" class="form-control">
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="email">电子邮箱：</label>
+                                <div class="col-sm-8">
+                                    <input id="email" type="email" minlength="1" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="phone">联系电话：</label>
+                                <div class="col-sm-8">
+                                    <input id="phone" type="text" minlength="11" type="text" class="form-control">
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="fax">传真：</label>
+                                <div class="col-sm-8">
+                                    <input id="fax" type="text" minlength="1" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="zipCode">邮政编码：</label>
+                                <div class="col-sm-8">
+                                    <input id="zipCode" type="text" minlength="1" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="companyAddress">公司地址：</label>
+                                <div class="col-sm-8">
+                                    <input id="companyAddress" type="text" minlength="1" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="companyWeb">公司网站地址：</label>
+                                <div class="col-sm-8">
+                                    <input id="companyWeb" type="text" minlength="1" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="companyLevel">公司资质等级：</label>
+                                <div class="col-sm-8">
+                                    <input id="companyLevel" type="number" minlength="1" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="companyDesc">公司简介：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="companyDesc" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3 col-sm-offset-4">
+                                    <button id="submitInfo" class="btn btn-primary disabled" onclick="supplier.createSupplier.submit()">提交</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-danger" onclick="supplier.createSupplier.resetInfo()">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script src="../../framework/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="../../framework/js/plugins/validate/messages_zh.min.js"></script>
+<script src="../../framework/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="../../myjs/supplier.js"></script>
+
+<script>
+    supplier.supplierTypeNames($('#supplierType'), null)
+
+    $('form').submit(function () {
+        return false;
+    });
+
+    $('#username').blur(function () {
+        var username = $('#username').val();
+        if (username != '') {
+            $.ajax({
+                url: "/supplier/" + username + '/unique',
+                type: "get",
+//            contentType: "application/x-www-form-urlencoded",
+                // dataType: "json",
+//                data: supplierInfo,
+                success: function (resp) {
+                    console.log(resp);
+                    $('#errorTip').html(resp.msg);
+                    if(resp.code == 200) {
+                        $('#errorTip').attr('class', 'fa fa-check')
+                        $('#errorTip').css('color', 'green')
+                    }else {
+                        $('#errorTip').attr('class', 'fa fa-times')
+                        $('#errorTip').css('color', 'red')
+                    }
+                    supplier.createSupplier.checkInfo();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '检查供应商用户名唯一性失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                    supplier.createSupplier.checkInfo();
+                }
+            });
+        }else {
+            $('#errorTip').html('用户名不能为空!');
+            $('#errorTip').attr('class', 'fa fa-times')
+            $('#errorTip').css('color', 'red')
+        }
+    });
+
+    $('.form-control').blur(function () {
+        supplier.createSupplier.checkInfo();
+    })
+
+    $('#supplierType').change(function () {
+        supplier.createSupplier.checkInfo();
+    })
+</script>
+
+</body>
+
+</html>

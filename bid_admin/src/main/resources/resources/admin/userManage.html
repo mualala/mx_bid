@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> - 竞标单管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../../framework/css/animate.css" rel="stylesheet">
+    <link href="../../framework/css/style.css?v=4.1.0" rel="stylesheet">
+
+    <link href="../../framework/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-editable.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="userManageReport">
+    <div class="wrapper wrapper-content animated fadeInRight" id="product">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>用户查询条件</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="tabs_panels.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">选项1</a></li>
+                                <li><a href="#">选项2</a></li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <ul class="ibox-content">
+                        <form class="form-inline m-t" v-on:submit.prevent="disableFormSubmit">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">账号:</label>
+                                <div class="col-sm-8">
+                                    <input v-model="queryCondition.username" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">开始时间:</label>
+                                <div class="col-sm-8">
+                                    <input v-model="queryCondition.startDate"
+                                           @click="initDate(1)"
+                                           minlength="1" type="datetime" class="form-control laydate-icon form-control layer-date" required="" aria-required="true" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">结束时间:</label>
+                                <div class="col-sm-8">
+                                    <input v-model="queryCondition.endDate"
+                                           @click="initDate(2)"
+                                           minlength="1" type="datetime" class="form-control laydate-icon form-control layer-date" required="" aria-required="true" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <button @click="queryUserReport" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>查询</button>
+                                </div>
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button @click="resetInfo" class="btn btn-danger"><i class="fa fa-reply" aria-hidden="true"></i>重置</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div id="userBlockTool" class="col-xs-12" style="color: red;font-size: 12px;">
+                                    <a href="#addUserModal" data-toggle="modal" onclick="" class="btn btn-success btn-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i>添加</a>
+                                    <a onclick="admin.userManage.deleteUser()" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i>删除</a>
+                                    <a onclick="admin.userManage.modifyUser.toggleModal()" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>修改</a>
+                                </div>
+                            </div>
+                        </form>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- 添加用户的模态框 -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title">添加用户</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">用户账号: </label>
+                            <div class="col-xs-5">
+                                <input v-model="addUserInfo.username"
+                                       v-on:blur="checkName"
+                                       type="text" class="form-control" placeholder="" required="">
+                            </div>
+                            <span class="mark">*</span>
+                            <i v-bind:class="{hidden: tipOptions.isDuplicatName}"
+                               v-bind:style="{color: tipOptions.color}"
+                               aria-hidden="true">
+                                {{tipOptions.duplicatNameTip}}
+                            </i>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">用户密码: </label>
+                            <div class="col-xs-5">
+                                <input v-model="addUserInfo.password" type="password" class="form-control" placeholder="" required="">
+                            </div>
+                            <span class="mark">*</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">用户名称: </label>
+                            <div class="col-xs-5">
+                                <input v-model="addUserInfo.name" type="text" class="form-control" placeholder="" required="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button :class="{disabled: tipOptions.disabled}"
+                            class="btn btn-primary"
+                            @click="createUser"
+                            data-dismiss="modal">
+                        创建
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <table id="userReport" class="table table-bordered table-hover"></table>
+
+
+</div>
+
+<!-- 修改用户的模态框 -->
+<div class="modal fade" id="modifyUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title">修改用户</h3>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-horizontal" role="form" method="post">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="m_username">用户账号: </label>
+                        <div class="col-xs-5">
+                            <input id="m_username"
+                                   v-on:blur="checkName"
+                                   type="text" class="form-control" placeholder="" required="">
+                        </div>
+                        <i v-bind:class="{hidden: tipOptions.isDuplicatName}"
+                           v-bind:style="{color: tipOptions.color}"
+                           aria-hidden="true">
+                        </i>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="m_password">用户密码: </label>
+                        <div class="col-xs-5">
+                            <input id="m_password" type="password" class="form-control" placeholder="" required="">
+                        </div>
+                    </div>
+                    <fieldset id="m_name_dis">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label" for="m_name">用户名称: </label>
+                            <div class="col-xs-5">
+                                <input id="m_name" type="text" class="form-control" placeholder="" required="">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button @click="resetNewUserInfo" type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                <button :class="{disabled: tipOptions.disabled}"
+                        class="btn btn-primary"
+                        onclick="admin.userManage.modifyUser.submit()"
+                        data-dismiss="modal">
+                    修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script src="../../framework/js/bootstrap-table.min.js"></script>
+<script src="../../framework/js/bootstrap-table-zh-CN.js"></script>
+<script src="../../framework/js/tableExport.min.js"></script>
+<script src="../../framework/js/bootstrap-table-export.js"></script>
+<script src="../../framework/js/bootstrap-table-editable.js"></script>
+<script src="../../framework/js/bootstrap-editable.js"></script>
+<script src="../../framework/js/bootstrap-select.min.js"></script>
+<script src="../../framework/js/plugins/layer/layer.min.js"></script>
+<script src="../../framework/js/plugins/layer/laydate/laydate.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script src="../../myjs/utils.js"></script>
+<script src="../../myjs/admin.js"></script>
+
+<script>
+    //modal完全关闭时
+    $('#modifyUserModal').on('hidden.bs.modal', function () {
+        $('#m_name_dis').removeAttr('disabled')
+    })
+
+    var user = new Vue({
+        el: '#userManageReport',
+        data: {
+            queryCondition: {
+                username: '',
+                startDate: '',
+                endDate: '',
+            },
+
+            addUserInfo:{},
+
+            tipOptions:{
+                disabled: true,        //按钮置灰  不可创建
+                isDuplicatName: true,  //禁掉     可创建
+                duplicatNameTip: '',
+                color: '',
+            },
+        },
+
+        methods: {
+            createUser: function () {
+                if (!user.tipOptions.disabled) {
+                    if (user.addUserInfo.name != 'root') {
+                        $.ajax({
+                            url: "/admin",
+                            type: "post",
+                            contentType: "application/x-www-form-urlencoded",
+                            data: user.addUserInfo,
+                            success: function (count) {
+                                layer.msg('成功创建了 [ ' + count + ' ] 个用户', {icon: 1});
+                                admin.userManage.initUserReport()
+                                user.resetNewUserInfo()
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                var status = xhr.status;
+                                layer.alert(
+                                    '创建用户失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                                    {title: '提示框', icon: 0}
+                                );
+                            }
+                        });
+                    }else {
+                        layer.alert(
+                            '不可创建 root 名称的用户 !!',
+                            {title: '提示框', icon: 0}
+                        );
+                    }
+                }
+            },
+
+            resetNewUserInfo: function () {
+                user.addUserInfo = {}
+            },
+
+            // 初始化日期
+            initDate: function (mark) {
+                laydate({
+                    istime: true,
+                    theme: 'molv',
+                    format: 'YYYY-MM-DD hh:mm:ss',
+                    choose: function(date) {
+                        switch (mark) {
+                            case 1: user.queryCondition.startDate = date; break;
+                            case 2: user.queryCondition.endDate = date; break;
+                            default:
+                                layer.alert(
+                                    '初始化日期控件失败, 原因: mark为[' + mark + '] , 传参错误 !',
+                                    {title: '提示框', icon: 0}
+                                ); break;
+                        }
+                    }
+                })
+            },
+
+            checkName: function () {
+                if (user.addUserInfo.username == undefined || user.addUserInfo.username == '') {
+                    user.markNameTip(-1, null)
+                }else {
+                    $.ajax({
+                        url: "/admin/" + user.addUserInfo.username + '/unique',
+                        type: "get",
+                        success: function (resp) {
+                            resp.code == 200 ? user.markNameTip(1, resp.msg) : user.markNameTip(-1, resp.msg)
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            var status = xhr.status;
+                            layer.alert(
+                                '创建用户失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                                {title: '提示框', icon: 0}
+                            );
+                        }
+                    });
+                }
+            },
+
+            //mark=1 名称合法
+            markNameTip: function (mark, tip) {
+                user.tipOptions.duplicatNameTip = tip == null ? '用户不能为空 !!' : tip
+                user.tipOptions.isDuplicatName = false
+                if (mark == 1) {
+                    user.tipOptions.color = 'green'
+                    user.tipOptions.disabled = false
+                }else {
+                    user.tipOptions.color = 'red'
+                    user.tipOptions.disabled = true
+                }
+            },
+
+            resetInfo: function () {
+                user.queryCondition = {}
+            },
+
+            queryUserReport: function () {
+                admin.userManage.initUserReport()
+            },
+
+
+            //必须禁掉form默认的submit
+            disableFormSubmit: function () {
+                return false;
+            },
+
+        },
+
+        // vue初始化完时执行
+        mounted: function () {
+            admin.userManage.initUserReport()
+        },
+        watch: {},
+        computed: {},
+    });
+
+</script>
+
+</body>
+</html>

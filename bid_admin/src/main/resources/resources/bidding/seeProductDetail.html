@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> - 查看已发布竞标单的产品信息 </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../../framework/css/animate.css" rel="stylesheet">
+    <link href="../../framework/css/style.css?v=4.1.0" rel="stylesheet">
+
+
+    <style>
+        .mark {color: red; background: white;}
+    </style>
+</head>
+
+<body class="gray-bg">
+<div id="bidTable" class="animated fadeInUp">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">约束的供应商</div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
+                    <thead class="thead-default">
+                    <tr>
+                        <!--<th><input type="checkbox"></th>-->
+                        <th>序号</th>
+                        <th>供应商类型</th>
+                        <th>供应商ID</th>
+                        <th>供应商账号</th>
+                        <th>联系人</th>
+                        <th>电话</th>
+                        <th>公司名称</th>
+                        <th>法人</th>
+                        <th>公司地址</th>
+                        <th>公司简介</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(addSu, index) in addSuppliers">
+                        <!--<td><input type="checkbox" :value="index" v-model="checkedRows"></td>-->
+                        <td>{{index + 1}}</td>
+                        <td>{{addSu.name}}</td>
+                        <td>{{addSu.supplierId}}</td>
+                        <td>{{addSu.username}}</td>
+                        <td>{{addSu.name}}</td>
+                        <td>{{addSu.phone}}</td>
+                        <td class="col-sm-1">{{addSu.companyName}}</td>
+                        <td>{{addSu.legal}}</td>
+                        <td>{{addSu.companyAddress}}</td>
+                        <td class="col-sm-1">{{addSu.companyDesc}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <hr />
+    <div class="panel panel-primary">
+        <div class="panel-heading">产品列表</div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table id="" class="table table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
+                <thead class="thead-default">
+                <tr>
+                    <!--<th><input type="checkbox"></th>-->
+                    <th>序号</th>
+                    <th>产品编码</th>
+                    <th>产品名称</th>
+                    <th>产品规格</th>
+                    <th>产品数量</th>
+                    <th>产品单位</th>
+                    <th>起拍价(元)</th>
+                    <th>竞价阶梯(元)</th>
+                    <th>交货期限</th>
+                    <th>付款期限</th>
+                    <!--<th>操作</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(addProduct, index) in addProducts">
+                    <!--<td><input type="checkbox" :value="index" v-model="checkedRows"></td>-->
+                    <td>{{index + 1}}</td>
+                    <td>{{addProduct.code}}</td>
+                    <td>{{addProduct.name}}</td>
+                    <td>{{addProduct.spec}}</td>
+                    <td class="col-sm-1">{{addProduct.number}}</td>
+                    <td>{{addProduct.unit}}</td>
+                    <td class="col-sm-1">{{addProduct.maxUnitPrice}}</td>
+                    <td class="col-sm-1">{{addProduct.step}}</td>
+                    <td class="col-sm-2">
+                        {{addProduct.endDeliveryDate}}
+                    </td>
+                    <td class="col-sm-2">
+                        {{addProduct.endPayDate}}
+                    </td>
+                    <!--<td><div class="btn btn-danger" @click="deleteOne(index)"><i class="fa fa-times" aria-hidden="true"></i>删除</div></td>-->
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../framework/js/bootstrap-table.min.js"></script>
+<script src="../../framework/js/bootstrap-table-zh-CN.js"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script src="../../framework/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="../../framework/js/plugins/validate/messages_zh.min.js"></script>
+<script src="../../framework/js/plugins/layer/layer.min.js"></script>
+<script src="../../framework/js/plugins/layer/laydate/laydate.js"></script>
+
+<!--<script src="../../framework/js/qs.js"></script>-->
+<!--<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- 自定义js -->
+<!--<script src="../../myjs/bidding.js"></script>-->
+<script src="../../myjs/utils.js"></script>
+
+<script>
+    var haha = new Vue({
+        el: '#bidTable',
+        data: {
+            addSuppliers: [],//添加的供应商
+            addProducts: [], //添加的产品数据
+        },
+
+        methods: {
+
+        },
+
+        // vue初始化完时执行
+        mounted: function () {
+            var name = utils.storage.getSession('bidName')
+            $.ajax({
+                url: "/bidding/" + name + "/bidding",
+                type: "get",
+                success: function (resp) {
+                    console.log(resp)
+                    var biddings = resp.biddings
+                    var biddingSuppliers = resp.biddingSuppliers
+
+                    for (var i in biddings) {
+                        var product = {}
+                        var bid = biddings[i]
+                        product.productId = bid.product.productId
+                        product.code = bid.product.code
+                        product.name = bid.product.name
+                        product.spec = bid.product.spec
+                        product.number = bid.number
+                        product.unit = bid.product.unit
+                        product.maxUnitPrice = bid.startPrice
+                        product.step = bid.step
+                        product.endDeliveryDate = utils.dateFormat.timeStampToDate(bid.endDeliveryDate)
+                        product.endPayDate = utils.dateFormat.timeStampToDate(bid.endPayDate)
+                        haha.addProducts.push(product)
+//                        bidding.productDatas.push(product)
+                        product = {}
+                    }
+
+                    // 取出供应商约束列表
+                    for (var j in biddingSuppliers) {
+                        var su = {}
+                        var bs = biddingSuppliers[j]
+                        su.supplierId = bs.suid
+                        su.name = bs.supplier.name
+                        su.username = bs.supplier.username
+                        su.companyName = bs.supplier.companyName
+                        su.legal = bs.supplier.legal
+                        su.companyAddress = bs.supplier.companyAddress
+                        su.companyDesc = bs.supplier.companyDesc
+                        haha.addSuppliers.push(su)
+                        su = {}
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '查询竞标单产品列表失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        },
+        watch: {},
+        computed: {},
+    });
+
+</script>
+
+</body>
+
+</html>

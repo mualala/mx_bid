@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meixin.bid_admin.mappers.dao.BidDetailsDao" >
+
+    <resultMap id="queryBidDetailsListByUidMap" type="com.meixin.bid_admin.entity.BidDetails">
+        <id column="bid_detail_id" property="bidDetailId" jdbcType="INTEGER" />
+        <id column="uid" property="uid" jdbcType="INTEGER" />
+        <id column="bid_name" property="bidName" jdbcType="VARCHAR" />
+        <id column="product_id" property="productId" jdbcType="INTEGER" />
+        <id column="count" property="count" jdbcType="INTEGER" />
+        <id column="sum" property="sum" jdbcType="FLOAT" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+
+        <association property="supplier" javaType="com.meixin.bid_admin.entity.Supplier">
+            <result column="username" property="username" jdbcType="VARCHAR" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+            <result column="phone" property="phone" jdbcType="VARCHAR" />
+        </association>
+
+        <association property="bidding" javaType="com.meixin.bid_admin.entity.Bidding">
+            <result column="bid_desc" property="bidDesc" jdbcType="VARCHAR" />
+            <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+            <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        </association>
+    </resultMap>
+
+    <select id="queryBidDetailsListByUid" parameterType="com.meixin.bid_admin.web.dto.BidDetailsCondition" resultMap="queryBidDetailsListByUidMap">
+        SELECT
+        A.*, count(0) count, SUM(A.price) sum
+        FROM
+        (
+                SELECT RS.*, bi.bid_desc, bi.start_time, bi.end_time FROM (
+                    SELECT
+                    bd.*, s.username, s.name, s.company_name, s.phone
+                    FROM
+                    bid_details bd
+                    INNER JOIN supplier s ON s.supplier_id = bd.uid
+                    <where>
+                        <if test="uid != -1">s.uid=#{uid}</if>
+                        <if test="username != null and username != ''">AND s.username=#{username}</if>
+                    </where>) RS
+                  INNER JOIN bidding bi ON RS.bid_name=bi.name GROUP BY RS.price
+            ) A
+        <where>
+            <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+                AND A.create_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+        GROUP BY A.uid
+        <if test="sortName != null and sortName == 'bidName'">ORDER BY A.bid_name ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'count'">ORDER BY count ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'sum'">ORDER BY sum ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'createTime'">ORDER BY A.create_time ${sortOrder}</if>
+        limit #{start}, #{size}
+    </select>
+
+    <select id="queryBidDetailsListTotal" parameterType="com.meixin.bid_admin.web.dto.BidDetailsCondition" resultType="int">
+        SELECT
+          count(DISTINCT A.bid_detail_id)
+        FROM
+            (
+                SELECT RS.*, bi.bid_desc, bi.start_time, bi.end_time FROM (
+                    SELECT
+                    bd.*, s.username, s.name, s.company_name, s.phone
+                    FROM
+                    bid_details bd
+                    INNER JOIN supplier s ON s.supplier_id = bd.uid
+                    <where>
+                        <if test="uid != -1">s.uid=#{uid}</if>
+                        <if test="username != null and username != ''">AND s.username=#{username}</if>
+                    </where>) RS
+                INNER JOIN bidding bi ON RS.bid_name=bi.name GROUP BY RS.uid
+            ) A
+        <where>
+            <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+                AND A.create_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+    <resultMap id="selectOptimalMap" type="com.meixin.bid_admin.entity.BidDetails">
+        <id column="bid_detail_id" property="bidDetailId" jdbcType="INTEGER" />
+        <id column="uid" property="uid" jdbcType="INTEGER" />
+        <id column="bid_name" property="bidName" jdbcType="VARCHAR" />
+        <id column="product_id" property="productId" jdbcType="INTEGER" />
+        <id column="count" property="count" jdbcType="INTEGER" />
+        <id column="optimal" property="optimal" jdbcType="FLOAT" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+
+        <association property="product" javaType="com.meixin.bid_admin.entity.Product">
+            <id column="code" property="code" jdbcType="VARCHAR" />
+            <id column="p_name" property="name" jdbcType="VARCHAR" />
+            <id column="spec" property="spec" jdbcType="VARCHAR" />
+            <id column="unit" property="unit" jdbcType="VARCHAR" />
+            <id column="product_desc" property="productDesc" jdbcType="VARCHAR" />
+        </association>
+        <association property="bidding" javaType="com.meixin.bid_admin.entity.Bidding">
+            <result column="number" property="number" jdbcType="INTEGER" />
+            <result column="start_price" property="startPrice" jdbcType="FLOAT" />
+            <result column="step" property="step" jdbcType="INTEGER" />
+            <result column="end_delivery_date" property="endDeliveryDate" jdbcType="TIMESTAMP" />
+            <result column="end_pay_date" property="endPayDate" jdbcType="TIMESTAMP" />
+        </association>
+        <association property="supplier" javaType="com.meixin.bid_admin.entity.Supplier">
+            <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+            <result column="username" property="username" jdbcType="VARCHAR" />
+            <result column="s_name" property="name" jdbcType="VARCHAR" />
+            <result column="phone" property="phone" jdbcType="VARCHAR" />
+            <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+            <result column="legal" property="legal" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <!-- 最高报价列表 -->
+    <select id="selectMax" resultMap="selectOptimalMap">
+      SELECT B.*, S.supplier_id, S.username, S.name s_name, S.phone, S.company_name, S.legal FROM
+        (
+        SELECT RS.*, P.code, P.name p_name, P.spec,P.unit, P.product_desc FROM
+        (
+          SELECT A.*, bi.number, bi.start_price, bi.step, bi.end_delivery_date, bi.end_pay_date FROM (
+            SELECT bd.*, MAX(bd.price) optimal, COUNT(0) count
+            from bid_details bd
+            where bd.bid_name=#{bidName}
+            GROUP BY bd.product_id) A
+          LEFT JOIN bidding bi ON A.bid_name=bi.name AND A.product_id=bi.product_id
+        ) RS INNER JOIN product P ON RS.product_id=P.product_id
+        ) B
+      INNER JOIN supplier S ON B.uid=S.supplier_id
+      WHERE B.product_id NOT IN (SELECT wb.product_id FROM win_bid wb WHERE wb.bid_name=#{bidName})
+    </select>
+
+    <!-- 最低报价列表 -->
+    <select id="selectMin" resultMap="selectOptimalMap">
+      SELECT B.*, S.supplier_id, S.username, S.name s_name, S.phone, S.company_name, S.legal FROM
+        (
+        SELECT RS.*, P.code, P.name p_name, P.spec,P.unit, P.product_desc FROM
+        (
+        SELECT A.*, bi.number, bi.start_price, bi.step, bi.end_delivery_date, bi.end_pay_date FROM (
+        SELECT bd.*, MIN(bd.price) optimal, COUNT(0) count
+        from bid_details bd
+        where bd.bid_name=#{bidName}
+        GROUP BY bd.product_id) A
+        LEFT JOIN bidding bi ON A.bid_name=bi.name AND A.product_id=bi.product_id
+        ) RS INNER JOIN product P ON RS.product_id=P.product_id
+        ) B
+      INNER JOIN supplier S ON B.uid=S.supplier_id
+      WHERE B.product_id NOT IN (SELECT wb.product_id FROM win_bid wb WHERE wb.bid_name=#{bidName})
+    </select>
+
+
+    <resultMap id="allSupplierPriceOptimalMap" type="com.meixin.bid_admin.entity.BidDetails">
+        <id column="bid_detail_id" property="bidDetailId" jdbcType="INTEGER" />
+        <id column="optimal" property="optimal" jdbcType="FLOAT" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+
+        <association property="supplier" javaType="com.meixin.bid_admin.entity.Supplier">
+            <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+            <result column="username" property="username" jdbcType="VARCHAR" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="phone" property="phone" jdbcType="VARCHAR" />
+            <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+            <result column="legal" property="legal" jdbcType="VARCHAR" />
+            <result column="company_level" property="companyLevel" jdbcType="VARCHAR" />
+            <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+            <result column="company_desc" property="companyDesc" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <!-- 每个供应商的最高出价 -->
+    <select id="allSupplierPriceMax" resultMap="allSupplierPriceOptimalMap">
+        SELECT A.bid_detail_id, A.optimal, A.create_time, S.* FROM
+        (
+        SELECT *, MAX(price) optimal from bid_details
+        WHERE bid_name=#{bidName} AND product_id=${productId}
+        GROUP BY uid
+        ) A INNER JOIN supplier S ON A.uid=S.supplier_id
+    </select>
+
+    <select id="allSupplierPriceMin" resultMap="allSupplierPriceOptimalMap">
+        SELECT A.bid_detail_id, A.optimal, A.create_time, S.* FROM
+        (
+        SELECT *, MIN(price) optimal from bid_details
+        WHERE bid_name=#{bidName} AND product_id=${productId}
+        GROUP BY uid
+        ) A INNER JOIN supplier S ON A.uid=S.supplier_id
+    </select>
+
+
+    <resultMap id="queryPriceDetailsMap" type="com.meixin.bid_admin.entity.BidDetails">
+        <id column="bid_detail_id" property="bidDetailId" jdbcType="INTEGER" />
+        <id column="uid" property="uid" jdbcType="INTEGER" />
+        <id column="bid_name" property="bidName" jdbcType="VARCHAR" />
+        <id column="price" property="price" jdbcType="FLOAT" />
+        <id column="product_id" property="productId" jdbcType="INTEGER" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+
+        <association property="product" javaType="com.meixin.bid_admin.entity.Product">
+            <id column="code" property="code" jdbcType="VARCHAR" />
+            <id column="p_name" property="name" jdbcType="VARCHAR" />
+            <id column="spec" property="spec" jdbcType="VARCHAR" />
+            <id column="unit" property="unit" jdbcType="VARCHAR" />
+            <id column="product_desc" property="productDesc" jdbcType="VARCHAR" />
+        </association>
+        <association property="bidding" javaType="com.meixin.bid_admin.entity.Bidding">
+            <result column="bi_uid" property="uid" jdbcType="INTEGER" />
+            <result column="mark" property="mark" jdbcType="INTEGER" />
+            <result column="start_price" property="startPrice" jdbcType="FLOAT" />
+            <result column="step" property="step" jdbcType="INTEGER" />
+            <result column="number" property="number" jdbcType="INTEGER" />
+            <result column="bid_desc" property="bidDesc" jdbcType="VARCHAR" />
+            <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+            <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        </association>
+        <association property="supplier" javaType="com.meixin.bid_admin.entity.Supplier">
+            <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+            <result column="username" property="username" jdbcType="VARCHAR" />
+            <result column="su_name" property="name" jdbcType="VARCHAR" />
+            <result column="phone" property="phone" jdbcType="VARCHAR" />
+            <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+            <result column="legal" property="legal" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <select id="queryPriceDetails" parameterType="com.meixin.bid_admin.web.dto.BidDetailsCondition" resultMap="queryPriceDetailsMap">
+        SELECT B.*, su.username, su.name su_name, su.phone, su.company_name, su.legal FROM
+        (
+        SELECT A.*, p.code, p.name p_name, p.spec, p.unit, p.product_desc FROM
+        (
+        SELECT bd.*, bi.uid bi_uid,bi.number,bi.mark,bi.start_price, bi.step, bi.start_time, bi.end_time, bi.bid_desc FROM bid_details bd
+        INNER JOIN bidding bi ON bi.name=bd.bid_name AND bi.product_id=bd.product_id
+        ) A
+        INNER JOIN product p ON A.product_id=p.product_id
+        ) B
+        INNER JOIN supplier su ON su.supplier_id=B.uid
+        <where>
+            <if test="uid != -1">B.bi_uid=#{uid}</if>
+            <if test="bidName != null and bidName != ''">AND B.bid_name=#{bidName}</if>
+            <if test="productId != null and productId != ''">AND B.product_id=#{productId}</if>
+            <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+                AND B.create_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+        <if test="sortName != null and sortName == 'price'">ORDER BY B.price ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'createTime'">ORDER BY B.create_time ${sortOrder}</if>
+        limit #{start}, #{size}
+    </select>
+
+    <select id="queryPriceDetailsTotal" parameterType="com.meixin.bid_admin.web.dto.BidDetailsCondition" resultType="int">
+        SELECT count(0) FROM
+        (
+        SELECT A.*, p.code, p.name p_name, p.spec, p.unit, p.product_desc FROM
+        (
+        SELECT bd.*, bi.uid bi_uid, bi.mark,bi.start_price, bi.step, bi.start_time, bi.end_time, bi.bid_desc FROM bid_details bd
+        INNER JOIN bidding bi ON bi.name=bd.bid_name AND bi.product_id=bd.product_id
+        ) A
+        INNER JOIN product p ON A.product_id=p.product_id
+        ) B
+        INNER JOIN supplier su ON su.supplier_id=B.uid
+        <where>
+            <if test="uid != -1">B.bi_uid=#{uid}</if>
+            <if test="bidName != null and bidName != ''">AND B.bid_name=#{bidName}</if>
+            <if test="productId != null and productId != ''">AND B.product_id=#{productId}</if>
+            <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+                AND B.create_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

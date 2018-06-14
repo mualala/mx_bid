@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title> Admin- 主页</title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" >
+    <link href="../framework/css/animate.css" rel="stylesheet">
+    <link href="../framework/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<div id="wrapper">
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <a data-toggle="dropdown" class="dropdown-toggle">
+                            <span class="clear">
+                                <a href="/">
+                                    <span class="block m-t-xs" style="font-size: 20px;">
+                                        <i class="fa fa-area-chart"></i>
+                                        <strong class="font-bold">采购后台</strong>
+                                    </span>
+                                </a>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">Admin
+                    </div>
+                </li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a class="J_menuItem" href="">
+                        <i class="fa fa-home fa-fw"></i>
+                        <span class="nav-label">主页</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa fa-bar-chart-o"></i>
+                        <span class="nav-label">统计图表</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="../graph_echarts.html">百度ECharts</a></li>
+                        <li><a class="J_menuItem" href="graph_flot.html">Flot</a></li>
+                        <li><a class="J_menuItem" href="graph_morris.html">Morris.js</a></li>
+                        <li><a class="J_menuItem" href="graph_rickshaw.html">Rickshaw</a></li>
+                        <li><a class="J_menuItem" href="graph_peity.html">Peity</a></li>
+                        <li><a class="J_menuItem" href="graph_sparkline.html">Sparkline</a></li>
+                        <li><a class="J_menuItem" href="graph_metrics.html">图表组合</a></li>
+                    </ul>
+                </li>
+                <li class="line dk"></li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-users"></i>
+                        <span class="nav-label">供应商管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="supplier/supplierManage.html">供应商管理</a></li>
+                        <li><a class="J_menuItem" href="supplierType/supplierTypeManage.html">类型管理</a></li>
+                        <li><a class="J_menuItem" href="supplier/createSupplier.html">新建供应商</a></li>
+                        <li><a class="J_menuItem" href="mail_compose.html">导入供应商</a></li>
+                    </ul>
+                </li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-coffee"></i>
+                        <span class="nav-label">产品管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="product/productManage.html">产品管理</a></li>
+                        <li><a class="J_menuItem" href="productType/productTypeManage.html">类型管理</a></li>
+                        <li><a class="J_menuItem" href="product/createProduct.html">新建产品</a></li>
+                        <li><a class="J_menuItem" href="mail_compose.html">导入产品</a></li>
+                    </ul>
+                </li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a class="J_menuItem" href="bidding/createBidding.html">
+                        <i class="fa fa-pencil"></i>
+                        <span class="nav-label">创建竞标单</span>
+                        <!--<span class="label label-warning pull-right">7</span>-->
+                    </a>
+                </li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-paper-plane"></i>
+                        <span class="nav-label">竞标单管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="bidding/draftBidding.html">草稿</a></li>
+                        <li><a class="J_menuItem" href="bidding/biddingManage.html">竞标单报表</a></li>
+                        <li><a class="J_menuItem" href="bidding/selectBiddingReport.html">选标</a></li>
+                        <li><a class="J_menuItem" href="bidding/doBidDetails.html">中标明细</a></li>
+                        <li><a class="J_menuItem" href="bidding/priceDetails.html">出价详情</a></li>
+                        <!--<li><a class="J_menuItem" href="bidding/supplierBidDetailsManage.html">招投标报表</a></li>-->
+                    </ul>
+                </li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-newspaper-o"></i>
+                        <span class="nav-label">新闻中心</span>
+                        <!--<span class="label label-warning pull-right">7</span>-->
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="news/createNews.html">创建新闻</a></li>
+                        <li><a class="J_menuItem" href="news/newsManage.html">新闻管理</a></li>
+                    </ul>
+                </li>
+
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <!--<span class="ng-scope">分类</span>-->
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-gears fa-fw"></i>
+                        <span class="nav-label">系统设置</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="admin/userManage.html">用户管理</a></li>
+                        <li><a class="J_menuItem" href="mail_detail.html">设置倒计时间</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-info " href="#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user"></i>
+                            <span id="username" style="color: black;"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="/logout">
+                                    <div class="text-center link-block">
+                                        <!--<i class="fa fa-circle-o-notch pull-left"></i>-->
+                                        <strong>退出登录 </strong>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#modifyPWD" data-toggle="modal">
+                                    <div class="text-center link-block">
+                                        <!--<i class="fa fa-pencil-square pull-left"></i>-->
+                                        <strong>修改密码 </strong>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="row J_mainContent" id="content-main">
+            <iframe id="J_iframe" width="100%" height="100%" src="" frameborder="0" data-id="" seamless></iframe>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+</div>
+
+<!-- 修改密码的模态框 -->
+<div class="modal fade" id="modifyPWD" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title">修改密码</h3>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-horizontal" role="form" method="post">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="username01">账号: </label>
+                        <div class="col-xs-5">
+                            <input id="username01" type="text" class="form-control" placeholder="" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="password01">原始密码: </label>
+                        <div class="col-xs-5">
+                            <input id="password01" type="password" class="form-control" placeholder="" required="">
+                        </div>
+                        <i id="modifyPWDTip" class="hidden" aria-hidden="true"></i>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="password02">新密码: </label>
+                        <div class="col-xs-5">
+                            <input id="password02" type="password" class="form-control" placeholder="" required="">
+                        </div>
+                        <i id="modifyPWDTip02" class="hidden" aria-hidden="true"></i>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                <button class="btn btn-primary disabled"
+                        id="submitPWD" data-dismiss="modal">
+                    修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../framework/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../framework/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../framework/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="../myjs/index.js"></script><!-- 把hAdmin的代码全部放到一起了 -->
+<script src="./myjs/utils.js"></script>
+
+<!-- 第三方插件 -->
+<script src="../framework/js/plugins/pace/pace.min.js"></script>
+
+<script>
+    $('#username').html(utils.storage.getSession('username'));
+
+    //模态框拖动
+    $(document).on("show.bs.modal", ".modal", function(){
+        $(this).draggable({
+		        handle: ".modal-header"   //只能点击头部拖动
+        });
+        $(this).css("overflow", "hidden"); //防止出现滚动条，出现的话，你会把滚动条一起拖着走的
+    });
+
+    //modal完全关闭时
+    $('#modifyPWD').on('show.bs.modal', function () {
+        $('#username01').val(utils.storage.getSession('username'))
+    })
+
+    //modal完全关闭时
+    $('#modifyPWD').on('hidden.bs.modal', function () {
+        $('#password01').val('')
+        $('#password02').val('')
+        $('#modifyPWDTip').html('');
+        $('#modifyPWDTip').attr('class', 'hidden');
+
+        $('#modifyPWDTip02').html('');
+        $('#modifyPWDTip02').attr('class', 'hidden');
+
+        $('#addNameTip').attr('class', 'hidden');
+        $('#addName').val('')
+
+        if (!$('#submitPWD').hasClass('disabled')) {
+            $('#submitPWD').addClass('disabled')
+        }
+    })
+
+    $('#password01').blur(function () {
+        if ($('#password01').val() == '') {
+            $('#modifyPWDTip').html('原始密码不能为空 !');
+            $('#modifyPWDTip').attr('class', 'fa fa-times')
+            $('#modifyPWDTip').css('color', 'red')
+        }else {
+            var userInfo = {
+                username: utils.storage.getSession('username'),
+                password: $('#password01').val()
+            }
+            $.ajax({
+                url: "/supplier/checkPwd",
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "json",
+                data: userInfo,
+                success: function (resp) {
+                    $('#modifyPWDTip').html(resp.msg);
+                    if(resp.code == 200) {
+                        $('#modifyPWDTip').attr('class', 'fa fa-check')
+                        $('#modifyPWDTip').css('color', 'green')
+                        if ($('#modifyPWDTip02').hasClass('fa fa-check')) {
+                            $('#submitPWD').removeClass('disabled')
+                        }
+                    }else {
+                        $('#modifyPWDTip').attr('class', 'fa fa-times')
+                        $('#modifyPWDTip').css('color', 'red')
+                        $('#submitPWD').addClass('disabled')
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '密码校验失败,状态码 [ ' + status + ' ] ,原因: ' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        }
+    })
+
+    $('#password02').blur(function () {
+        if ($('#password02').val() == '') {
+            $('#modifyPWDTip02').html('密码不能为空 !');
+            $('#modifyPWDTip02').attr('class', 'fa fa-times')
+            $('#modifyPWDTip02').css('color', 'red')
+            $('#submitPWD').addClass('disabled')
+        }else {
+            $('#modifyPWDTip02').html('');
+            $('#modifyPWDTip02').attr('class', 'hidden')
+            if ($('#modifyPWDTip').hasClass('fa fa-check')) {
+                $('#submitPWD').removeClass('disabled')
+            }
+        }
+    })
+
+    $('#submitPWD').click(function () {
+        if (!$('#submitPWD').hasClass('disabled')) {
+            var newUser = {
+                username: $('#username01').val(),
+                password: $('#password02').val()
+            }
+            $.ajax({
+                url: "/supplier/one",
+                type: "put",
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "json",
+                data: newUser,
+                success: function (count) {
+                    layer.msg('密码修改成功 !', {icon: 1});
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '修改密码失败,状态码 [ ' + status + ' ], 原因: ' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        }
+    })
+
+</script>
+
+</body>
+
+</html>

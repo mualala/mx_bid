@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> - 产品类型管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../../framework/css/animate.css" rel="stylesheet">
+    <link href="../../framework/css/style.css?v=4.1.0" rel="stylesheet">
+
+    <link href="../../framework/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-editable.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="../../framework/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="wrapper wrapper-content animated fadeInRight" id="product">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <ul class="ibox-content">
+                        <form class="form-inline m-t" id="commentForm">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">开始时间:</label>
+                                <div class="col-sm-8">
+                                    <input id="startDate" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">结束时间:</label>
+                                <div class="col-sm-8">
+                                    <input id="endDate" minlength="1" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <button id="query" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>查询</button>
+                                </div>
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-danger" onclick="productType.productTypeManage.resetCondition();"><i class="fa fa-reply" aria-hidden="true"></i>重置</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div id="productTypeBlockTool" class="col-xs-12" style="color: red;font-size: 12px;">
+                                <a onclick="" href="#addProductTypeModal" data-toggle="modal" class="btn btn-success btn-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i>添加</a>
+                                <a onclick="productType.productTypeManage.deleteProduct();" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i>删除</a>
+                                <a onclick="productType.productTypeManage.modifyProductType.toggleModal();" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>修改</a>
+                                <!--<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>封禁状态：0 解封状态; 1 封禁状态-->
+                            </div>
+                        </div>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="productTypeReport" class="table table-bordered table-hover"></table>
+
+    <!-- 修改产品类型的模态框 -->
+    <div class="modal fade" id="modifyProductTypeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title">修改产品信息</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label for="modifyName" class="col-xs-3 control-label">产品类型名称</label>
+                            <div class="col-xs-5">
+                                <input id="modifyName" type="text" class="form-control" placeholder="" required="">
+                            </div>
+                            <i id="modifyNameTip" class="hidden" aria-hidden="true"></i>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button onclick="productType.productTypeManage.modifyProductType.submit();" id="modifyProductType" type="button" class="btn btn-primary disabled" data-dismiss="modal">提交修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加产品类型的模态框 -->
+    <div class="modal fade" id="addProductTypeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title">添加产品类别信息</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label for="addName" class="col-xs-3 control-label">产品类型名称</label>
+                            <div class="col-xs-5">
+                                <input id="addName" type="text" class="form-control" placeholder="" required="" aria-required="true">
+                            </div>
+                            <i id="addNameTip" class="hidden" aria-hidden="true"></i>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button onclick="productType.createProductType.submit()" id="addProductType" type="button" class="btn btn-primary disabled" data-dismiss="modal">创建产品类型</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script src="../../framework/js/bootstrap-table.min.js"></script>
+<script src="../../framework/js/bootstrap-table-zh-CN.js"></script>
+<script src="../../framework/js/tableExport.min.js"></script>
+<script src="../../framework/js/bootstrap-table-export.js"></script>
+<script src="../../framework/js/bootstrap-table-editable.js"></script>
+<script src="../../framework/js/bootstrap-editable.js"></script>
+<script src="../../framework/js/bootstrap-select.min.js"></script>
+<script src="../../framework/js/plugins/layer/layer.min.js"></script>
+
+<script src="../../myjs/productType.js"></script>
+<script src="../../myjs/utils.js"></script>
+
+<script>
+    //初始化日期控件
+    utils.dateFormat.initDate($("#startDate"));
+    utils.dateFormat.initDate($("#endDate"));
+
+    $('#addName').blur(function () {
+        productType.createProductType.checkInfo();
+    })
+
+    $('form').submit(function () {
+        return false;
+    });
+
+    //初始化报表
+    productType.productTypeManage.initProductTypeReport();
+    $("#query").click(function(){
+        productType.productTypeManage.initProductTypeReport();
+    });
+
+    $('#modifyName').blur(function () {
+        var rows = $("#productTypeReport").bootstrapTable('getAllSelections');
+        var username = $('#modifyName').val();
+        if (username != '' && username != rows[0].name) {
+            $.ajax({
+                url: "/productType/" + username + '/unique',
+                type: "get",
+                success: function (resp) {
+                    $('#modifyNameTip').html(resp.msg);
+                    if(resp.code == 200) {
+                        $('#modifyNameTip').attr('class', 'fa fa-check')
+                        $('#modifyNameTip').css('color', 'green')
+                        $('#modifyProductType').removeClass('disabled')
+                    }else {
+                        $('#modifyNameTip').attr('class', 'fa fa-times')
+                        $('#modifyNameTip').css('color', 'red')
+                        $('#modifyProductType').addClass('disabled')
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '检查产品类型唯一性失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        }
+
+        if (username == '') {
+            $('#modifyNameTip').html('产品类型不能为空!');
+            $('#modifyNameTip').attr('class', 'fa fa-times')
+            $('#modifyNameTip').css('color', 'red')
+        }
+    });
+
+    $('#addName').blur(function () {
+        var rows = $("#productTypeReport").bootstrapTable('getAllSelections');
+        var username = $('#addName').val();
+        if (username != '') {
+            $.ajax({
+                url: "/productType/" + username + '/unique',
+                type: "get",
+                success: function (resp) {
+                    $('#addNameTip').html(resp.msg);
+                    if(resp.code == 200) {
+                        $('#addNameTip').attr('class', 'fa fa-check')
+                        $('#addNameTip').css('color', 'green')
+                        $('#addProductType').removeClass('disabled')
+                    }else {
+                        $('#addNameTip').attr('class', 'fa fa-times')
+                        $('#addNameTip').css('color', 'red')
+                        $('#addProductType').addClass('disabled')
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var status = xhr.status;
+                    layer.alert(
+                        '检查产品类型唯一性失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                        {title: '提示框', icon: 0}
+                    );
+                }
+            });
+        }else {
+            $('#addNameTip').html('产品类型不能为空!');
+            $('#addNameTip').attr('class', 'fa fa-times')
+            $('#addNameTip').css('color', 'red')
+        }
+    });
+
+    // modal完全隐藏时触发
+    $('#modifyProductTypeModal, #addProductTypeModal').on('hidden.bs.modal', function () {
+        $('#modifyNameTip').attr('class', 'hidden');
+        $('#addNameTip').attr('class', 'hidden');
+        $('#addName').val('')
+        if (!$('#modifyProductType').hasClass('disabled')) {
+            $('#modifyProductType').addClass('disabled')
+        }
+        if (!$('#addProductType').hasClass('disabled')) {
+            $('#addProductType').addClass('disabled')
+        }
+    })
+</script>
+
+</body>
+</html>

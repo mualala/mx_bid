@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title> - 会话超时</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="../framework/css/animate.css" rel="stylesheet">
+    <link href="../framework/css/style.css?v=4.1.0" rel="stylesheet">
+    <script>if (window.top !== window.self) {
+        window.top.location = window.location;
+    }</script>
+
+</head>
+
+<body class="gray-bg">
+
+<div class="lock-word animated fadeInDown">
+</div>
+<div class="middle-box text-center lockscreen animated fadeInDown">
+    <div>
+        <div class="m-b-md">
+            <img alt="image" class="img-circle circle-border" src="./images/lockscreen.jpg">
+        </div>
+        <h3></h3>
+        <p>您需要再次输入密码</p>
+        <form class="m-t" role="form" action="/admin/login" method="post">
+            <div id="errorInfo" class="row hidden">
+                <div class="alert alert-danger" role="alert">登录失败! <strong>密码错误</strong></div>
+
+                <!--<div class="alert alert-danger alert-dismissable">-->
+                <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                <!--<p3><strong>登录失败!&nbsp;&nbsp;</strong>账号或密码错误</p3>-->
+                <!--</div>-->
+            </div>
+            <div class="form-group">
+                <input id="password" type="password" class="form-control" placeholder="******" required="">
+            </div>
+
+            <button id="reLogin" type="submit" class="btn btn-primary block full-width" style="margin-bottom: 10px;">登录到首页+</button>
+        </form>
+        <button id="toLogin" class="btn btn-default block full-width"><a>返回登录 ~~</a></button>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../framework/js/plugins/layer/layer.min.js"></script>
+<script src="./myjs/utils.js"></script>
+
+<script>
+    $('h3').text(utils.storage.getSession('username'));
+
+    $('form').submit(function () {
+        return false;
+    });
+
+    $('#reLogin').click(function () {
+        var username = utils.storage.getSession('username');
+        if(username == undefined || username == '') {
+            //询问框
+            layer.confirm('客官, 用户名不存在了 ...', {
+                time: 30000, //30s后自动关闭
+                btn: ['去登录页', '算了~~']
+            }, function(){
+                location.href = '/login.html';
+            });
+        }else {
+            var password = $('#password').val();
+            $.ajax({
+                url: "/admin/login",
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                // dataType: "json",
+                data: {username: username, password: password},
+                success: function (resp) {
+                    location.href = '/index.html';
+                    utils.storage.setSession('username', username);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+//                    var status = xhr.status;
+//                    utils.storage.delLocalDB('username');
+                    $('#errorInfo').removeClass('hidden')
+                }
+            });
+        }
+    });
+
+    $('#toLogin').click(function () {
+        location.href = '/login.html';
+    })
+</script>
+
+</body>
+
+</html>
