@@ -47,7 +47,7 @@ public class Bidding {
 
     private Integer mark; //1=招标（公司卖）   2=竞标（公司买）
 
-    private Integer status = 0; //标单状态 0：发布状态     1：正在竞标中     2：结束
+    private Integer status = 0; //标单状态 0：发布状态  1：正在竞标中  2：结束  3:审核
 
     private Integer type; //类别 1:草稿 2:垃圾箱
 

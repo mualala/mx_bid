@@ -184,7 +184,7 @@ var bidDetails = {
                     if(field == 'name') {
                         var idx = layer.open({
                             type: 2,
-                            area: ['70%', '50%'],
+                            area: ['70%', '65%'],
                             fixed: false, //不固定
                             shadeClose: true,
                             // resize: true,
@@ -331,7 +331,7 @@ var bidDetails = {
                 if(field == 'bidName') {
                     layer.open({
                         type: 2,
-                        area: ['1000px', '600px'],
+                        area: ['70%', '65%'],
                         fixed: false, //不固定
                         maxmin: true,
                         content: 'seePriceDetail.html'
@@ -462,6 +462,7 @@ var bidDetails = {
 
                         bidName: $("#bidName").val(),
                         productId: $('#productId').val(),
+                        username: $('#username').val(),
                         startDate: $("#startDate").val(),
                         endDate: $("#endDate").val(),
                     };
@@ -481,6 +482,7 @@ var bidDetails = {
         resetInfo: function () {
             $('#bidName').val('')
             $('#productId').val('')
+            $('#username').val('')
             $('#startDate').val('')
             $('#endDate').val('')
         }

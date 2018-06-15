@@ -40,9 +40,6 @@ public class BiddingController {
     @Autowired
     private BiddingService biddingService;
 
-    @Autowired
-    private SimpleTaskService simpleTaskService;
-
     @GetMapping("/{name}/unique")
     public ResponseEntity checkNameIsUnique(@PathVariable(name = "name") String name) {
         List<Bidding> biddings = biddingService.getBiddingName(name);
@@ -59,6 +56,7 @@ public class BiddingController {
             try {
                 bid.parseAndSetAllTime();
                 bid.setUid(Utils.uidFromSession(session));
+                bid.setStatus(3);//待审核
             } catch (ParseException e) {
                 LOGGER.error(e.getMessage(), e);
                 return new ResponseEntity(SimpleResponse.ERROR(e.getMessage(), 0), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -119,6 +117,18 @@ public class BiddingController {
         return ResponseEntity.ok(count);
     }
 
+    /**
+     * @Desc:   审核竞标单
+     * @Author: yanghm
+     * @Param:  status=0审核通过
+     * @Date:   10:10 2018/6/15 0015
+     * @Return:
+     */
+    @PutMapping("/{status}/check")
+    public ResponseEntity checkBidding(@RequestBody List<String> bidNames, @PathVariable("status") int status) {
+        int count = biddingService.checkBidding(bidNames, status);
+        return ResponseEntity.ok(count);
+    }
 
 
 }

@@ -50,6 +50,7 @@ public class BiddingServiceImpl implements BiddingService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public int createBidding(List<Bidding> biddings) {
+        //待审核竞标单
         int count = biddingDao.insertList(biddings);
         Bidding bidding = biddings.get(0);
         //添加约束的供应商列表
@@ -65,12 +66,13 @@ public class BiddingServiceImpl implements BiddingService {
             }
             biddingSupplierDao.insertList(bsList);
         }
-
+        /*
         if (count > 0 && bidding.getType() == 0) {//不是草稿
             String uid = String.valueOf(bidding.getUid());
             BiddingTaskUtil.startBiddingTask(scheduler, bidding.getName(), uid, bidding.getRecStartTime());
             BiddingTaskUtil.endBiddingTask(scheduler, bidding.getName(), uid, bidding.getRecEndTime());
         }
+        */
         return count;
     }
 
@@ -151,6 +153,30 @@ public class BiddingServiceImpl implements BiddingService {
     public int setStatus(String bidName, int uid, int status) {
         int count = biddingDao.setBidStatus(bidName, uid, status);
         LOGGER.info("sertvie time={}, bidName={}, uid={}, 设置了 [{}] 条竞标单记录",System.currentTimeMillis(),  bidName, uid, count);
+        return count;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int checkBidding(List<String> bidNames, int status) {
+        int count = 0;
+        Map<String, Object> map = new HashMap<>();
+        map.put("names", bidNames);
+
+        if (status == 0) {//审核通过
+            count = biddingDao.checkokBiddings(map);
+            List<Bidding> biddingList = biddingDao.queryBiddingListByBidNames(map);
+            for (Bidding bidding : biddingList) {
+                if (count > 0 && bidding.getType() == 0) {//不是草稿
+                    String uid = String.valueOf(bidding.getUid());
+                    BiddingTaskUtil.startBiddingTask(scheduler, bidding.getName(), uid, bidding.getStartTime().toString());
+                    BiddingTaskUtil.endBiddingTask(scheduler, bidding.getName(), uid, bidding.getEndTime().toString());
+                }
+            }
+        }else {//保存草稿
+            count = biddingDao.saveToDraft(map);
+        }
+
         return count;
     }
 

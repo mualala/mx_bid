@@ -31,6 +31,7 @@
             <table id="" class="table table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
             <thead class="thead-default">
             <tr>
+                <th>操作</th>
                 <th>序号</th>
                 <th>产品编码</th>
                 <th>产品名称</th>
@@ -50,11 +51,13 @@
                 <th>供应商电话</th>
                 <th>公司名称</th>
                 <th>法人</th>
-                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item, index) in optimalList">
+                <td>
+                    <div class="btn btn-info btn-xs" @click="doBid(item.productId)"><i class="fa fa-filter" aria-hidden="true"></i>定标</div>
+                </td>
                 <td>{{index + 1}}</td>
                 <td>{{item.code}}</td>
                 <td>{{item.name}}</td>
@@ -74,9 +77,6 @@
                 <td>{{item.phone}}</td>
                 <td class="col-sm-1">{{item.companyName}}</td>
                 <td>{{item.legal}}</td>
-                <td>
-                    <div class="btn btn-info btn-xs" @click="doBid(item.productId)"><i class="fa fa-filter" aria-hidden="true"></i>定标</div>
-                </td>
             </tr>
             </tbody>
         </table>

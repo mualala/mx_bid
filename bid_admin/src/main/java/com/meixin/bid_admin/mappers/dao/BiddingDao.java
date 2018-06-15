@@ -47,5 +47,18 @@ public interface BiddingDao extends IMapper<Bidding> {
     int setBidStatus(@Param("bidName") String bidName, @Param("uid") int uid, @Param("status") int status);
 
 
+    List<Bidding> queryBiddingListByBidNames(Map<String, Object> params);
+
+    int checkokBiddings(Map<String, Object> params);
+
+    /**
+     * @Desc:   存成草稿竞标单
+     * @Author: yanghm
+     * @Param:
+     * @Date:   11:09 2018/6/15 0015
+     * @Return:
+     */
+    int saveToDraft(Map<String, Object> params);
+
 
 }

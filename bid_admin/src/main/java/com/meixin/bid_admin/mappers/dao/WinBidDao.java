@@ -18,8 +18,8 @@ public interface WinBidDao extends IMapper<WinBid> {
     @Select("select count(0) from win_bid where bid_name=#{bidName} limit 0, 1")
     int countByBidName(@Param("bidName") String bidName);
 
-    @Select("select * from win_bid where bid_name=#{bidName} and product_id=${productId}")
-    List<WinBid> queryWinBidByNameAndPid(@Param("bidName") String bidName, @Param("productId") int productId);
+    @Select("select * from win_bid where bid_name=#{bidName} and product_id=${productId} and suid=${suid}")
+    List<WinBid> queryWinBidByNameAndPid(@Param("bidName") String bidName, @Param("productId") int productId, @Param("suid") int suid);
 
     List<WinBid> queryWinBidListByUid(BasePageCondition condition);
 

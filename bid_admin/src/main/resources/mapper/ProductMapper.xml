@@ -2,24 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.meixin.bid_admin.mappers.dao.ProductDao" >
 
-    <!--
-    <resultMap id="queryCityForMap" type="com.meixin.bid.entity.Alis">
-        <id column="id" property="id" jdbcType="VARCHAR" />
-        <id column="msg" property="msg" jdbcType="VARCHAR" />
-        <id column="a_msg" property="AMsg" jdbcType="VARCHAR" />
-        <collection property="cityies" javaType="java.util.List" ofType="com.meixin.bid.entity.City">
-            <result column="Name" property="name" jdbcType="VARCHAR" />
-            <result column="Poplulation" property="oplulation" jdbcType="INTEGER" />
-        </collection>
-    </resultMap>
-
-    <select id="queryForListOfCity" resultMap="queryCityForMap">
-        SELECT A.id,A.msg,A.a_msg,C.Name,C.Population
-        FROM alis A
-        INNER JOIN city C on A.id=C.id
-    </select>
-    -->
-
     <resultMap id="queryProductListByUidMap" type="com.meixin.bid_admin.entity.Product">
         <id column="product_id" property="productId" jdbcType="INTEGER" />
         <id column="code" property="code" jdbcType="VARCHAR" />
@@ -44,7 +26,6 @@
         FROM product P
         INNER JOIN product_type PT ON P.product_type_id=PT.product_type_id
         <where>
-            <if test="uid != -1">P.uid=#{uid}</if>
             <if test="productTypeId != null and productTypeId != '' and productTypeId > 0"> AND P.product_type_id=#{productTypeId}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
               AND P.create_time BETWEEN #{startDate} AND #{endDate}
@@ -61,7 +42,6 @@
     <select id="queryProductListTotal" parameterType="com.meixin.bid_admin.web.dto.ProductCondition" resultType="int">
       SELECT count(0) FROM product
         <where>
-            <if test="uid != -1">uid=#{uid}</if>
             <if test="productTypeId != null and productTypeId != '' and productTypeId > 0"> AND product_type_id=#{productTypeId}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND create_time BETWEEN #{startDate} AND #{endDate}
@@ -76,7 +56,6 @@
             <foreach collection="productIds" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
-            <if test="uid != -1">AND uid=#{uid}</if>
         </where>
     </delete>
 

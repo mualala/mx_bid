@@ -32,5 +32,6 @@ public interface BiddingService {
 
     int setStatus(String bidName, int uid, int status);
 
+    int checkBidding(List<String> bidNames, int status);
 
 }

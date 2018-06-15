@@ -8,7 +8,7 @@
         FROM product_type PT
         LEFT JOIN product P ON P.product_type_id=PT.product_type_id
         <where>
-            <if test="uid != -1">PT.uid=#{uid}</if>
+--             <if test="uid != -1">PT.uid=#{uid}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
               AND PT.create_time BETWEEN #{startDate} AND #{endDate}
             </if>
@@ -29,7 +29,7 @@
     <select id="queryProductTypeListTotal" parameterType="com.meixin.bid_admin.web.dto.BasePageCondition" resultType="int">
       SELECT count(0) FROM product_type
         <where>
-            <if test="uid != -1">uid=#{uid}</if>
+--             <if test="uid != -1">uid=#{uid}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND create_time BETWEEN #{startDate} AND #{endDate}
             </if>
@@ -43,7 +43,7 @@
             <foreach collection="productTypeIds" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
-            <if test="uid != -1">AND uid=#{uid}</if>
+--             <if test="uid != -1">AND uid=#{uid}</if>
         </where>
     </delete>
 

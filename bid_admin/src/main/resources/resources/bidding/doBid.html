@@ -32,6 +32,8 @@
             <thead class="thead-default">
             <tr>
                 <!--<th><input type="checkbox"></th>-->
+                <th>操作</th>
+                <th>中标理由</th>
                 <th>序号</th>
                 <th>供应商账号</th>
                 <th>供应商名称</th>
@@ -43,13 +45,17 @@
                 <th>资质等级</th>
                 <th>公司地址</th>
                 <th>公司描述</th>
-                <th>中标理由</th>
-                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(su, index) in suppliers">
                 <!--<td><input type="checkbox" :value="index" v-model="checkedRows"></td>-->
+                <td>
+                    <div @click="winBid(index)" class="btn btn-primary btn-xs"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>中标</div>
+                </td>
+                <td class="col-sm-3">
+                    <textarea v-model="su.reason" class="form-control"></textarea>
+                </td>
                 <td>{{index + 1}}</td>
                 <td>{{su.username}}</td>
                 <td>{{su.name}}</td>
@@ -61,12 +67,6 @@
                 <td>{{su.companyLevel}}</td>
                 <td class="col-sm-1">{{su.companyAddress}}</td>
                 <td class="col-sm-1">{{su.companyDesc}}</td>
-                <td class="col-sm-3">
-                    <textarea v-model="su.reason" class="form-control"></textarea>
-                </td>
-                <td>
-                    <div @click="winBid(index)" class="btn btn-primary btn-xs"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>中标</div>
-                </td>
             </tr>
             </tbody>
         </table>

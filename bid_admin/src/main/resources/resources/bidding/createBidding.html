@@ -66,6 +66,7 @@
                                 <i v-bind:class="{hidden: nameTipOptions.isDuplicatName}"
                                    v-bind:style="{color: nameTipOptions.color}"
                                    aria-hidden="true">
+                                    {{nameTipOptions.duplicatNameTip}}
                                 </i>
                             </div>
                             <div class="form-group">
@@ -114,7 +115,7 @@
                                     <button :class="{disabled: nameTipOptions.disabled}"
                                             class="btn btn-primary"
                                             @click="submitBid(0)">
-                                        发布
+                                        提交到待审核
                                     </button>
                                 </div>
                                 <div class="col-sm-2">
@@ -469,7 +470,7 @@
 
             //mark=1 名称合法
             markNameTip: function (mark, tip) {
-                haha.nameTipOptions.duplicatNameTip = tip == null ? '竞标单名称不能为空 !!' : tip
+                haha.nameTipOptions.duplicatNameTip = (tip == null ? '竞标单名称不能为空 !!' : tip)
                 haha.nameTipOptions.isDuplicatName = false
                 if (mark == 1) {
                     haha.nameTipOptions.color = 'green'

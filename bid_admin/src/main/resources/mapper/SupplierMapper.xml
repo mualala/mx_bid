@@ -33,25 +33,23 @@
         FROM supplier S
         INNER JOIN supplier_type ST ON S.supplier_type_id=ST.supplier_type_id
         <where>
-            <if test="uid != -1">S.uid=#{uid}</if>
             <if test="supplierTypeId != null and supplierTypeId != '' and supplierTypeId > 0"> AND S.supplier_type_id=#{supplierTypeId}</if>
             <if test="companyName != null and companyName != '' and companyName != '%%'"> AND S.company_name LIKE #{companyName}</if>
             <if test="phone != null and phone != ''"> AND S.phone=#{phone}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND S.create_time BETWEEN #{startDate} AND #{endDate}
             </if>
-            <if test="sortName != null and sortName == 'supplierId'">ORDER BY S.supplier_id ${sortOrder}</if>
-            <if test="sortName != null and sortName == 'supplierType.name'">ORDER BY ST.name ${sortOrder}</if>
-            <if test="sortName != null and sortName == 'createTime'">ORDER BY S.create_time ${sortOrder}</if>
-            <if test="sortName != null and sortName == 'updateTime'">ORDER BY S.update_time ${sortOrder}</if>
         </where>
+        <if test="sortName != null and sortName == 'supplierId'">ORDER BY S.supplier_id ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'supplierType.name'">ORDER BY ST.name ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'createTime'">ORDER BY S.create_time ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'updateTime'">ORDER BY S.update_time ${sortOrder}</if>
         limit #{start}, #{size}
     </select>
 
     <select id="querySupplierListTotal" parameterType="com.meixin.bid_admin.web.dto.SupplierCondition" resultType="int">
         SELECT count(0) FROM supplier
         <where>
-            <if test="uid != -1">uid=#{uid}</if>
             <if test="supplierTypeId != null and supplierTypeId != '' and supplierTypeId > 0"> AND supplier_type_id=#{supplierTypeId}</if>
             <if test="companyName != null and companyName != ''"> AND company_name LIKE #{companyName}</if>
             <if test="phone != null and phone != ''"> AND phone=#{phone}</if>
@@ -68,7 +66,6 @@
             <foreach collection="supplierIds" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
-            <if test="uid != -1">AND uid=#{uid}</if>
         </where>
     </delete>
 

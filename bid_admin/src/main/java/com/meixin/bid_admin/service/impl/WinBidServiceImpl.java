@@ -27,12 +27,13 @@ public class WinBidServiceImpl implements WinBidService {
 
     @Autowired
     private BiddingDao biddingDao;
-    
+
     @Override
     public int winBid(WinBid winBid) {
         String bidName = winBid.getBidName();
         int productId = winBid.getProductId();
-        List<WinBid> winBids = winBidDao.queryWinBidByNameAndPid(bidName, productId);
+        int supplierId = winBid.getSuid();
+        List<WinBid> winBids = winBidDao.queryWinBidByNameAndPid(bidName, productId, supplierId);//同一标单的同一产品可以多个人设置中标(只能是不同供应商中标)
         if (winBids != null && !winBids.isEmpty()) {
             return 0;//已经中标了
         }

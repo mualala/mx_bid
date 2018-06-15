@@ -21,7 +21,7 @@ public class BiddingTaskUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiddingTaskUtil.class);
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    enum TaskType {
+    private enum TaskType {
         START_MARK("START-"), // 开启
         END_MARK("END-");     // 结束
 

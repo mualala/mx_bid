@@ -56,7 +56,7 @@ public interface SupplierTypeDao extends IMapper<SupplierType> {
      */
     @Select({"<script>",
             "select * from supplier_type ",
-            "<where><if test='uid != -1'>uid=#{uid}</if></where>",
+//            "<where><if test='uid != -1'>uid=#{uid}</if></where>",
             "</script>"})
     List<SupplierType> querySupplierTypeNamesByUid(@Param("uid") int uid);
 

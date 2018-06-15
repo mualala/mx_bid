@@ -9,6 +9,8 @@ var bidding = {
     selectedBiddings: [], //草稿要操作的竞标单数据
     // dustbinBiddins: [], //垃圾箱操作的竞标单数据
 
+    checkBiddings: [], //选中要审核的竞标单
+
     products: {
         initProducts: function () {
             $('#getProducts').bootstrapTable('destroy').bootstrapTable({
@@ -324,7 +326,7 @@ var bidding = {
     },
 
     biddingManage: {
-        initBiddingReport: function (type) {
+        initBiddingReport: function (type, status) {
             $('#biddingReport').bootstrapTable('destroy').bootstrapTable({
                 method: 'post',
                 url: '/bidding/biddingReport',
@@ -392,29 +394,7 @@ var bidding = {
                             return markMsg
                         }
                     },
-                    {field: 'count', title: '类别数量', sortable: true},
-                    /*
-                    {field: 'startPrice', title: '起拍价', sortable: true},
-                    {field: 'step', title: '竞价阶梯', sortable: true},
-                    {
-                        field: 'endDeliveryDate',
-                        title: '交货期限',
-                        formatter: function (value, row, index) {
-                            if(value != null && value != '') {
-                                return utils.dateFormat.timeStampToDate(value);
-                            }
-                        }
-                    },
-                    {
-                        field: 'endPayDate',
-                        title: '付款期限',
-                        formatter: function (value, row, index) {
-                            if(value != null && value != '') {
-                                return utils.dateFormat.timeStampToDate(value);
-                            }
-                        }
-                    },
-                    */
+                    {field: 'count', title: '产品数目', sortable: true},
                     {
                         field: 'startTime',
                         title: '启标日期',
@@ -444,6 +424,7 @@ var bidding = {
                                 case 0: statusMsg = '已发布'; break;
                                 case 1: statusMsg = '正在竞标中'; break;
                                 case 2: statusMsg = '已结束'; break;
+                                case 3: statusMsg = '待审核'; break;
                             }
                             return statusMsg
                         }
@@ -482,6 +463,8 @@ var bidding = {
                         ho.queryCondition.pageSize = params.pageSize
                         ho.queryCondition.sortName = params.sortName
                         ho.queryCondition.sortOrder = params.sortOrder
+                        if(type == 0 || type == 1 || type == 2) ho.queryCondition.type = type
+                        if (status == 0 || status == 1 || status == 2 || status == 3) ho.queryCondition.status = status
                         return ho.queryCondition
                     }else {
                         var param = {
@@ -490,9 +473,8 @@ var bidding = {
                             sortName: params.sortName,
                             sortOrder: params.sortOrder,
                         }
-                        if(type == 0 || type == 1 || type == 2) {
-                            param.type = type
-                        }
+                        if(type == 0 || type == 1 || type == 2) param.type = type
+                        if (status == 0 || status == 1 || status == 2 || status == 3) param.status = status
                         return param
                     }
                 },
@@ -506,7 +488,7 @@ var bidding = {
                 },
 
                 onClickCell: function (field, value, row, $element) {
-                    utils.storage.delSession('bidName') //先清除缓存
+                    // utils.storage.delSession('bidName') //先清除缓存
                     utils.storage.setSession('bidName', value)
 
                     if(field == 'name') {
@@ -524,12 +506,21 @@ var bidding = {
 
                 onCheck: function (row, tr, field) {
                     bidding.selectedBiddings.push(row.name)
+
+                    bidding.checkBiddings.push(row.name)
                 },
                 onUncheck: function (row, tr) {
                     for (var i in bidding.selectedBiddings) {
-                        var bid = bidding.selectedBiddings[i]
-                        if(row.id == bid.id) {
+                        var bidName = bidding.selectedBiddings[i]
+                        if(row.name == bidName) {
                             bidding.selectedBiddings.splice(i, 1)
+                        }
+                    }
+
+                    for (var i in bidding.checkBiddings) {
+                        var bidName = bidding.checkBiddings[i]
+                        if(row.name == bidName) {
+                            bidding.checkBiddings.splice(i, 1)
                         }
                     }
                 },
@@ -538,13 +529,16 @@ var bidding = {
                 onCheckAll: function (rows) {
                     //先清空所有元素
                     bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
+                    bidding.checkBiddings.splice(0, bidding.checkBiddings.length)
 
                     for(var i in rows) {
                         bidding.selectedBiddings.push(rows[i].name)
+                        bidding.checkBiddings.push(rows[i].name)
                     }
                 },
                 onUncheckAll: function (rows) {
                     bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
+                    bidding.checkBiddings.splice(0, bidding.checkBiddings.length)
                 }
             });
         },
@@ -566,7 +560,7 @@ var bidding = {
                             contentType: "application/json",
                             dataType: "json",
                             success: function (count) {
-                                layer.msg('成功删除了 [ ' + 1 + ' ] 个竞标单, 其中包含 [' + count + '] 个产品', {icon: 1});
+                                layer.msg('成功删除了 [ ' + len + ' ] 个竞标单, 其中包含 [' + count + '] 个产品', {icon: 1});
                                 bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
                                 bidding.biddingManage.initBiddingReport();
                             },

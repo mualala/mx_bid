@@ -12,9 +12,11 @@ import com.meixin.bid_admin.web.dto.BasePageCondition;
 public interface WinBidService {
 
     /**
-     * 后台中标操作
-     * @param winBid
-     * @return
+     * @Desc:   中标操作
+     * @Author: yanghm
+     * @Param:
+     * @Date:   15:16 2018/6/15 0015
+     * @Return:
      */
     int winBid(WinBid winBid);
 

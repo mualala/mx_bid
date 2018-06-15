@@ -56,7 +56,7 @@ public interface ProductTypeDao extends IMapper<ProductType> {
      */
     @Select({"<script>",
             "select * from product_type ",
-            "<where><if test='uid != -1'>uid=#{uid}</if></where>",
+//            "<where><if test='uid != -1'>uid=#{uid}</if></where>",
             "</script>"})
     List<ProductType> queryproductTypeNamesByUid(@Param("uid") int uid);
 
