@@ -57,6 +57,7 @@ var app = new Vue({
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         },
 
+
         login: function () {
             var userInfo = {
                 username: app.username,
