@@ -77,6 +77,32 @@ var utils = {
                 return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
             }
         },
+        /*
+         * 将时间戳装换成yyyy-MM-dd 的日期格式
+         */
+        timeStampToDate1: function (_timestamp) {
+            if (_timestamp != null && _timestamp != '') {
+                var _date = new Date(_timestamp);
+                var year = _date.getFullYear();
+
+                var month = _date.getMonth() + 1;
+                month = utils.dateFormat.append0(month);
+
+                var day = _date.getDate();
+                day = utils.dateFormat.append0(day)
+
+                var hour = _date.getHours();
+                hour = utils.dateFormat.append0(hour);
+
+                var minute = _date.getMinutes();
+                minute = utils.dateFormat.append0(minute)
+
+                var second = _date.getSeconds();
+                second = utils.dateFormat.append0(second);
+
+                return year + "-" + month + "-" + day ;
+            }
+        },
 
         append0: function (_obj) {
             return _obj < 10 ? "0" + _obj : _obj;
