@@ -57,6 +57,7 @@ var app = new Vue({
             window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
         },
 
+
         login: function () {
             var userInfo = {
                 username: app.username,
@@ -65,7 +66,8 @@ var app = new Vue({
             if (!app.isSubmit) {
                 app.$axios.post('/supplier/login', userInfo)
                     .then(function (resp) {
-                        utils.storage.setSession('username', userInfo.username)
+                        console.log(resp)
+                        utils.storage.setSession('username', resp.data.data)
                         app.$router.push('/')
                         // app.$router.go('/')
                         // location.reload();

@@ -38,7 +38,7 @@ class SupplierAuthenticationSuccessHandler implements AuthenticationSuccessHandl
         sessionStore.storeAttribute(webRequest, "suid", supplier.getSupplierId());
 
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSONObject.toJSONString(ResponseEntity.ok("登录成功")));
+        response.getWriter().write(JSONObject.toJSONString(SimpleResponse.OK("登录成功", supplier.getCompanyName())));
     }
 
 }
