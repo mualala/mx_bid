@@ -9,6 +9,8 @@ public class WinBidCondition extends BasePageCondition {
 
     private String bidName;
 
+    private Integer mark;
+
     private String username;
 
     public String getBidName() {
@@ -17,6 +19,14 @@ public class WinBidCondition extends BasePageCondition {
 
     public void setBidName(String bidName) {
         this.bidName = bidName;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
     }
 
     public String getUsername() {

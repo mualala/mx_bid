@@ -20,6 +20,8 @@ public interface BiddingService {
 
     JSONObject biddingReport(BiddingCondition biddingCondition);
 
+    JSONObject checkBiddingReport(BiddingCondition biddingCondition);
+
     int deleteBiddings(String names, int uid);
 
     List<Bidding> getProductsByBiddingName(String name, int uid);

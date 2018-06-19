@@ -3,6 +3,7 @@ package com.meixin.bid_admin.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.meixin.bid_admin.entity.Admin;
 import com.meixin.bid_admin.entity.Product;
+import com.meixin.bid_admin.init.RoleType;
 import com.meixin.bid_admin.mappers.dao.AdminDao;
 import com.meixin.bid_admin.service.AdminService;
 import com.meixin.bid_admin.web.dto.AdminCondition;
@@ -67,7 +68,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int createUser(Admin admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        admin.setRole("ROLE_USER");
+        admin.addRoles(RoleType.ROLE_USER.name());
+        if (admin.getCheckAuth() != null && admin.getCheckAuth() ==1)
+            admin.addRoles(RoleType.ROLE_CHECK.name());
+
         int count = adminDao.insertSelective(admin);
         return count;
     }

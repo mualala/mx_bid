@@ -39,6 +39,7 @@
         </association>
         <association property="bidDetails" javaType="com.meixin.bid_admin.entity.BidDetails">
             <result column="price" property="price" jdbcType="FLOAT" />
+            <result column="optimal" property="optimal" jdbcType="FLOAT" />
             <result column="bd_create_time" property="createTime" jdbcType="TIMESTAMP" />
         </association>
     </resultMap>
@@ -46,19 +47,31 @@
     <select id="queryWinBidListByUid" parameterType="com.meixin.bid_admin.web.dto.WinBidCondition" resultMap="queryWinBidListByUidMap">
         SELECT C.*, su.username, su.name, su.phone, su.company_name, su.legal FROM
         (
-        SELECT bd.price, bd.create_time bd_create_time, B.* FROM
+        SELECT B.*, P.code, P.name p_name, P.spec, P.unit, P.product_desc FROM
         (
-        SELECT A.*, P.code, P.name p_name, P.spec, P.unit, P.product_desc FROM
+        SELECT wb1.reason, A.* FROM
         (
-        SELECT wb.*, bi.start_price, bi.step, bi.number, bi.mark, bi.start_time, bi.end_time, bi.end_delivery_date, bi.end_pay_date, bi.bid_desc FROM win_bid wb
-        INNER JOIN bidding bi ON bi.name=wb.bid_name AND bi.product_id=wb.product_id
+        SELECT
+        CASE b1.mark
+        WHEN 1 THEN MAX(bd1.price)
+        WHEN 2 THEN MIN(bd1.price)
+        ELSE 0
+        END
+        as optimal,
+        bd1.price, bd1.uid suid, bd1.bid_detail_id, bd1.create_time,
+        b1.uid, b1.name bid_name, b1.product_id, b1.start_price, b1.step, b1.number, b1.mark, b1.start_time, b1.end_time, b1.end_delivery_date, b1.end_pay_date, b1.bid_desc
+
+        FROM bidding b1
+        LEFT JOIN bid_details bd1 ON b1.name=bd1.bid_name AND b1.product_id=bd1.product_id
+        -- WHERE b1.suid=20
+        GROUP BY bid_name, b1.product_id, suid
         ) A
-        INNER JOIN product P ON A.product_id=P.product_id
+        LEFT JOIN win_bid wb1 ON wb1.bid_name=A.bid_name AND wb1.product_id=A.product_id AND wb1.suid=A.suid
+        GROUP BY A.bid_name, A.product_id, A.suid
         ) B
-        INNER JOIN bid_details bd ON bd.bid_name=B.bid_name AND bd.product_id=B.product_id AND bd.uid=B.suid
-        AND bd.bid_detail_id=B.bid_detail_id
+        LEFT JOIN product P ON B.product_id = P.product_id
         ) C
-        INNER JOIN supplier su ON C.suid=su.supplier_id
+        LEFT JOIN supplier su ON C.suid = su.supplier_id
         <where>
             <if test="uid != -1">C.uid=${uid}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
@@ -67,26 +80,38 @@
             <if test="bidName != null and bidName != ''">AND C.bid_name=#{bidName}</if>
             <if test="username != null and username != ''">AND su.username=#{username}</if>
         </where>
-        <if test="sortName != null and sortName == 'createTime'">ORDER BY C.bd_create_time ${sortOrder}</if>
         limit #{start}, #{size}
     </select>
+
 
     <select id="queryWinBidListTotal" parameterType="com.meixin.bid_admin.web.dto.WinBidCondition" resultType="int">
         SELECT COUNT(0) FROM
         (
-        SELECT bd.price, B.* FROM
+        SELECT B.*, P.code, P.name p_name, P.spec, P.unit, P.product_desc FROM
         (
-        SELECT A.*, P.code, P.name p_name, P.spec, P.unit, P.product_desc FROM
+        SELECT wb1.reason, A.* FROM
         (
-        SELECT wb.*, bi.start_price, bi.step, bi.number, bi.mark, bi.start_time, bi.end_time, bi.end_delivery_date, bi.end_pay_date, bi.bid_desc FROM win_bid wb
-        INNER JOIN bidding bi ON bi.name=wb.bid_name AND bi.product_id=wb.product_id
+        SELECT
+        CASE b1.mark
+        WHEN 1 THEN MAX(bd1.price)
+        WHEN 2 THEN MIN(bd1.price)
+        ELSE 0
+        END
+        as optimal,
+        bd1.price, bd1.uid suid, bd1.bid_detail_id, bd1.create_time,
+        b1.uid, b1.name bid_name, b1.product_id, b1.start_price, b1.step, b1.number, b1.mark, b1.start_time, b1.end_time, b1.end_delivery_date, b1.end_pay_date, b1.bid_desc
+
+        FROM bidding b1
+        LEFT JOIN bid_details bd1 ON b1.name=bd1.bid_name AND b1.product_id=bd1.product_id
+        -- WHERE b1.suid=20
+        GROUP BY bid_name, b1.product_id, suid
         ) A
-        INNER JOIN product P ON A.product_id=P.product_id
+        LEFT JOIN win_bid wb1 ON wb1.bid_name=A.bid_name AND wb1.product_id=A.product_id AND wb1.suid=A.suid
+        GROUP BY A.bid_name, A.product_id, A.suid
         ) B
-        INNER JOIN bid_details bd ON bd.bid_name=B.bid_name AND bd.product_id=B.product_id AND bd.uid=B.suid
-        AND bd.bid_detail_id=B.bid_detail_id
+        LEFT JOIN product P ON B.product_id = P.product_id
         ) C
-        INNER JOIN supplier su ON C.suid=su.supplier_id
+        LEFT JOIN supplier su ON C.suid = su.supplier_id
         <where>
             <if test="uid != -1">C.uid=${uid}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">

@@ -36,9 +36,9 @@ var doBidDetails = {
             dataType: 'json',
             contentType: 'application/x-www-form-urlencoded',
             pagination: true,//启动分页
-            pageSize: 15,//每页显示的记录数
+            pageSize: 10,//每页显示的记录数
             pageNumber: 1,//当前第几页
-            pageList: [15, 50, 100, 500, 5000, 50000],//记录数可选列表
+            pageList: [10, 15, 'ALL'],//记录数可选列表
             search: true,//是否启用查询,是客户端client才有效
             searchOnEnterKey: true,//按回车触发搜索方法，否则自动触发搜索方法
             showColumns: true,//显示下拉框勾选要显示的列
@@ -60,11 +60,31 @@ var doBidDetails = {
                 // {field: 'state', checkbox: true, width: 30},
                 {field: 'winBidId', title: 'winBidId', visible: false},
                 {field: 'productId', title: 'pid', visible: false},
-                {field: 'bidName', title: '竞标单名称'},
+                {field: 'bidName', title: '竞标单名称', sortable: true},
 
-                {field: 'product.code', title: '产品编码'},
                 {field: 'product.name', title: '产品名称'},
                 {field: 'bidding.number', title: '数量'},
+                {field: 'bidDetails.optimal', title: '最优出价'},
+                {field: 'bidDetails.price', title: '中标金额'},
+                {field: 'reason', title: '中标理由'},
+                {field: 'supplier.username', title: '中标人账号'},
+                {field: 'supplier.name', title: '中标人名称'},
+                {field: 'supplier.phone', title: '中标人电话'},
+                {field: 'supplier.companyName', title: '公司名字'},
+                {field: 'supplier.legal', title: '法人'},
+                {
+                    field: 'bidDetails.createTime',
+                    title: '出价时间',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if(value != null && value != '') {
+                            return utils.dateFormat.timeStampToDate(value);
+                        }
+                    }
+                },
+
+                {field: 'product.code', title: '产品编码', visible: false},
+
                 {field: 'product.spec', title: '产品规格'},
                 {field: 'product.unit', title: '产品单位'},
                 {field: 'product.productDesc', title: '产品描述'},
@@ -104,24 +124,6 @@ var doBidDetails = {
                     }
                 },
                 {field: 'bidding.bidDesc', title: '标单描述'},
-
-                {field: 'supplier.username', title: '中标人账号'},
-                {field: 'supplier.name', title: '中标人名称'},
-                {field: 'bidDetails.price', title: '中标金额'},
-                {field: 'reason', title: '中标理由'},
-                {field: 'supplier.phone', title: '中标人电话'},
-                {field: 'supplier.companyName', title: '公司名字'},
-                {field: 'supplier.legal', title: '法人'},
-                {
-                    field: 'bidDetails.createTime',
-                    title: '中标人出价时间',
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        if(value != null && value != '') {
-                            return utils.dateFormat.timeStampToDate(value);
-                        }
-                    }
-                },
             ],
 
             //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder

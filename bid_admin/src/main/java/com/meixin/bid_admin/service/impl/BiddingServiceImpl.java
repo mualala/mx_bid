@@ -88,6 +88,17 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     @Override
+    public JSONObject checkBiddingReport(BiddingCondition biddingCondition) {
+        JSONObject result = new JSONObject();
+
+        biddingCondition.pageSettings();
+        List<Bidding> productList = biddingDao.queryCheckBiddingListByUid(biddingCondition);
+        result.put("rows", productList);
+        result.put("total", biddingDao.queryCheckBiddingListTotal(biddingCondition));
+        return result;
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public int deleteBiddings(String names, int uid) {
         String[] _names = StringUtils.split(names, "-");

@@ -32,8 +32,7 @@
         FROM bidding B
         INNER JOIN product P ON P.product_id=B.product_id
         <where>
-            B.finish = 0
-            <if test="uid != -1">AND B.uid=#{uid}</if>
+            <if test="uid != -1">B.uid=#{uid}</if>
             <if test="name != null and name != ''"> AND B.name=#{name}</if>
             <if test="type != null"> AND B.type=${type}</if>
             <choose>
@@ -60,11 +59,61 @@
     </select>
 
     <select id="queryBiddingListTotal" parameterType="com.meixin.bid_admin.web.dto.BiddingCondition" resultType="int">
-      SELECT count(DISTINCT name) FROM bidding
+        SELECT count(DISTINCT name) FROM bidding
         <where>
-            finish = 0
-            <if test="uid != -1">AND uid=#{uid}</if>
+            <if test="uid != -1">uid=#{uid}</if>
             <if test="name != null and name != ''"> AND name=#{name}</if>
+            <if test="type != null"> AND type=${type}</if>
+            <choose>
+                <when test="status == 0">AND status=${status}</when>
+                <when test="status == 1">AND status=${status}</when>
+                <when test="status == 2">AND status=${status}</when>
+                <when test="status == 3">AND status=${status}</when>
+                <otherwise>AND status!=3</otherwise>
+            </choose>
+            <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+                AND create_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryCheckBiddingListByUid" parameterType="com.meixin.bid_admin.web.dto.BiddingCondition" resultMap="queryBiddingListByUidMap">
+        SELECT
+        B.id, B.name, B.mark, B.product_id, B.status, B.type, B.bid_desc,
+        B.start_time, B.end_time, B.create_time, B.update_time, count(0) count,
+        P.product_id, P.name p_name, P.spec, P.unit
+        FROM bidding B
+        INNER JOIN product P ON P.product_id=B.product_id
+        <where>
+            <if test="name != null and name != ''">B.name=#{name}</if>
+            <if test="type != null"> AND B.type=${type}</if>
+            <choose>
+                <when test="status == 0">AND B.status=${status}</when>
+                <when test="status == 1">AND B.status=${status}</when>
+                <when test="status == 2">AND B.status=${status}</when>
+                <when test="status == 3">AND B.status=${status}</when>
+                <otherwise>AND B.status!=3</otherwise>
+            </choose>
+            <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+                AND B.create_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+        GROUP BY B.name
+        <if test="sortName != null and sortName == 'name'">ORDER BY B.name ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'mark'">ORDER BY B.mark ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'type'">ORDER BY B.type ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'count'">ORDER BY count ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'startTime'">ORDER BY B.start_time ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'endTime'">ORDER BY B.end_time ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'createTime'">ORDER BY B.create_time ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'updateTime'">ORDER BY B.update_time ${sortOrder}</if>
+        limit #{start}, #{size}
+    </select>
+
+    <select id="queryCheckBiddingListTotal" parameterType="com.meixin.bid_admin.web.dto.BiddingCondition" resultType="int">
+        SELECT count(DISTINCT name) FROM bidding
+        <where>
+            <if test="name != null and name != ''">name=#{name}</if>
             <if test="type != null"> AND type=${type}</if>
             <choose>
                 <when test="status == 0">AND status=${status}</when>

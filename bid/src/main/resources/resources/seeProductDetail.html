@@ -30,10 +30,10 @@
                     <table class="table  table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
                     <thead class="thead-default">
                     <tr>
-                        <th>产品编码</th>
+                        <!--<th>产品编码</th>-->
                         <th>产品名称</th>
-                        <th>产品规格</th>
                         <th>产品数量</th>
+                        <th>产品规格</th>
                         <th>产品单位</th>
                         <th>起拍价(元)</th>
                         <th>竞价阶梯(元)</th>
@@ -43,10 +43,10 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>{{oneProduct.code}}</td>
+                        <!--<td>{{oneProduct.code}}</td>-->
                         <td>{{oneProduct.name}}</td>
+                        <td>{{oneProduct.number}}</td>
                         <td>{{oneProduct.spec}}</td>
-                        <td class="col-sm-1">{{oneProduct.number}}</td>
                         <td>{{oneProduct.unit}}</td>
                         <td class="col-sm-1">{{oneProduct.maxUnitPrice}}</td>
                         <td class="col-sm-1">{{oneProduct.step}}</td>
@@ -118,10 +118,10 @@
                     <tr>
                         <th v-if="showOptsion"><strong>操作</strong></th>
                         <th>序号</th>
-                        <th>产品编码</th>
+                        <!--<th>产品编码</th>-->
                         <th>产品名称</th>
-                        <th>产品规格</th>
                         <th>产品数量</th>
+                        <th>产品规格</th>
                         <th>产品单位</th>
                         <th>起拍价(元)</th>
                         <th>竞价阶梯(元)</th>
@@ -134,10 +134,10 @@
                     <tr v-for="(product, index) in productList">
                         <td class="col-sm-1" v-if="showOptsion" @click="clickPriceOpt(index)"><a><strong>出价</strong></a></td>
                         <td>{{index + 1}}</td>
-                        <td>{{product.code}}</td>
+                        <!--<td>{{product.code}}</td>-->
                         <td>{{product.name}}</td>
+                        <td>{{product.number}}</td>
                         <td>{{product.spec}}</td>
-                        <td class="col-sm-1">{{product.number}}</td>
                         <td>{{product.unit}}</td>
                         <td class="col-sm-1">{{product.maxUnitPrice}}</td>
                         <td class="col-sm-1">{{product.step}}</td>

@@ -118,6 +118,13 @@
                             </i>
                         </div>
                         <div class="form-group">
+                            <label class="col-xs-3 control-label">竞标单审核权限: </label>
+                            <div class="col-xs-3">
+                                <input type="checkbox" id="come" value="1" v-model="addUserInfo.checkAuth">
+                                <label for="come">审核</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-xs-3 control-label">用户密码: </label>
                             <div class="col-xs-5">
                                 <input v-model="addUserInfo.password" type="password" class="form-control" placeholder="" required="">
@@ -134,10 +141,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                    <button @click="resetNew" type="button" class="btn btn-default">重置</button>
                     <button :class="{disabled: tipOptions.disabled}"
                             class="btn btn-primary"
-                            @click="createUser"
-                            data-dismiss="modal">
+                            @click="createUser">
                         创建
                     </button>
                 </div>
@@ -172,6 +179,13 @@
                            v-bind:style="{color: tipOptions.color}"
                            aria-hidden="true">
                         </i>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">竞标单审核权限: </label>
+                        <div class="col-xs-3">
+                            <input type="checkbox" id="checkAuth" value="1" v-model="addUserInfo.checkAuth">
+                            <label for="checkAuth">审核</label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-xs-3 control-label" for="m_password">用户密码: </label>
@@ -225,7 +239,6 @@
 <script src="../../myjs/admin.js"></script>
 
 <script>
-    //modal完全关闭时
     $('#modifyUserModal').on('hidden.bs.modal', function () {
         $('#m_name_dis').removeAttr('disabled')
     })
@@ -250,27 +263,41 @@
         },
 
         methods: {
+            resetNew: function () {
+                user.addUserInfo = {}
+                user.tipOptions.disabled = true
+                user.tipOptions.duplicatNameTip = ''
+                user.tipOptions.color = ''
+            },
+
             createUser: function () {
                 if (!user.tipOptions.disabled) {
                     if (user.addUserInfo.name != 'root') {
-                        $.ajax({
-                            url: "/admin",
-                            type: "post",
-                            contentType: "application/x-www-form-urlencoded",
-                            data: user.addUserInfo,
-                            success: function (count) {
-                                layer.msg('成功创建了 [ ' + count + ' ] 个用户', {icon: 1});
-                                admin.userManage.initUserReport()
-                                user.resetNewUserInfo()
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
-                                var status = xhr.status;
-                                layer.alert(
-                                    '创建用户失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
-                                    {title: '提示框', icon: 0}
-                                );
-                            }
-                        });
+                        if (user.addUserInfo.password != undefined && user.addUserInfo.password != '') {
+                            $.ajax({
+                                url: "/admin",
+                                type: "post",
+                                contentType: "application/x-www-form-urlencoded",
+                                data: user.addUserInfo,
+                                success: function (count) {
+                                    layer.msg('成功创建了 [ ' + count + ' ] 个用户', {icon: 1});
+                                    admin.userManage.initUserReport()
+                                    user.resetNewUserInfo()
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    var status = xhr.status;
+                                    layer.alert(
+                                        '创建用户失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                                        {title: '提示框', icon: 0}
+                                    );
+                                }
+                            });
+                        }else {
+                            layer.alert(
+                                '密码不能为空 !!',
+                                {title: '提示框', icon: 0}
+                            );
+                        }
                     }else {
                         layer.alert(
                             '不可创建 root 名称的用户 !!',

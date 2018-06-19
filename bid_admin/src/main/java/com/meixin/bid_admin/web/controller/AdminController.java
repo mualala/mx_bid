@@ -46,7 +46,7 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity createProduct(@Valid Admin admin, BindingResult errors) {
+    public ResponseEntity createAdmin(@Valid Admin admin, BindingResult errors) {
         if(errors.hasErrors()) {
             return new ResponseEntity("必填数据项有空", HttpStatus.BAD_REQUEST);
         }

@@ -543,6 +543,223 @@ var bidding = {
             });
         },
 
+        initCheckBiddingReport: function (type, status) {
+            $('#biddingReport').bootstrapTable('destroy').bootstrapTable({
+                method: 'post',
+                url: '/checkBidding/checkBiddingReport',
+                // height: "450",
+                striped: false,//不显示斑马线
+                clickToSelect: false,//点击行即可选中单选/复选框
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded',
+                pagination: true,//启动分页
+                pageSize: 15,//每页显示的记录数
+                pageNumber: 1,//当前第几页
+                pageList: [15, 50, 100, 500, 5000, 50000],//记录数可选列表
+                search: true,//是否启用查询,是客户端client才有效
+                searchOnEnterKey: true,//按回车触发搜索方法，否则自动触发搜索方法
+                showColumns: true,//显示下拉框勾选要显示的列
+                showExport: true,//是否显示导出
+                exportDataType: 'basic',
+                showRefresh: true,//显示刷新按钮
+                silent: true,//刷新事件必须设置
+                strictSearch: true,//全匹配搜索，否则为模糊搜索
+                showToggle: true,//显示 切换试图（table/card）按钮
+                toolbar: '#biddingBlockTool',
+                singleSelect: false,//多选
+                exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx'],  //导出文件类型
+                // uniqueId: "id", //每一行的唯一标识，一般为主键列
+                pagination:true,
+                // editable: false,
+                sidePagination: 'server',//服务器端请求
+
+                columns: [
+                    {field: 'state', checkbox: true, width: 30},
+                    {field: 'id', title: 'id', visible: false},
+                    {
+                        field: 'type',
+                        title: '竞标单类型',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            var typeMsg = ''
+                            switch (value) {
+                                case 0: typeMsg = '竞标单'; break;
+                                case 1: typeMsg = '草稿'; break;
+                                case 2: typeMsg = '垃圾箱'; break;
+                            }
+                            return typeMsg
+                        }
+                    },
+                    {field: 'name', title: '竞标单名称', sortable: true,
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                return '<a>' + value + '</a>'
+                            }
+                        }
+                    },
+                    {
+                        field: 'mark',
+                        title: '标记',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            var markMsg = ''
+                            switch (value) {
+                                case 0: markMsg = '异常标记..'; break;
+                                case 1: markMsg = '招标'; break;
+                                case 2: markMsg = '竞标'; break;
+                            }
+                            return markMsg
+                        }
+                    },
+                    {field: 'count', title: '产品数目', sortable: true},
+                    {
+                        field: 'startTime',
+                        title: '启标日期',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                return utils.dateFormat.timeStampToDate(value);
+                            }
+                        }
+                    },
+                    {
+                        field: 'endTime',
+                        title: '竞标单截止日期',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                return utils.dateFormat.timeStampToDate(value);
+                            }
+                        }
+                    },
+                    {
+                        field: 'status',
+                        title: '标单状态',
+                        formatter: function (value, row, index) {
+                            var statusMsg = ''
+                            switch (value) {
+                                case 0: statusMsg = '已发布'; break;
+                                case 1: statusMsg = '正在竞标中'; break;
+                                case 2: statusMsg = '已结束'; break;
+                                case 3: statusMsg = '待审核'; break;
+                            }
+                            return statusMsg
+                        }
+                    },
+                    {field: 'bidDesc', title: '详细描述'},
+                    {
+                        field: 'createTime',
+                        title: '竞标单创建日期',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                return utils.dateFormat.timeStampToDate(value);
+                            }
+                        }
+                    },
+                    {
+                        field: 'updateTime',
+                        title: '竞标单更新日期',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                return utils.dateFormat.timeStampToDate(value);
+                            }
+                        }
+                    },
+                ],
+
+                //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+                //设置为limit可以获取limit, offset, search, sort, order
+                queryParamsType: 'undefined',
+
+                queryParams: function queryParams(params) {
+                    //请求的分页参数
+                    if (ho != undefined) {
+                        ho.queryCondition.pageNumber = params.pageNumber
+                        ho.queryCondition.pageSize = params.pageSize
+                        ho.queryCondition.sortName = params.sortName
+                        ho.queryCondition.sortOrder = params.sortOrder
+                        if(type == 0 || type == 1 || type == 2) ho.queryCondition.type = type
+                        if (status == 0 || status == 1 || status == 2 || status == 3) ho.queryCondition.status = status
+                        return ho.queryCondition
+                    }else {
+                        var param = {
+                            pageNumber: params.pageNumber,
+                            pageSize: params.pageSize,
+                            sortName: params.sortName,
+                            sortOrder: params.sortOrder,
+                        }
+                        if(type == 0 || type == 1 || type == 2) param.type = type
+                        if (status == 0 || status == 1 || status == 2 || status == 3) param.status = status
+                        return param
+                    }
+                },
+                onLoadSuccess: function () {//加载成功时执行
+                },
+                onLoadError: function () {//加载失败时执行
+                    layer.alert(
+                        '加载数据失败 !',
+                        {title: '提示框', icon: 0}
+                    );
+                },
+
+                onClickCell: function (field, value, row, $element) {
+                    // utils.storage.delSession('bidName') //先清除缓存
+                    utils.storage.setSession('bidName', value)
+
+                    if(field == 'name') {
+                        var content = type == 0 ? '/bidding/seeProductDetail.html' : '/bidding/modifyProductDetail.html'
+                        //iframe层-父子操作
+                        layer.open({
+                            type: 2,
+                            area: ['70%', '65%'],
+                            fixed: false, //不固定
+                            maxmin: true,
+                            content: content
+                        });
+                    }
+                },
+
+                onCheck: function (row, tr, field) {
+                    bidding.selectedBiddings.push(row.name)
+
+                    bidding.checkBiddings.push(row.name)
+                },
+                onUncheck: function (row, tr) {
+                    for (var i in bidding.selectedBiddings) {
+                        var bidName = bidding.selectedBiddings[i]
+                        if(row.name == bidName) {
+                            bidding.selectedBiddings.splice(i, 1)
+                        }
+                    }
+
+                    for (var i in bidding.checkBiddings) {
+                        var bidName = bidding.checkBiddings[i]
+                        if(row.name == bidName) {
+                            bidding.checkBiddings.splice(i, 1)
+                        }
+                    }
+                },
+
+                //table全部选中时
+                onCheckAll: function (rows) {
+                    //先清空所有元素
+                    bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
+                    bidding.checkBiddings.splice(0, bidding.checkBiddings.length)
+
+                    for(var i in rows) {
+                        bidding.selectedBiddings.push(rows[i].name)
+                        bidding.checkBiddings.push(rows[i].name)
+                    }
+                },
+                onUncheckAll: function (rows) {
+                    bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
+                    bidding.checkBiddings.splice(0, bidding.checkBiddings.length)
+                }
+            });
+        },
+
         //删除竞标单
         deleteBid: function () {
             var len = bidding.selectedBiddings.length

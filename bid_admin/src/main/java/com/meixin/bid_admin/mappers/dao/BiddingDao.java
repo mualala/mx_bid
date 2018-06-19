@@ -28,7 +28,11 @@ public interface BiddingDao extends IMapper<Bidding> {
 
     List<Bidding> queryBiddingListByUid(BasePageCondition condition);
 
+    List<Bidding> queryCheckBiddingListByUid(BasePageCondition condition);
+
     int queryBiddingListTotal(BasePageCondition condition);
+
+    int queryCheckBiddingListTotal(BasePageCondition condition);
 
     int deleteBiddings(Map<String, Object> params);
 

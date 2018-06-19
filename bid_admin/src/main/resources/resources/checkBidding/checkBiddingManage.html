@@ -149,7 +149,7 @@
                 }else {
                     // status=0 通过
                     $.ajax({
-                        url: '/bidding/' + status + '/check',
+                        url: '/checkBidding/' + status + '/check',
                         type: "put",
                         headers: {
                             'Accept': 'application/json',
@@ -205,7 +205,7 @@
             },
 
             queryBiddingReport: function () {
-                bidding.biddingManage.initBiddingReport(0, 3)
+                bidding.biddingManage.initCheckBiddingReport(0, 3)
             },
 
 
@@ -218,7 +218,7 @@
 
         // vue初始化完时执行
         mounted: function () {
-            bidding.biddingManage.initBiddingReport(0, 3)
+            bidding.biddingManage.initCheckBiddingReport(0, 3)
         },
         watch: {},
         computed: {},

@@ -40,7 +40,7 @@ public class AdminDataInitializer {
             admin.setUsername(USER_NAME);
             admin.setPassword(passwordEncoder.encode(PASSWORD));
             admin.setName("root");
-            admin.setRole("ROLE_ADMIN");
+            admin.addRoles(RoleType.ROLE_ADMIN.name(), RoleType.ROLE_CHECK.name());
             admin.setCreateTime(new Timestamp(System.currentTimeMillis()));
             adminDao.insertSelective(admin);
 

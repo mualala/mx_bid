@@ -2,6 +2,7 @@ package com.meixin.bid_admin.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.meixin.bid_admin.entity.BiddingSupplier;
+import com.meixin.bid_admin.init.RoleType;
 import com.meixin.bid_admin.service.SimpleTaskService;
 import com.meixin.bid_admin.web.dto.BiddingCondition;
 import com.meixin.bid_admin.entity.Bidding;
@@ -18,10 +19,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
+
+import static com.meixin.bid_admin.init.RoleType.ROLE_CHECK;
 
 /**
  * @Desc：
@@ -116,19 +120,5 @@ public class BiddingController {
         int count = biddingService.modifyBidding(biddings);
         return ResponseEntity.ok(count);
     }
-
-    /**
-     * @Desc:   审核竞标单
-     * @Author: yanghm
-     * @Param:  status=0审核通过
-     * @Date:   10:10 2018/6/15 0015
-     * @Return:
-     */
-    @PutMapping("/{status}/check")
-    public ResponseEntity checkBidding(@RequestBody List<String> bidNames, @PathVariable("status") int status) {
-        int count = biddingService.checkBidding(bidNames, status);
-        return ResponseEntity.ok(count);
-    }
-
 
 }

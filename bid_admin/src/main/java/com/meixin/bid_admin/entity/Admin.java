@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,11 +42,18 @@ public class Admin implements UserDetails {
 
     private Timestamp updateTime;
 
+    //前端的 竞标单审核 权限
+    @Transient
+    private Integer checkAuth;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        auths.add(new SimpleGrantedAuthority(this.role));
+        String[] rol = this.role.split(",");
+        for (String r : rol) {
+            auths.add(new SimpleGrantedAuthority(r));
+        }
         return auths;
     }
 
@@ -137,6 +145,36 @@ public class Admin implements UserDetails {
     @Override
     public boolean equals(Object obj) {
         return this.toString().equals(obj.toString());
+    }
+
+    public Integer getCheckAuth() {
+        return checkAuth;
+    }
+
+    public void setCheckAuth(Integer checkAuth) {
+        this.checkAuth = checkAuth;
+    }
+
+    /**
+     * @Desc:   添加角色
+     * @Author: yanghm
+     * @Param:
+     * @Date:   14:11 2018/6/19 0019
+     * @Return:
+     */
+    public void addRoles(String ...roles) {
+        StringBuilder sb = null;
+        if (this.role == null) {
+            sb = new StringBuilder();
+        }else {
+            sb = new StringBuilder(this.role);
+        }
+        if (roles != null) {
+            for (String r : roles) {
+                sb.append(r).append(",");
+            }
+        }
+        setRole(sb.toString());
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
@@ -31,6 +32,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
+    @RolesAllowed("ROLE_USER")
     public ResponseEntity createProduct(@Valid Product product, BindingResult errors, HttpSession session) {
         if(errors.hasErrors()) {
 //            List<FieldError> ls  = errors.getFieldErrors();

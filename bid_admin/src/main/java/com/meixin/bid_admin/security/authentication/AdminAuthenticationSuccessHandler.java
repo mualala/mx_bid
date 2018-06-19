@@ -31,7 +31,7 @@ class AdminAuthenticationSuccessHandler implements AuthenticationSuccessHandler 
         WebRequest webRequest = new ServletWebRequest(request);
         SessionAttributeStore sessionStore = new DefaultSessionAttributeStore();
         sessionStore.storeAttribute(webRequest, "uid",
-                admin.getRole().equals("ROLE_ADMIN") ? -1 : admin.getUid());
+                admin.getRole().contains("ROLE_ADMIN") ? -1 : admin.getUid());
 
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(JSONObject.toJSONString(ResponseEntity.ok("登录成功")));
