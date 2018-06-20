@@ -44,7 +44,7 @@ public class Admin implements UserDetails {
 
     //前端的 竞标单审核 权限
     @Transient
-    private Integer checkAuth;
+    private int checkAuth;
 
 
     @Override
@@ -171,6 +171,9 @@ public class Admin implements UserDetails {
         }
         if (roles != null) {
             for (String r : roles) {
+                if (r.contains(",")) {
+                    r = r.split(",")[0];
+                }
                 sb.append(r).append(",");
             }
         }

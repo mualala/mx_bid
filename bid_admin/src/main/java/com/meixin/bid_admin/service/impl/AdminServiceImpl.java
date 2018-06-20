@@ -41,8 +41,8 @@ public class AdminServiceImpl implements AdminService {
         JSONObject result = new JSONObject();
 
         adminCondition.pageSettings();
-        List<Admin> productList = adminDao.queryUserListByUid(adminCondition);
-        result.put("rows", productList);
+        List<Admin> adminList = adminDao.queryUserListByUid(adminCondition);
+        result.put("rows", adminList);
         result.put("total", adminDao.queryUserListTotal(adminCondition));
         return result;
     }
@@ -69,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
     public int createUser(Admin admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.addRoles(RoleType.ROLE_USER.name());
-        if (admin.getCheckAuth() != null && admin.getCheckAuth() ==1)
+        if (admin.getCheckAuth() == 1)
             admin.addRoles(RoleType.ROLE_CHECK.name());
 
         int count = adminDao.insertSelective(admin);
@@ -79,7 +79,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int updateUserInfo(Admin admin) throws Exception {
         try {
+            Admin originalAdmin = checkName(admin.getUsername());
             admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+            if (admin.getCheckAuth() == 1 &&
+                    !originalAdmin.getRole().contains(RoleType.ROLE_CHECK.name())) {
+                admin.addRoles(originalAdmin.getRole(), RoleType.ROLE_CHECK.name());
+            }else {
+                admin.addRoles(RoleType.ROLE_USER.name());
+            }
+
             int count = adminDao.updateByPrimaryKeySelective(admin);
             return count;
         }catch (Exception e) {

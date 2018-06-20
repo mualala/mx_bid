@@ -42,6 +42,17 @@ var admin = {
                     {field: 'username', title: '账号', sortable: true},
                     {field: 'name', title: '名字'},
                     {
+                        field: 'role',
+                        title: '权限',
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                if (value.indexOf('ROLE_ADMIN') != -1) return '超级管理'
+                                if (value.indexOf('ROLE_CHECK')  != -1) return '采购和审核'
+                                if (value.indexOf('ROLE_USER')  != -1) return '采购'
+                            }
+                        }
+                    },
+                    {
                         field: 'createTime',
                         title: '创建时间',
                         sortable: true,
@@ -166,7 +177,7 @@ var admin = {
                     $('#modifyUserModal').modal('toggle');
                     var rowValue = rows[0];
                     $('#m_username').val(rowValue.username);
-                    $('#m_password').val(rowValue.password);
+                    // $('#m_password').val(rowValue.password);
                     $('#m_name').val(rowValue.name);
                     if (rowValue.name == 'root') {
                         $('#m_name_dis').attr('disabled', 'disabled')
@@ -183,34 +194,41 @@ var admin = {
                         name: $('#m_name').val(),
                         uid: rows[0].uid
                     };
-
-                    if (userInfo.name == 'root') {
-                        layer.alert(
-                            '不能修改 root 名称',
-                            {title: '提示框', icon: 0}
-                        );
-                    }else {
-                        console.log(userInfo)
-                        $.ajax({
-                            url: "/admin/one",
-                            type: "put",
-                            contentType: "application/x-www-form-urlencoded",
-                            dataType: "json",
-                            data: userInfo,
-                            success: function (count) {
-                                layer.msg('成功修改 [ ' + count + ' ] 个用户', {icon: 1});
-                                admin.userManage.initUserReport()
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
-                                var status = xhr.status;
-                                layer.alert(
-                                    '修改用户信息失败,状态码 [ ' + status + ' ], 原因: ' + xhr.responseText,
-                                    {title: '提示框', icon: 0}
-                                );
-                            }
-                        });
+                    if ($('#checkAuth').is(':checked')) {
+                        console.log('checked')
+                        userInfo.checkAuth = $('#checkAuth').val()
                     }
 
+                    if (userInfo.name == 'root') {
+                        layer.alert('不能修改 root 名称', {title: '提示框', icon: 0})
+                    }else {
+                        if ($('#m_password').val() != '') {
+                            $.ajax({
+                                url: "/admin/one",
+                                type: "put",
+                                contentType: "application/x-www-form-urlencoded",
+                                dataType: "json",
+                                data: userInfo,
+                                success: function (count) {
+                                    layer.msg('成功修改 [ ' + count + ' ] 个用户', {icon: 1});
+                                    admin.userManage.initUserReport()
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    var status = xhr.status;
+                                    layer.alert(
+                                        '修改用户信息失败,状态码 [ ' + status + ' ], 原因: ' + xhr.responseText,
+                                        {title: '提示框', icon: 0}
+                                    );
+                                }
+                            });
+                        }else {
+                            layer.alert(
+                                '密码不能为空 !',
+                                {title: '提示框', icon: 0}
+                            );
+                        }
+
+                    }
                 }
             }
         },

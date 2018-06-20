@@ -169,33 +169,27 @@
             <div class="modal-body">
                 <form action="" class="form-horizontal" role="form" method="post">
                     <div class="form-group">
-                        <label class="col-xs-3 control-label" for="m_username">用户账号: </label>
+                        <label class="col-xs-3 control-label" for="m_username">新用户账号: </label>
                         <div class="col-xs-5">
-                            <input id="m_username"
-                                   v-on:blur="checkName"
-                                   type="text" class="form-control" placeholder="" required="">
+                            <input id="m_username" type="text" class="form-control" placeholder="" required="">
                         </div>
-                        <i v-bind:class="{hidden: tipOptions.isDuplicatName}"
-                           v-bind:style="{color: tipOptions.color}"
-                           aria-hidden="true">
-                        </i>
                     </div>
                     <div class="form-group">
                         <label class="col-xs-3 control-label">竞标单审核权限: </label>
                         <div class="col-xs-3">
-                            <input type="checkbox" id="checkAuth" value="1" v-model="addUserInfo.checkAuth">
+                            <input type="checkbox" id="checkAuth" value="1">
                             <label for="checkAuth">审核</label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label" for="m_password">用户密码: </label>
+                        <label class="col-xs-3 control-label" for="m_password">新密码: </label>
                         <div class="col-xs-5">
                             <input id="m_password" type="password" class="form-control" placeholder="" required="">
                         </div>
                     </div>
                     <fieldset id="m_name_dis">
                         <div class="form-group">
-                            <label class="col-xs-3 control-label" for="m_name">用户名称: </label>
+                            <label class="col-xs-3 control-label" for="m_name">新名字: </label>
                             <div class="col-xs-5">
                                 <input id="m_name" type="text" class="form-control" placeholder="" required="">
                             </div>
@@ -204,7 +198,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button @click="resetNewUserInfo" type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
                 <button :class="{disabled: tipOptions.disabled}"
                         class="btn btn-primary"
                         onclick="admin.userManage.modifyUser.submit()"
@@ -239,8 +233,19 @@
 <script src="../../myjs/admin.js"></script>
 
 <script>
+    $('#modifyUserModal').on('show.bs.modal', function () {
+        var rows = $("#userReport").bootstrapTable('getAllSelections');
+        if(rows.length == 1) {
+            var row = rows[0]
+            if (row.role.match('ROLE_CHECK')) {
+                $('#checkAuth').prop('checked', true)
+            }
+        }
+    })
     $('#modifyUserModal').on('hidden.bs.modal', function () {
         $('#m_name_dis').removeAttr('disabled')
+        $('#checkAuth').prop('checked', false)
+        $('#m_password').val('')
     })
 
     var user = new Vue({
