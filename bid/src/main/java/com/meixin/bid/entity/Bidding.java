@@ -68,6 +68,9 @@ public class Bidding {
     @Transient
     private Product product;
 
+    @Transient
+    private BidDetails bidDetails;
+
     /* 用于接收前端的日期数据 */
     @Transient
     @NotNull
@@ -288,7 +291,15 @@ public class Bidding {
         this.product = product;
     }
 
-/* 用于接收前端的日期数据 */
+    public BidDetails getBidDetails() {
+        return bidDetails;
+    }
+
+    public void setBidDetails(BidDetails bidDetails) {
+        this.bidDetails = bidDetails;
+    }
+
+    /* 用于接收前端的日期数据 */
 
     public String getRecEndDeliveryDate() {
         return recEndDeliveryDate;

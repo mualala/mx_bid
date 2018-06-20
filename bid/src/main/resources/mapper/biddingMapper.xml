@@ -106,4 +106,99 @@
         <if test="uid != -1">AND B.uid=#{uid}</if>
     </select>
 
+    <select id="queryMyBiddingListByUid" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultType="com.meixin.bid.entity.Bidding">
+    SELECT
+    b1.name,
+    count(0) count,
+    b1.product_id, b1.mark, b1.start_time, b1.end_time, b1.end_delivery_date, b1.end_pay_date, b1.bid_desc
+    FROM bidding b1
+    WHERE b1.name IN
+    (
+    SELECT bid_name FROM bid_details WHERE uid=${suid} GROUP BY bid_name
+    ) AND b1.type=0
+    GROUP BY b1.name
+    <if test="sortName != null and sortName == 'name'">ORDER BY b1.name ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'mark'">ORDER BY b1.mark ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'type'">ORDER BY b1.type ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'count'">ORDER BY count ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'startTime'">ORDER BY b1.start_time ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'endTime'">ORDER BY b1.end_time ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'createTime'">ORDER BY b1.create_time ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'updateTime'">ORDER BY b1.update_time ${sortOrder}</if>
+    limit #{start}, #{size}
+    </select>
+
+    <select id="queryMyBiddingListTotal" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultType="int">
+    SELECT count(0) FROM
+    (
+        SELECT b1.name
+        FROM bidding b1
+        WHERE b1.name IN
+        (
+        SELECT bid_name FROM bid_details WHERE uid=${suid} GROUP BY bid_name
+        ) AND b1.type=0
+        GROUP BY b1.name
+    ) A
+    </select>
+
+
+    <resultMap id="queryMyBiddingPriceDetailsMap" type="com.meixin.bid.entity.Bidding">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="name" property="name" jdbcType="INTEGER" />
+        <id column="mark" property="mark" jdbcType="INTEGER" />
+        <id column="pid" property="productId" jdbcType="INTEGER" />
+        <id column="number" property="number" jdbcType="INTEGER" />
+        <id column="start_price" property="startPrice" jdbcType="FLOAT" />
+        <id column="step" property="step" jdbcType="INTEGER" />
+        <id column="end_delivery_date" property="endDeliveryDate" jdbcType="TIMESTAMP" />
+        <id column="end_pay_date" property="endPayDate" jdbcType="TIMESTAMP" />
+
+        <association property="product" javaType="com.meixin.bid.entity.Product">
+            <result column="product_id" property="productId" jdbcType="INTEGER" />
+            <result column="p_name" property="name" jdbcType="VARCHAR" />
+            <result column="spec" property="spec" jdbcType="VARCHAR" />
+            <result column="unit" property="unit" jdbcType="VARCHAR" />
+            <result column="code" property="code" jdbcType="VARCHAR" />
+        </association>
+        <association property="bidDetails" javaType="com.meixin.bid.entity.BidDetails">
+            <result column="bid_detail_id" property="bidDetailId" jdbcType="INTEGER" />
+            <result column="uid" property="uid" jdbcType="INTEGER" />
+            <result column="bid_name" property="bidName" jdbcType="VARCHAR" />
+            <result column="rank" property="rank" jdbcType="INTEGER" />
+            <result column="product_id" property="productId" jdbcType="INTEGER" />
+            <result column="price" property="price" jdbcType="FLOAT" />
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        </association>
+    </resultMap>
+
+    <select id="queryMyBiddingPriceDetails" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultMap="queryMyBiddingPriceDetailsMap">
+    SELECT C.*, p1.name p_name, p1.spec, p1.unit, p1.code FROM
+    (
+    SELECT B.*, b1.name, b1.mark, b1.product_id pid, b1.number, b1.start_price, b1.step, b1.end_delivery_date, b1.end_pay_date FROM
+    (
+    SELECT * FROM
+    (
+    SELECT * ,
+    IF(@pid=product_id,
+    CASE
+        WHEN @P=price THEN @r
+        WHEN @P:=price THEN @r:=@r+1
+        ELSE 1
+    END,
+    @r:=1) AS rank,
+    @pid:=product_id,
+    @P:=price
+    FROM bid_details, (SELECT @pid:=NULL, @P:=NULL, @r:=0) r
+    <choose>
+        <when test="mark != null and mark == 1">ORDER BY price DESC </when>
+    </choose>
+    ) A
+    WHERE A.uid=${suid}
+    ) B
+    RIGHT JOIN bidding b1 ON b1.name=B.bid_name AND b1.product_id=B.product_id
+    ) C
+    LEFT JOIN product p1 ON p1.product_id=C.pid
+    WHERE C.name=#{name}
+    </select>
+
 </mapper>

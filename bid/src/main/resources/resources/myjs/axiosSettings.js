@@ -33,7 +33,6 @@ axios_instance.interceptors.response.use(function(resp){
 },function(err){
     var resp = err.response;
     var status = resp.status;
-    alert(status)
     if(status >= 300 && status < 400) {
         console.log('服务器响应3xx ('+status+') 状态码');
     }else if(status >= 400 && status < 500) {

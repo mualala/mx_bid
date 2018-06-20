@@ -17,4 +17,8 @@ public interface BiddingService {
 
     List<Bidding> getProductsByBiddingName(String name, int uid);
 
+    JSONObject myBiddingReport(BiddingCondition biddingCondition);
+
+    List<Bidding> myBiddingDetails(BiddingCondition biddingCondition);
+
 }

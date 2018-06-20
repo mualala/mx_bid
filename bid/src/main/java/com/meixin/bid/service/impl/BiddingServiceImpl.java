@@ -45,5 +45,20 @@ public class BiddingServiceImpl implements BiddingService {
         return biddings;
     }
 
+    @Override
+    public JSONObject myBiddingReport(BiddingCondition biddingCondition) {
+        JSONObject result = new JSONObject();
+        biddingCondition.pageSettings();
+        result.put("rows", biddingDao.queryMyBiddingListByUid(biddingCondition));
+        result.put("total", biddingDao.queryMyBiddingListTotal(biddingCondition));
+        return result;
+    }
+
+    @Override
+    public List<Bidding> myBiddingDetails(BiddingCondition biddingCondition) {
+        List<Bidding> myBiddingPriceDetails = biddingDao.queryMyBiddingPriceDetails(biddingCondition);
+        return myBiddingPriceDetails;
+    }
+
 
 }

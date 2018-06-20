@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> - 供应商参与竞标单的产品信息 </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./framework/css/bootstrap-table.min.css">
+
+    <link rel="stylesheet" href="./framework/css/animate.css" />
+    <link rel="stylesheet" href="./framework/css/style.css" />
+</head>
+
+<body>
+<div id="bidTable">
+
+    <div class="animated fadeInUp">
+        <div class="panel panel-success">
+            <div class="panel-heading">我的项目 出价详情</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-4 pull-left">
+                        <button @click="refresh" class="btn btn-info btn-xs" type="button"><i class="fa fa-refresh" aria-hidden="true"></i> 刷新</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
+                    <thead class="thead-default">
+                    <tr>
+                        <th>序号</th>
+                        <!--<th>产品编码</th>-->
+                        <th>产品名称</th>
+
+                        <th>我的报价</th>
+                        <th>排名</th>
+
+                        <th>产品数量</th>
+                        <th>出价时间</th>
+                        <th>产品规格</th>
+                        <th>产品单位</th>
+                        <th>起拍价(元)</th>
+                        <th>竞价阶梯(元)</th>
+                        <th>交货期限</th>
+                        <th>付款期限</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(product, index) in productList">
+                        <td>{{index + 1}}</td>
+                        <!--<td>{{product.code}}</td>-->
+                        <td>{{product.name}}</td>
+
+                        <td>{{product.price}}</td>
+                        <td>{{product.rank}}</td>
+
+                        <td>{{product.number}}</td>
+                        <td>{{product.createTime}}</td>
+                        <td>{{product.spec}}</td>
+                        <td>{{product.unit}}</td>
+                        <td>{{product.maxUnitPrice}}</td>
+                        <td>{{product.step}}</td>
+                        <td>{{product.endDeliveryDate}}</td>
+                        <td>{{product.endPayDate}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="./framework/js/bootstrap-table.min.js"></script>
+<script src="./framework/js/bootstrap-table-zh-CN.js"></script>
+<script src="./framework/js/plugins/layer/layer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- 自定义js -->
+<script src="./myjs/utils.js"></script>
+
+<script>
+    var myProjectDetail = function () {
+        var name = utils.storage.getSession('bidName')
+        var mark = utils.storage.getSession('mark')
+        $.ajax({
+            url: "/bidding/" + name + "/" + mark + "/myBiddingDetail",
+            type: "get",
+            success: function (resp) {
+                for (var i in resp) {
+                    var prod = {}
+                    var bid = resp[i]
+                    prod.productId = bid.product.productId
+                    prod.code = bid.product.code
+                    prod.name = bid.product.name
+                    prod.spec = bid.product.spec
+                    prod.number = bid.number
+                    prod.unit = bid.product.unit
+                    prod.maxUnitPrice = bid.startPrice
+                    prod.step = bid.step
+                    prod.endDeliveryDate = utils.dateFormat.timeStampToDate(bid.endDeliveryDate)
+                    prod.endPayDate = utils.dateFormat.timeStampToDate(bid.endPayDate)
+
+                    prod.rank       = bid.bidDetails == null ? '尚未报价' : bid.bidDetails.rank
+                    prod.price      = bid.bidDetails == null ? '尚未报价' : bid.bidDetails.price
+                    prod.createTime = bid.bidDetails == null ? '尚未报价' : utils.dateFormat.timeStampToDate(bid.bidDetails.createTime)
+
+                    haha.productList.push(prod)
+                    prod = {}
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                var status = xhr.status;
+                layer.alert(
+                    '查询竞标单失败,状态码 [ ' + status + ' ] ',
+                    {title: '提示框', icon: 0}
+                );
+            }
+        });
+    };
+
+    var haha = new Vue({
+        el: '#bidTable',
+        data: {
+            mark: '', //竞标单标记
+            productList: [],
+        },
+
+        methods: {
+            //必须禁掉form默认的submit
+            disableFormSubmit: function () {
+                return false;
+            },
+
+            refresh: function () {
+                haha.productList.splice(0, haha.productList.length)
+                myProjectDetail()
+            },
+            //计算剩余时间
+            computRemaindTime: function () {
+                var now = new Date()
+                var diff = new Date(haha.endTime) - now
+                if (diff <= 0) {
+                    haha.remaindTime = '竞标已结束'
+                }else {
+                    var day = Math.floor(diff / (24 * 3600 * 1000))
+                    var hour = Math.floor((diff / (3600 * 1000)) % 24)
+                    var min = Math.floor((diff / (60 * 1000)) % 60)
+                    var sec = Math.floor((diff / 1000) % 60)
+
+                    day > 0
+                        ? haha.remaindTime = `${day}天`
+                        : haha.remaindTime = `${hour}小时 ${min}分 ${sec}秒`
+                }
+            },
+
+        },
+        // vue初始化完时执行
+        mounted: function () {
+            myProjectDetail()
+        },
+        watch: {},
+        computed: {},
+    });
+
+
+
+</script>
+
+</body>
+
+</html>

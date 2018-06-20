@@ -15,6 +15,8 @@ public class BiddingCondition extends BasePageCondition {
 
     private Integer suid; //供应商id
 
+    private Integer mark;//供应商查看我的项目 时的产品出价排名
+
 //    private Integer all = 0; //默认显示全部 (查询竞标单那些供应商可看、可出价)
 
 
@@ -50,4 +52,11 @@ public class BiddingCondition extends BasePageCondition {
         this.suid = suid;
     }
 
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
 }

@@ -41,4 +41,27 @@ public class BiddingController {
         return ResponseEntity.ok(biddings);
     }
 
+    @PostMapping("/myBiddingReport")
+    public JSONObject myBiddingReport(BiddingCondition biddingCondition, HttpSession session) {
+        biddingCondition.setUid(Utils.uidFromSession(session));
+        biddingCondition.setSuid(Utils.suidFromSession(session));
+        JSONObject result = biddingService.myBiddingReport(biddingCondition);
+        return result;
+    }
+
+    /**
+     * @Desc:   我的项目 每个产品出价详情
+     * @Author: yanghm
+     * @Param:
+     * @Date:   16:07 2018/6/20 0020
+     * @Return:
+     */
+    @GetMapping("/{name}/{mark}/myBiddingDetail")
+    public ResponseEntity myBiddingDetail(BiddingCondition biddingCondition, HttpSession session) {
+        biddingCondition.setUid(Utils.uidFromSession(session));
+        biddingCondition.setSuid(Utils.suidFromSession(session));
+        List<Bidding> result = biddingService.myBiddingDetails(biddingCondition);
+        return ResponseEntity.ok(result);
+    }
+
 }

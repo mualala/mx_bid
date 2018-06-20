@@ -33,7 +33,7 @@ var router = new VueRouter({
 // 记得要通过 router 配置参数注入路由，从而让整个应用都有路由功能
 var app = new Vue({
     data: {
-        showName: sessionStorage.getItem('username'),
+        showName: sessionStorage.getItem('companyName'),
         username: '',
         password: '',
         isSubmit: true, //不能提交
@@ -66,8 +66,8 @@ var app = new Vue({
             if (!app.isSubmit) {
                 app.$axios.post('/supplier/login', userInfo)
                     .then(function (resp) {
-                        console.log(resp)
-                        utils.storage.setSession('username', resp.data.data)
+                        utils.storage.setSession('companyName', resp.data.data.companyName)
+                        utils.storage.setSession('username', resp.data.data.username)
                         app.$router.push('/')
                         // app.$router.go('/')
                         // location.reload();
@@ -120,7 +120,9 @@ var app = new Vue({
         report.initBidding(1, 1)
         report.initBidding(1, 2)
 
-        app.showName = sessionStorage.getItem('username')
+        report.initMyBidding()
+
+        app.showName = sessionStorage.getItem('companyName')
     },
     // vue初始化完时执行
     mounted: function () {
@@ -132,6 +134,6 @@ var app = new Vue({
         report.initBidding(1, 1)
         report.initBidding(1, 2)
 
-        // $('#m_username').val(sessionStorage.getItem('username'))
+        report.initMyBidding()
     },
 }).$mount('#app')
