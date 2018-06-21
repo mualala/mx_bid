@@ -128,7 +128,7 @@ var report = {
                 if(field == 'name') {
                     layer.open({
                         type: 2,
-                        area: ['75%', '60%'],
+                        area: ['100%', '100%'],
                         fixed: false, //不固定
                         maxmin: true,
                         content: 'seeProductDetail.html'
@@ -259,7 +259,7 @@ var report = {
                 if(field == 'name') {
                     layer.open({
                         type: 2,
-                        area: ['75%', '60%'],
+                        area: ['100%', '100%'],
                         fixed: false, //不固定
                         maxmin: true,
                         content: 'myProductDetail.html'
