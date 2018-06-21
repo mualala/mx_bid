@@ -120,7 +120,10 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">竞标单审核权限: </label>
                             <div class="col-xs-3">
-                                <input type="checkbox" id="come" value="1" v-model="addUserInfo.checkAuth">
+                                <input type="checkbox" id="come"
+                                       v-bind:true-value="1"
+                                       v-bind:false-value="0"
+                                       v-model="addUserInfo.checkAuth">
                                 <label for="come">审核</label>
                             </div>
                         </div>
@@ -279,6 +282,8 @@
                 if (!user.tipOptions.disabled) {
                     if (user.addUserInfo.name != 'root') {
                         if (user.addUserInfo.password != undefined && user.addUserInfo.password != '') {
+                            console.log(user.addUserInfo.checkAuth)
+                            console.log(user.addUserInfo)
                             $.ajax({
                                 url: "/admin",
                                 type: "post",
