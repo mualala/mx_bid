@@ -2,6 +2,8 @@ package com.meixin.bid_admin.security.authentication;
 
 import com.alibaba.fastjson.JSONObject;
 import com.meixin.bid_admin.entity.Admin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -23,6 +25,7 @@ import java.io.IOException;
  */
 @Component
 class AdminAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private final Logger LOGGER = LoggerFactory.getLogger(AdminAuthenticationSuccessHandler.class);
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -32,6 +35,10 @@ class AdminAuthenticationSuccessHandler implements AuthenticationSuccessHandler 
         SessionAttributeStore sessionStore = new DefaultSessionAttributeStore();
         sessionStore.storeAttribute(webRequest, "uid",
                 admin.getRole().contains("ROLE_ADMIN") ? -1 : admin.getUid());
+
+        LOGGER.info("登录成功！！ info....");
+        LOGGER.warn("登录成功！！ warn....");
+        LOGGER.error("登录成功！！ error....");
 
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(JSONObject.toJSONString(ResponseEntity.ok("登录成功")));
