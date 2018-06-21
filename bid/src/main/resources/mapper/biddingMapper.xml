@@ -101,7 +101,6 @@
         FROM bidding B
         INNER JOIN product P ON P.product_id=B.product_id
         WHERE B.name=#{name}
-        <if test="uid != -1">AND B.uid=#{uid}</if>
     </select>
 
     <select id="queryMyBiddingListByUid" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultType="com.meixin.bid.entity.Bidding">

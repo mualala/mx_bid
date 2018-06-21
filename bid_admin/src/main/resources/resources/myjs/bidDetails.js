@@ -191,7 +191,8 @@ var bidDetails = {
                             // scrolling: auto,
                             // scrollbar: false,
                             maxmin: true,
-                            content: 'screenBidding.html'
+                            content: 'seeProductDetail02.html'
+                            // screenBidding.html
                             // style: 'position:fixed; left:0; top:0; width:70%; height:50%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;'
                         });
                         layer.iframeAuto(idx)

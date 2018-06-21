@@ -27,21 +27,21 @@
             <div class="panel-heading"><strong>选择的出价产品</strong></div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="table  table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
-                    <thead class="thead-default">
-                    <tr>
-                        <!--<th>产品编码</th>-->
-                        <th>产品名称</th>
-                        <th>产品数量</th>
-                        <th>产品规格</th>
-                        <th>产品单位</th>
-                        <th>起拍价(元)</th>
-                        <th>竞价阶梯(元)</th>
-                        <th>交货期限</th>
-                        <th>付款期限</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                    <table class="table table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
+                        <thead class="thead-default">
+                        <tr>
+                            <!--<th>产品编码</th>-->
+                            <th>产品名称</th>
+                            <th>产品数量</th>
+                            <th>产品规格</th>
+                            <th>产品单位</th>
+                            <th>起拍价(元)</th>
+                            <th>竞价阶梯(元)</th>
+                            <th>交货期限</th>
+                            <th>付款期限</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                     <tr>
                         <!--<td>{{oneProduct.code}}</td>-->
                         <td>{{oneProduct.name}}</td>
@@ -58,7 +58,7 @@
                         </td>
                     </tr>
                     </tbody>
-                </table>
+                    </table>
                 </div>
                 <div class="row">
                     <div class="col-sm-7">
@@ -114,43 +114,43 @@
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table table-condensed table-hover" data-show-columns="true" data-mobile-responsive="true">
-                    <thead class="thead-default">
-                    <tr>
-                        <th v-if="showOptsion"><strong>操作</strong></th>
-                        <th>序号</th>
-                        <!--<th>产品编码</th>-->
-                        <th>产品名称</th>
-                        <th>产品数量</th>
-                        <th>产品规格</th>
-                        <th>产品单位</th>
-                        <th>起拍价(元)</th>
-                        <th>竞价阶梯(元)</th>
-                        <th>交货期限</th>
-                        <th>付款期限</th>
+                        <thead class="thead-default">
+                        <tr>
+                            <th v-if="showOptsion"><strong>操作</strong></th>
+                            <th>序号</th>
+                            <!--<th>产品编码</th>-->
+                            <th>产品名称</th>
+                            <th>产品数量</th>
+                            <th>产品规格</th>
+                            <th>产品单位</th>
+                            <th>起拍价(元)</th>
+                            <th>竞价阶梯(元)</th>
+                            <th>交货期限</th>
+                            <th>付款期限</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(product, index) in productList">
-                        <td class="col-sm-1" v-if="showOptsion" @click="clickPriceOpt(index)"><a><strong>出价</strong></a></td>
-                        <td>{{index + 1}}</td>
-                        <!--<td>{{product.code}}</td>-->
-                        <td>{{product.name}}</td>
-                        <td>{{product.number}}</td>
-                        <td>{{product.spec}}</td>
-                        <td>{{product.unit}}</td>
-                        <td class="col-sm-1">{{product.maxUnitPrice}}</td>
-                        <td class="col-sm-1">{{product.step}}</td>
-                        <td class="col-sm-2">
-                            {{product.endDeliveryDate}}
-                        </td>
-                        <td class="col-sm-2">
-                            {{product.endPayDate}}
-                        </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(product, index) in productList">
+                            <td class="col-sm-1" v-if="showOptsion" @click="clickPriceOpt(index)"><a><strong>出价</strong></a></td>
+                            <td>{{index + 1}}</td>
+                            <!--<td>{{product.code}}</td>-->
+                            <td>{{product.name}}</td>
+                            <td>{{product.number}}</td>
+                            <td>{{product.spec}}</td>
+                            <td>{{product.unit}}</td>
+                            <td class="col-sm-1">{{product.maxUnitPrice}}</td>
+                            <td class="col-sm-1">{{product.step}}</td>
+                            <td class="col-sm-2">
+                                {{product.endDeliveryDate}}
+                            </td>
+                            <td class="col-sm-2">
+                                {{product.endPayDate}}
+                            </td>
 
-                    </tr>
-                    </tbody>
-                </table>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
