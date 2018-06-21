@@ -35,8 +35,10 @@
                 <th>序号</th>
                 <th>产品编码</th>
                 <th>产品名称</th>
-                <th>产品数量</th>
                 <th>最优报价</th>
+                <th>供应商账号</th>
+                <th>供应商名称</th>
+                <th>产品数量</th>
                 <th>总出价次数</th>
                 <th>产品规格</th>
                 <th>产品单位</th>
@@ -46,8 +48,6 @@
                 <th>交货期限</th>
                 <th>付款期限</th>
 
-                <th>供应商账号</th>
-                <th>供应商名称</th>
                 <th>供应商电话</th>
                 <th>公司名称</th>
                 <th>法人</th>
@@ -61,8 +61,10 @@
                 <td>{{index + 1}}</td>
                 <td>{{item.code}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.number}}</td>
                 <td>{{item.optimal}}</td>
+                <td>{{item.username}}</td>
+                <td>{{item.suName}}</td>
+                <td>{{item.number}}</td>
                 <td>{{item.count}}</td>
                 <td>{{item.spec}}</td>
                 <td>{{item.unit}}</td>
@@ -72,8 +74,6 @@
                 <td class="col-sm-1">{{item.endDeliveryDate}}</td>
                 <td class="col-sm-1">{{item.endPayDate}}</td>
 
-                <td>{{item.username}}</td>
-                <td>{{item.suName}}</td>
                 <td>{{item.phone}}</td>
                 <td class="col-sm-1">{{item.companyName}}</td>
                 <td>{{item.legal}}</td>

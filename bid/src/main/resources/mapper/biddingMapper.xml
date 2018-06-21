@@ -33,7 +33,6 @@
         INNER JOIN product P ON P.product_id=B.product_id
         <where>
             B.name IN (SELECT bs.bid_name FROM bidding_supplier bs WHERE suid=${suid})
-            <if test="uid != -1">AND B.uid=#{uid}</if>
             <if test="name != null and name != ''"> AND B.name=#{name}</if>
             <if test="type != null"> AND B.type=${type}</if>
             <if test="status != null"> AND B.status=${status}</if>
@@ -57,7 +56,6 @@
         SELECT count(DISTINCT name) FROM bidding
         <where>
             name IN (SELECT bs.bid_name FROM bidding_supplier bs WHERE suid=${suid})
-            <if test="uid != -1">AND uid=#{uid}</if>
             <if test="name != null and name != ''"> AND name=#{name}</if>
             <if test="type != null"> AND type=${type}</if>
             <if test="status != null"> AND status=${status}</if>

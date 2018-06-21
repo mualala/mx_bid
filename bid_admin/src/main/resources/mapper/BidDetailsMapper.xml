@@ -129,12 +129,11 @@
             SELECT bd.*, MAX(bd.price) optimal, COUNT(0) count
             from bid_details bd
             where bd.bid_name=#{bidName}
-            GROUP BY bd.product_id) A
+            GROUP BY bd.uid, bd.product_id) A
           LEFT JOIN bidding bi ON A.bid_name=bi.name AND A.product_id=bi.product_id
         ) RS INNER JOIN product P ON RS.product_id=P.product_id
         ) B
       INNER JOIN supplier S ON B.uid=S.supplier_id
-      WHERE B.product_id NOT IN (SELECT wb.product_id FROM win_bid wb WHERE wb.bid_name=#{bidName})
     </select>
 
     <!-- 最低报价列表 -->
@@ -147,12 +146,11 @@
         SELECT bd.*, MIN(bd.price) optimal, COUNT(0) count
         from bid_details bd
         where bd.bid_name=#{bidName}
-        GROUP BY bd.product_id) A
+        GROUP BY bd.uid, bd.product_id) A
         LEFT JOIN bidding bi ON A.bid_name=bi.name AND A.product_id=bi.product_id
         ) RS INNER JOIN product P ON RS.product_id=P.product_id
         ) B
       INNER JOIN supplier S ON B.uid=S.supplier_id
-      WHERE B.product_id NOT IN (SELECT wb.product_id FROM win_bid wb WHERE wb.bid_name=#{bidName})
     </select>
 
 
