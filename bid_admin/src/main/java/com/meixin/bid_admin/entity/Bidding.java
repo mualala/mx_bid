@@ -65,6 +65,10 @@ public class Bidding {
 
     private Integer finish = 0; // 选择中标完成状态 1:完成
 
+    private String taskName; //竞标单triggerKey的name
+
+    private String groupId; //竞标单triggerKey的group
+
     @Transient
     private Integer count;
 
@@ -286,6 +290,22 @@ public class Bidding {
 
     public void setFinish(Integer finish) {
         this.finish = finish;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public Integer getCount() {

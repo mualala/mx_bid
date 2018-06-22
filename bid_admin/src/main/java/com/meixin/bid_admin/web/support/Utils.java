@@ -53,4 +53,31 @@ public class Utils {
         return uid;
     }
 
+
+    /**
+     * 后台的延时
+     */
+    public static class Delay {
+        private static AtomicInteger delay = new AtomicInteger(3); //默认是延时 3min
+
+        /**
+         * @Desc:   更新延时的时间
+         * @Author: yanghm
+         * @Param:
+         * @Date:   15:04 2018/6/22 0022
+         * @Return: 延时的毫秒数 /ms
+         */
+        public static long setDelay(int val) {
+            if (val > 0) {
+                delay.getAndSet(val);
+            }
+            return getDelay();
+        }
+
+        public static long getDelay() {
+            long d = delay.get() * 60 * 1000;
+            return d;
+        }
+    }
+
 }

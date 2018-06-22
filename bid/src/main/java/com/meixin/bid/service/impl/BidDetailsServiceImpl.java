@@ -9,7 +9,9 @@ import com.meixin.bid.web.support.SimpleResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.AsyncRestTemplate;
 
 /**
  * @Desc：
@@ -20,11 +22,19 @@ import org.springframework.stereotype.Service;
 public class BidDetailsServiceImpl implements BidDetailsService {
     private final Logger LOGGER = LoggerFactory.getLogger(BidDetailsServiceImpl.class);
 
+    @Value("${admin-url}")
+    private String adminUrl;
+
+    @Autowired
+    private AsyncRestTemplate asyncRestTemplate;
+
     @Autowired
     private BidDetailsDao bidDetailsDao;
 
     @Autowired
     private BiddingDao biddingDao;
+
+
 
     private String order(int mark) {
         String order = "asc";
@@ -113,6 +123,9 @@ public class BidDetailsServiceImpl implements BidDetailsService {
         if (count == 1) {
             BidDetails optimalPrice = lastPrice(bidDetails.getBidName(), bidDetails.getProductId(), bidDetails.getMark(), bidDetails.getUid());
             result = SimpleResponse.OK(optimalPrice);
+
+            // TODO 向admin发送重置定时器消息（只有admin才能检查是否要重置,因为延时实在admin的jvm内存中）
+            System.err.println("adminUrl= " + adminUrl);
         }else {
             result = new SimpleResponse(Price.REFRESH.getCode(), Price.REFRESH.getMsg());
         }

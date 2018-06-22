@@ -20,6 +20,9 @@ public interface BiddingDao extends IMapper<Bidding> {
     @Select("select * from bidding where name = #{name}")
     List<Bidding> queryByName(@Param("name") String name);
 
+    @Select("select * from bidding where name = #{name} and status=1")
+    List<Bidding> queryByNameAndStatus(@Param("name") String name);
+
     @Update("update bidding set finish=1 where name=#{name}")
     int finish(@Param("name") String bidName);
 
@@ -41,7 +44,18 @@ public interface BiddingDao extends IMapper<Bidding> {
     int releaseBiddings(Map<String, Object> params);
 
     /**
-     * @Desc:   设置竞标单状态
+     * @Desc:   开启竞标单是设置状态  和 schedul的triggerkey
+     * @Author: yanghm
+     * @Param:
+     * @Date:   14:07 2018/6/22 0022
+     * @Return:
+     */
+    @Update("update bidding set status=${status}, task_name=#{taskName}, group_id=#{groupId} where uid=${uid} and name=#{bidName}")
+    int startBidding(@Param("bidName") String bidName, @Param("uid") int uid, @Param("status") int status,
+                     @Param("taskName") String taskName, @Param("groupId") String groupId);
+
+    /**
+     * @Desc:   设置竞标单结束的状态
      * @Author: yanghm
      * @Param:  status 标单状态 0：发布状态     1：正在竞标中     2：结束
      * @Date:   09:19 2018/5/29 0029

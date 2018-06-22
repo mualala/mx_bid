@@ -69,8 +69,9 @@ public class AdminServiceImpl implements AdminService {
     public int createUser(Admin admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.addRoles(RoleType.ROLE_USER.name());
-        if (admin.getCheckAuth() == 1)
-            admin.addRoles(RoleType.ROLE_CHECK.name());
+
+        if (admin.getCheckAuth() == 1) admin.addRoles(RoleType.ROLE_CHECK.name());
+        if (admin.getProdAuth() == 1) admin.addRoles(RoleType.ROLE_PROD.name());
 
         int count = adminDao.insertSelective(admin);
         return count;
@@ -81,11 +82,14 @@ public class AdminServiceImpl implements AdminService {
         try {
             Admin originalAdmin = checkName(admin.getUsername());
             admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-            if (admin.getCheckAuth() == 1 &&
-                    !originalAdmin.getRole().contains(RoleType.ROLE_CHECK.name())) {
-                admin.addRoles(originalAdmin.getRole(), RoleType.ROLE_CHECK.name());
-            }else {
-                admin.addRoles(RoleType.ROLE_USER.name());
+
+            admin.addRoles(originalAdmin.getRole()); //先添加原有的权限
+            if (admin.getCheckAuth() == 1 && !originalAdmin.getRole().contains(RoleType.ROLE_CHECK.name()))
+                admin.addRoles(RoleType.ROLE_CHECK.name());
+
+            if (admin.getProdAuth() == 1 && !originalAdmin.getRole().contains(RoleType.ROLE_PROD.name())) {
+                admin.addRoles(RoleType.ROLE_PROD.name());
+                admin.removeRoles(RoleType.ROLE_USER.name());
             }
 
             int count = adminDao.updateByPrimaryKeySelective(admin);

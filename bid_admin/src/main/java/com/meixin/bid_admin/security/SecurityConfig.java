@@ -53,16 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .authorizeRequests()
             // 所有用户均可访问的资源
             .antMatchers("/framework/css/**", "/framework/fonts/**", "/framework/js/**", "/myjs/**", "/images/**",
-                    "/lockscreen.html",
+                    "/lockscreen.html", "/reschedule/**",
                     "/login.html", "/admin/login")
                 .permitAll()
+            .antMatchers("/index.html").hasAnyRole("USER", "ADMIN", "CHECK", "PROD")
             .antMatchers("/admin/**").hasRole("ADMIN")
             .antMatchers("/checkBidding/**").hasRole("CHECK")
+            .antMatchers("/product/**", "/productType/**").hasRole("PROD")
 //                .antMatchers("/supplier/**").hasRole("")
 
             // 任何尚未匹配的URL只需要验证用户即可访问
-            .anyRequest()
-            .authenticated()
+            .anyRequest().hasAnyRole("USER", "ADMIN")
+//            .authenticated()
             .and()
             .csrf().disable();
     }

@@ -89,4 +89,18 @@ public class AdminController {
     }
 
 
+    /************** 延时 **************/
+    /* --------------  -------------- */
+    @GetMapping("/delay")
+    public ResponseEntity getDelay() {
+        return ResponseEntity.ok(Utils.Delay.getDelay());
+    }
+
+    @PutMapping("/delay")
+    public ResponseEntity putDelay(@RequestParam("delay") int delay) {
+        Utils.Delay.setDelay(delay);
+        return ResponseEntity.ok(Utils.Delay.getDelay());
+    }
+
+
 }

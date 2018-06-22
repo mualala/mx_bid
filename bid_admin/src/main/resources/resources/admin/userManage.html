@@ -118,13 +118,29 @@
                             </i>
                         </div>
                         <div class="form-group">
-                            <label class="col-xs-3 control-label">竞标单审核权限: </label>
+                            <label class="col-xs-3 control-label">用户权限: </label>
                             <div class="col-xs-3">
-                                <input type="checkbox" id="come"
-                                       v-bind:true-value="1"
-                                       v-bind:false-value="0"
-                                       v-model="addUserInfo.checkAuth">
-                                <label for="come">审核</label>
+                                <ul style="list-style-type: none">
+                                    <li>
+                                        <input type="checkbox" id="come"
+                                               v-bind:true-value="1"
+                                               v-bind:false-value="0"
+                                               v-model="addUserInfo.checkAuth">
+                                        <label for="come">标单审核</label>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="prod"
+                                               v-bind:true-value="1"
+                                               v-bind:false-value="0"
+                                               v-model="addUserInfo.prodAuth">
+                                        <label for="prod">产品管理</label>
+                                    </li>
+                                </ul>
+                                <!--<input type="checkbox" id="come"-->
+                                       <!--v-bind:true-value="1"-->
+                                       <!--v-bind:false-value="0"-->
+                                       <!--v-model="addUserInfo.checkAuth">-->
+                                <!--<label for="come">审核</label>-->
                             </div>
                         </div>
                         <div class="form-group">
@@ -178,10 +194,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">竞标单审核权限: </label>
+                        <label class="col-xs-3 control-label">用户权限: </label>
                         <div class="col-xs-3">
-                            <input type="checkbox" id="checkAuth" value="1">
-                            <label for="checkAuth">审核</label>
+                            <ul style="list-style-type: none">
+                                <li>
+                                    <input type="checkbox" id="checkAuth" value="1">
+                                    <label for="checkAuth">标单审核</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="prodAuth" value="1">
+                                    <label for="prodAuth">产品管理</label>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="form-group">
@@ -240,14 +264,14 @@
         var rows = $("#userReport").bootstrapTable('getAllSelections');
         if(rows.length == 1) {
             var row = rows[0]
-            if (row.role.match('ROLE_CHECK')) {
-                $('#checkAuth').prop('checked', true)
-            }
+            if (row.role.match('ROLE_CHECK')) $('#checkAuth').prop('checked', true)
+            if (row.role.match('ROLE_PROD')) $('#prodAuth').prop('checked', true)
         }
     })
     $('#modifyUserModal').on('hidden.bs.modal', function () {
         $('#m_name_dis').removeAttr('disabled')
         $('#checkAuth').prop('checked', false)
+        $('#prodAuth').prop('checked', false)
         $('#m_password').val('')
     })
 
@@ -319,6 +343,8 @@
 
             resetNewUserInfo: function () {
                 user.addUserInfo = {}
+                user.tipOptions.duplicatNameTip = ''
+                user.tipOptions.disabled = true
             },
 
             // 初始化日期

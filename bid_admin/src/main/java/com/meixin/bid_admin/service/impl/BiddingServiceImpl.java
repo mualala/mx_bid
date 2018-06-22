@@ -161,9 +161,14 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     @Override
+    public int startBidding(String bidName, int uid, int status, String taskName, String groupId) {
+        int count = biddingDao.startBidding(bidName, uid, status, taskName, groupId);
+        return count;
+    }
+
+    @Override
     public int setStatus(String bidName, int uid, int status) {
         int count = biddingDao.setBidStatus(bidName, uid, status);
-        LOGGER.info("sertvie time={}, bidName={}, uid={}, 设置了 [{}] 条竞标单记录",System.currentTimeMillis(),  bidName, uid, count);
         return count;
     }
 

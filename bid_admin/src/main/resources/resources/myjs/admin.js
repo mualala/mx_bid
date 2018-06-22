@@ -46,9 +46,13 @@ var admin = {
                         title: '权限',
                         formatter: function (value, row, index) {
                             if(value != null && value != '') {
-                                if (value.indexOf('ROLE_ADMIN') != -1) return '超级管理'
-                                if (value.indexOf('ROLE_CHECK')  != -1) return '采购和审核'
-                                if (value.indexOf('ROLE_USER')  != -1) return '采购'
+                                var msg = ''
+                                if (value.match('ROLE_ADMIN')) msg = '超级管理员'
+                                if (value.match('ROLE_CHECK')) msg=  '采购和审核'
+                                if (value.match('ROLE_PROD')) msg = '产品管理'
+                                if (value.match('ROLE_USER')) msg = '采购'
+                                if (value.match('ROLE_CHECK') && value.match('ROLE_PROD')) msg = '产品管理和审核'
+                                return msg
                             }
                         }
                     },
@@ -194,10 +198,8 @@ var admin = {
                         name: $('#m_name').val(),
                         uid: rows[0].uid
                     };
-                    if ($('#checkAuth').is(':checked')) {
-                        console.log('checked')
-                        userInfo.checkAuth = $('#checkAuth').val()
-                    }
+                    if ($('#checkAuth').is(':checked')) userInfo.checkAuth = $('#checkAuth').val()
+                    if ($('#prodAuth').is(':checked')) userInfo.prodAuth = $('#prodAuth').val()
 
                     if (userInfo.name == 'root') {
                         layer.alert('不能修改 root 名称', {title: '提示框', icon: 0})

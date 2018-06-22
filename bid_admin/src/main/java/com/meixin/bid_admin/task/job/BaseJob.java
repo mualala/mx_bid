@@ -22,11 +22,11 @@ public abstract class BaseJob implements Job {
         String name = dataMap.getString("bidName");
         Integer uid = dataMap.getInt("uid");
 
-        int count = doService(name, uid);
+        int count = doService(name, uid, taskName, group);
         LOGGER.info("用户[{}] 竞标单 {}, taskName={} group={},更新了{}条记录", uid, name, taskName, group, count);
     }
 
     // 执行service逻辑
-    abstract int doService(String name, int uid);
+    abstract int doService(String name, int uid, String taskName, String groupId);
 
 }

@@ -42,9 +42,11 @@ public class Admin implements UserDetails {
 
     private Timestamp updateTime;
 
-    //前端的 竞标单审核 权限
     @Transient
-    private int checkAuth;
+    private int checkAuth; //前端的 竞标单审核 权限
+
+    @Transient
+    private int prodAuth; //前端的 product 权限
 
 
     @Override
@@ -147,12 +149,20 @@ public class Admin implements UserDetails {
         return this.toString().equals(obj.toString());
     }
 
-    public Integer getCheckAuth() {
+    public int getCheckAuth() {
         return checkAuth;
     }
 
-    public void setCheckAuth(Integer checkAuth) {
+    public void setCheckAuth(int checkAuth) {
         this.checkAuth = checkAuth;
+    }
+
+    public int getProdAuth() {
+        return prodAuth;
+    }
+
+    public void setProdAuth(int prodAuth) {
+        this.prodAuth = prodAuth;
     }
 
     /**
@@ -178,6 +188,25 @@ public class Admin implements UserDetails {
             }
         }
         setRole(sb.toString());
+    }
+
+    /**
+     * @Desc:   移除指定角色
+     * @Author: yanghm
+     * @Param:
+     * @Date:   10:36 2018/6/22 0022
+     * @Return:
+     */
+    public void removeRoles(String ...roles) {
+        if (roles != null) {
+            for (String r : roles) {
+                if (this.role.contains(r)) {
+                    int len = r.length();
+                    if (!r.contains(",")) len = len + 1;
+                    setRole(this.role.substring(len));
+                }
+            }
+        }
     }
 
 }

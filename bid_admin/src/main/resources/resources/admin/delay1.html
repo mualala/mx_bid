@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title> - 延时设置 </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../framework/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../framework/css/animate.css" rel="stylesheet">
+    <link href="../framework/css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="container animated fadeInUp">
+        <div class="panel panel-warning">
+            <div class="panel-heading">竞标单 延时设置</div>
+            <div class="panel-body">
+                <form class="form-horizontal m-t">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="delay">竞标单延时时间(分钟):</label>
+                        <div class="col-sm-2">
+                            <input id="delay" type="number" minlength="1" type="text" class="form-control" placeholder="0" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 col-sm-offset-4">
+                            <button class="btn btn-primary btn-xs" onclick="set()">  设置  </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- 全局js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../framework/js/plugins/layer/layer.min.js"></script>
+
+<script>
+    $('form').submit(function () {
+        return false;
+    });
+
+    $.ajax({
+        url: "/admin/delay",
+        type: "get",
+        success: function (resp) {
+            $('#delay').val(resp / (60*1000))
+        },
+        error: function (xhr, textStatus, errorThrown) {
+//                var status = xhr.status;
+//                layer.alert(
+//                    '查询延时时间失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+//                    {title: '提示框', icon: 0}
+//                );
+        }
+    })
+
+    var set = function () {
+        layer.confirm('确定修改延时时间吗 ?', {
+            btn: ['修改','再考虑一下~~'] //按钮
+        }, function(){
+            var val = $('#delay').val()
+            if (val == '') {
+                layer.alert('失败! 时间不能为空', {title: '提示框', icon: 0});
+            }else if(val <= 0) {
+                layer.alert('失败! 时间不能小于0', {title: '提示框', icon: 0});
+            }else {
+                $.ajax({
+                    url: "/admin/delay",
+                    type: "put",
+                    contentType: "application/x-www-form-urlencoded",
+                    // dataType: "json",
+                    data: {'delay': val},
+                    success: function (resp) {
+                        layer.msg('设置成功 ! ', {icon: 1});
+                        $('#delay').val(resp / (60*1000))
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var status = xhr.status;
+                        layer.alert(
+                            '设置失败,状态码 [ ' + status + ' ] ,原因:' + xhr.responseText,
+                            {title: '提示框', icon: 0}
+                        );
+                    }
+                });
+            }
+        }, function(){
+        });
+    }
+</script>
+
+</body>
+
+</html>

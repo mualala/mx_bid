@@ -7,7 +7,7 @@
         <!--<appender-ref ref="FILE"/>-->
     <!--</logger>-->
 
-    <property name="LOG_HOME" value="D:/logs/bid/bid_admin" />
+    <property name="LOG_HOME" value="D:/logs/bid/bid" />
     <property name="CUSTOM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%5level] [%thread] %logger{0}.%method - %msg%n"/>
 
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
@@ -28,7 +28,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>${LOG_HOME}/info/bid_admin-info.%d.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/info/bid-info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -42,7 +42,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>${LOG_HOME}/error/bid_admin-error.%d.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/error/bid-error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
 

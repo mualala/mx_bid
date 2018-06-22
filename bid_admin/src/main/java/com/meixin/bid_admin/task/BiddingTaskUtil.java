@@ -1,5 +1,6 @@
 package com.meixin.bid_admin.task;
 
+import com.meixin.bid_admin.entity.Bidding;
 import com.meixin.bid_admin.task.job.EndBiddingJob;
 import com.meixin.bid_admin.task.job.StartBiddingJob;
 import com.meixin.bid_admin.web.support.Utils;
@@ -87,12 +88,40 @@ public class BiddingTaskUtil {
 
             }
         }catch (ParseException e) {
-            LOGGER.error("创建竞标单定时器失败,日期格式解析异常 {}", e);
+            LOGGER.error("日期格式解析异常,竞标单定时器错误,定时器类型[{}],竞标单名称[{}]", taskType.getMark(), name);
         } catch (SchedulerException e) {
-            LOGGER.error("创建竞标单定时器失败,scheduler异常 {}", e);
+            LOGGER.error("scheduler异常{},竞标单定时器错误,定时器类型[{}],竞标单名称[{}]", e, taskType.getMark(), name);
         }
 
     }
 
+
+    /**
+     * @Desc:   按新的trigger重新设置job执行
+     * @Author: yanghm
+     * @Param:
+     * @Date:   13:30 2018/6/22 0022
+     * @Return:
+     */
+    public static void rescheduleBidding(Scheduler scheduler, Bidding bidding) throws SchedulerException {
+        String taskName = bidding.getTaskName();
+        String groupId = bidding.getGroupId();
+
+        // 计算新的结束时间
+        long delay = Utils.Delay.getDelay();//追加的时间
+        long endTime = bidding.getEndTime().getTime();
+
+        long delayTime = endTime + delay;//追加后的总延时时间
+        Date delayDate = new Date(delayTime);
+
+        TriggerKey oldTriggerKey = TriggerKey.triggerKey(taskName, groupId);
+        Trigger newTrigger = scheduler.getTrigger(oldTriggerKey);
+        newTrigger.getTriggerBuilder()
+                .withIdentity(oldTriggerKey)
+                .startAt(delayDate)
+                .build();
+
+        scheduler.rescheduleJob(oldTriggerKey, newTrigger); //重置
+    }
 
 }

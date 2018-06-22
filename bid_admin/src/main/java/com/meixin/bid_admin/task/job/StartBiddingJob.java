@@ -21,8 +21,8 @@ public class StartBiddingJob extends BaseJob {
     private BiddingService biddingService;
 
     @Override
-    int doService(String name, int uid) {
-        int count = biddingService.setStatus(name, uid, 1);
+    int doService(String name, int uid, String taskName, String groupId) {
+        int count = biddingService.startBidding(name, uid, 1, taskName, groupId);
         return count;
     }
 
