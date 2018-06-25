@@ -54,11 +54,13 @@
 <script src="./myjs/utils.js"></script>
 
 <script>
-    $('h2').text('您好! ' + utils.storage.getSession('username'));
+    var companyName = utils.storage.getSession('companyName')
+    $('h2').text('您好,' + (companyName == null ? '' : companyName))
 
     $('#toIndex').click(function () {
-        location.href = '/login.html';
+        location.href = '/index.html';
         utils.storage.delSession('username')
+        utils.storage.delSession('companyName')
         utils.storage.delSession('loginForm')
         utils.storage.delSession('bidName')
     });

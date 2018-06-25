@@ -1,6 +1,7 @@
 package com.meixin.bid_admin.task;
 
 import com.meixin.bid_admin.entity.Bidding;
+import com.meixin.bid_admin.mappers.dao.BiddingDao;
 import com.meixin.bid_admin.task.job.EndBiddingJob;
 import com.meixin.bid_admin.task.job.StartBiddingJob;
 import com.meixin.bid_admin.web.support.Utils;
@@ -8,9 +9,12 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Desc：
@@ -43,26 +47,31 @@ public class BiddingTaskUtil {
 
     }
 
-    public static void startBiddingTask(Scheduler scheduler, String name, String group, String time) {
-        setBiddingTask(scheduler, name, group, time, TaskType.START_MARK);
+    public static void startBiddingTask(Scheduler scheduler, String name, String group, String time, BiddingDao biddingDao) {
+        setBiddingTask(scheduler, name, group, time, TaskType.START_MARK, biddingDao);
     }
 
-    public static void endBiddingTask(Scheduler scheduler, String name, String group, String time) {
-        setBiddingTask(scheduler, name, group, time, TaskType.END_MARK);
+    public static void endBiddingTask(Scheduler scheduler, String name, String group, String time, BiddingDao biddingDao) {
+        setBiddingTask(scheduler, name, group, time, TaskType.END_MARK, biddingDao);
     }
 
-    private static void setBiddingTask(Scheduler scheduler, String name, String group, String time, TaskType taskType) {
+    //开启定时器
+    private static void setBiddingTask(Scheduler scheduler, String name, String group, String time, TaskType taskType, BiddingDao biddingDao) {
+        String taskName = taskType.taskName(name);
+        String groupId = Utils.ID.taskGroupId(group);
         try {
             Class jobClazz = null;
             switch (taskType) {
                 case START_MARK: jobClazz = StartBiddingJob.class; break;
-                case END_MARK: jobClazz = EndBiddingJob.class; break;
+                case END_MARK: {
+                    jobClazz = EndBiddingJob.class;
+                    //设置end task的trigger的name和groupId到数据库
+                    biddingDao.setTaskInfo(name, Integer.valueOf(group), taskName, groupId);
+                    break;
+                }
             }
 
             if (jobClazz != null) {
-                String taskName = taskType.taskName(name);
-                String groupId = Utils.ID.taskGroupId(group);
-
                 JobDataMap dataMap = new JobDataMap();
                 dataMap.put("bidName", name);
                 dataMap.put("uid", group);
@@ -101,9 +110,9 @@ public class BiddingTaskUtil {
      * @Author: yanghm
      * @Param:
      * @Date:   13:30 2018/6/22 0022
-     * @Return:
+     * @Return: delay time 延迟后的结束时间
      */
-    public static void rescheduleBidding(Scheduler scheduler, Bidding bidding) throws SchedulerException {
+    public static Map<String, Object> rescheduleBidding(Scheduler scheduler, Bidding bidding) throws SchedulerException {
         String taskName = bidding.getTaskName();
         String groupId = bidding.getGroupId();
 
@@ -114,14 +123,23 @@ public class BiddingTaskUtil {
         long delayTime = endTime + delay;//追加后的总延时时间
         Date delayDate = new Date(delayTime);
 
+        //gov doc: http://www.quartz-scheduler.org/documentation/quartz-2.2.x/cookbook/UpdateTrigger.html
+
         TriggerKey oldTriggerKey = TriggerKey.triggerKey(taskName, groupId);
-        Trigger newTrigger = scheduler.getTrigger(oldTriggerKey);
-        newTrigger.getTriggerBuilder()
-                .withIdentity(oldTriggerKey)
+
+        String newGroupId = Utils.ID.taskGroupId(String.valueOf(bidding.getUid()));
+        Trigger newTrigger = TriggerBuilder.newTrigger()
+                .withIdentity(taskName, newGroupId)
                 .startAt(delayDate)
                 .build();
 
-        scheduler.rescheduleJob(oldTriggerKey, newTrigger); //重置
+        Date resD = scheduler.rescheduleJob(oldTriggerKey, newTrigger); //重置
+        LOGGER.info("重置了{}竞标单,增加了{} /m延时", bidding.getName(), delay/1000/60);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("delayTime", delayTime / 1000);
+        params.put("groupId", newGroupId);
+        return params;
     }
 
 }

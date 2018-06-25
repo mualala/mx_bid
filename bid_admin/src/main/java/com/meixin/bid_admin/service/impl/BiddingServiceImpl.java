@@ -161,12 +161,6 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     @Override
-    public int startBidding(String bidName, int uid, int status, String taskName, String groupId) {
-        int count = biddingDao.startBidding(bidName, uid, status, taskName, groupId);
-        return count;
-    }
-
-    @Override
     public int setStatus(String bidName, int uid, int status) {
         int count = biddingDao.setBidStatus(bidName, uid, status);
         return count;
@@ -185,8 +179,8 @@ public class BiddingServiceImpl implements BiddingService {
             for (Bidding bidding : biddingList) {
                 if (count > 0 && bidding.getType() == 0) {//不是草稿
                     String uid = String.valueOf(bidding.getUid());
-                    BiddingTaskUtil.startBiddingTask(scheduler, bidding.getName(), uid, bidding.getStartTime().toString());
-                    BiddingTaskUtil.endBiddingTask(scheduler, bidding.getName(), uid, bidding.getEndTime().toString());
+                    BiddingTaskUtil.startBiddingTask(scheduler, bidding.getName(), uid, bidding.getStartTime().toString(), null);
+                    BiddingTaskUtil.endBiddingTask(scheduler, bidding.getName(), uid, bidding.getEndTime().toString(), biddingDao);
                 }
             }
         }else {//保存草稿

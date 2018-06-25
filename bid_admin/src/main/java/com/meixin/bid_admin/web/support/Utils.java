@@ -58,7 +58,7 @@ public class Utils {
      * 后台的延时
      */
     public static class Delay {
-        private static AtomicInteger delay = new AtomicInteger(3); //默认是延时 3min
+        private static AtomicInteger delay = new AtomicInteger(3); //默认延时 3min
 
         /**
          * @Desc:   更新延时的时间

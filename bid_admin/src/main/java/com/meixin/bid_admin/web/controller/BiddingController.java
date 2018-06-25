@@ -2,12 +2,16 @@ package com.meixin.bid_admin.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.meixin.bid_admin.entity.BiddingSupplier;
+import com.meixin.bid_admin.entity.ProductType;
 import com.meixin.bid_admin.init.RoleType;
+import com.meixin.bid_admin.service.ProductService;
+import com.meixin.bid_admin.service.ProductTypeService;
 import com.meixin.bid_admin.service.SimpleTaskService;
 import com.meixin.bid_admin.web.dto.BiddingCondition;
 import com.meixin.bid_admin.entity.Bidding;
 import com.meixin.bid_admin.service.BiddingService;
 import com.meixin.bid_admin.task.BiddingTaskUtil;
+import com.meixin.bid_admin.web.dto.ProductCondition;
 import com.meixin.bid_admin.web.support.SimpleResponse;
 import com.meixin.bid_admin.web.support.Utils;
 import org.quartz.*;
@@ -38,11 +42,14 @@ public class BiddingController {
     
     private final Logger LOGGER = LoggerFactory.getLogger(BiddingController.class);
 
-    @Resource(name = "scheduler")
-    private Scheduler scheduler;
-
     @Autowired
     private BiddingService biddingService;
+
+    @Autowired
+    private ProductTypeService productTypeService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/{name}/unique")
     public ResponseEntity checkNameIsUnique(@PathVariable(name = "name") String name) {
@@ -119,6 +126,21 @@ public class BiddingController {
         }
         int count = biddingService.modifyBidding(biddings);
         return ResponseEntity.ok(count);
+    }
+
+
+
+    @GetMapping("/productTypeNameList")
+    public ResponseEntity productTypeNameList(HttpSession session) {
+        List<ProductType> productTypeNameList = productTypeService.getProductTypeNames(Utils.uidFromSession(session));
+        return ResponseEntity.ok(productTypeNameList);
+    }
+
+    @PostMapping("/productReport")
+    public JSONObject productReport(ProductCondition productCondition, HttpSession session) {
+        productCondition.setUid(Utils.uidFromSession(session));
+        JSONObject result = productService.productReport(productCondition);
+        return result;
     }
 
 }

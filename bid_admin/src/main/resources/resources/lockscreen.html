@@ -65,7 +65,8 @@
 <script src="./myjs/utils.js"></script>
 
 <script>
-    $('h3').text(utils.storage.getSession('username'));
+    var un = utils.storage.getSession('username')
+    $('h3').text((un == null ? '' : un));
 
     $('form').submit(function () {
         return false;

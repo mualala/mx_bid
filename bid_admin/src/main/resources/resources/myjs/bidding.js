@@ -15,7 +15,7 @@ var bidding = {
         initProducts: function () {
             $('#getProducts').bootstrapTable('destroy').bootstrapTable({
                 method: 'post',
-                url: '/product/productReport',
+                url: '/bidding/productReport',
                 height: "350",
                 striped: false,//不显示斑马线
                 clickToSelect: true,//点击行即可选中单选/复选框
@@ -336,9 +336,9 @@ var bidding = {
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded',
                 pagination: true,//启动分页
-                pageSize: 15,//每页显示的记录数
+                pageSize: 10,//每页显示的记录数
                 pageNumber: 1,//当前第几页
-                pageList: [15, 50, 100, 500, 5000, 50000],//记录数可选列表
+                pageList: [10, 20, 50, 100, 500, 5000, 50000],//记录数可选列表
                 search: true,//是否启用查询,是客户端client才有效
                 searchOnEnterKey: true,//按回车触发搜索方法，否则自动触发搜索方法
                 showColumns: true,//显示下拉框勾选要显示的列
@@ -496,7 +496,7 @@ var bidding = {
                         //iframe层-父子操作
                         layer.open({
                             type: 2,
-                            area: ['70%', '65%'],
+                            area: ['100%', '100%'],
                             fixed: false, //不固定
                             maxmin: true,
                             content: content
@@ -553,9 +553,9 @@ var bidding = {
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded',
                 pagination: true,//启动分页
-                pageSize: 15,//每页显示的记录数
+                pageSize: 10,//每页显示的记录数
                 pageNumber: 1,//当前第几页
-                pageList: [15, 50, 100, 500, 5000, 50000],//记录数可选列表
+                pageList: [10, 20, 50, 100, 500, 5000, 50000],//记录数可选列表
                 search: true,//是否启用查询,是客户端client才有效
                 searchOnEnterKey: true,//按回车触发搜索方法，否则自动触发搜索方法
                 showColumns: true,//显示下拉框勾选要显示的列
@@ -713,7 +713,7 @@ var bidding = {
                         //iframe层-父子操作
                         layer.open({
                             type: 2,
-                            area: ['70%', '65%'],
+                            area: ['100%', '100%'],
                             fixed: false, //不固定
                             maxmin: true,
                             content: content
@@ -804,7 +804,7 @@ var bidding = {
 
     productTypeNames: function (select_obj, selectId) {
         $.ajax({
-            url: "/productType/productTypeNameList",
+            url: "/bidding/productTypeNameList",
             type: "get",
             success: function (resp) {
                 for (var index in resp) {

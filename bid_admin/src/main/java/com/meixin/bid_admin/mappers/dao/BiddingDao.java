@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -50,9 +51,19 @@ public interface BiddingDao extends IMapper<Bidding> {
      * @Date:   14:07 2018/6/22 0022
      * @Return:
      */
-    @Update("update bidding set status=${status}, task_name=#{taskName}, group_id=#{groupId} where uid=${uid} and name=#{bidName}")
-    int startBidding(@Param("bidName") String bidName, @Param("uid") int uid, @Param("status") int status,
+    @Update("update bidding set task_name=#{taskName}, group_id=#{groupId} where uid=${uid} and name=#{bidName}")
+    int setTaskInfo(@Param("bidName") String bidName, @Param("uid") int uid,
                      @Param("taskName") String taskName, @Param("groupId") String groupId);
+
+    /**
+     * @Desc:   更新竞标单延迟后的结束时间
+     * @Author: yanghm
+     * @Param:
+     * @Date:   13:35 2018/6/25 0025
+     * @Return:
+     */
+    @Update("update bidding set end_time=FROM_UNIXTIME(${delayTime}), group_id=#{groupId} where uid=${uid} and name=#{bidName}")
+    int updateDelayTime(Map<String, Object> params);
 
     /**
      * @Desc:   设置竞标单结束的状态

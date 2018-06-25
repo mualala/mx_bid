@@ -32,8 +32,6 @@ public interface BiddingService {
 
     int biddingRelease(String names, int uid);
 
-    int startBidding(String bidName, int uid, int status, String taskName, String groupId);
-
     int setStatus(String bidName, int uid, int status);
 
     int checkBidding(List<String> bidNames, int status);

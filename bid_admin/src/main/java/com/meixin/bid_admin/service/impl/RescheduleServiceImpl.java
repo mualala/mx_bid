@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Desc：
@@ -39,8 +41,21 @@ public class RescheduleServiceImpl implements RescheduleService {
             List<Bidding> biddingList = biddingDao.queryByNameAndStatus(bidName);
             if (!biddingList.isEmpty()) {
                 Bidding bidding = biddingList.get(0);
-                BiddingTaskUtil.rescheduleBidding(scheduler, bidding); //重置
-                result = ResponseEntity.ok("延时成功");
+                //判断是否增加延时
+                long now = System.currentTimeMillis();
+                long over = bidding.getEndTime().getTime();
+                long diff = over - now;
+                if (diff <= Utils.Delay.getDelay()) {//如果剩余时间 < 设定的延时时间，那么增加延时
+                    Map<String, Object> params = BiddingTaskUtil.rescheduleBidding(scheduler, bidding); //重置
+
+                    //更新数据库延迟后的结束时间, mysql必须除以1000
+//                    biddingDao.updateDelayTime(delayTime / 1000, bidName, bidding.getUid());
+                    params.put("bidName", bidName);
+                    params.put("uid", bidding.getUid());
+                    biddingDao.updateDelayTime(params);
+
+                    result = ResponseEntity.ok("延时成功");
+                }
             }else {
                 result = new ResponseEntity("竞标单已经结束", HttpStatus.NOT_IMPLEMENTED);
             }

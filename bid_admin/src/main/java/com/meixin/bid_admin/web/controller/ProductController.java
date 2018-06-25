@@ -32,7 +32,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    @RolesAllowed("ROLE_USER")
+    @RolesAllowed("ROLE_PROD")
     public ResponseEntity createProduct(@Valid Product product, BindingResult errors, HttpSession session) {
         if(errors.hasErrors()) {
 //            List<FieldError> ls  = errors.getFieldErrors();

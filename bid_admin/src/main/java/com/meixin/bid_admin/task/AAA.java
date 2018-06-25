@@ -56,7 +56,9 @@
 //        scheduler.start();
 //
 //        //构建job信息
-//        JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass()).withIdentity(jobClassName, jobGroupName).build();
+//        JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass())
+//                .withIdentity(jobClassName, jobGroupName)
+//                .build();
 //
 //        //表达式调度构建器(即任务执行的时间)
 //        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
@@ -75,6 +77,13 @@
 //    }
 //
 //
+//    /**
+//     * @Desc:   暂停job
+//     * @Author: yanghm
+//     * @Param:
+//     * @Date:   13:28 2018/6/22 0022
+//     * @Return:
+//     */
 //    @PostMapping(value="/pausejob")
 //    public void pausejob(@RequestParam(value="jobClassName")String jobClassName, @RequestParam(value="jobGroupName")String jobGroupName) throws Exception
 //    {
@@ -87,6 +96,13 @@
 //    }
 //
 //
+//    /**
+//     * @Desc:   恢复job
+//     * @Author: yanghm
+//     * @Param:
+//     * @Date:   13:28 2018/6/22 0022
+//     * @Return:
+//     */
 //    @PostMapping(value="/resumejob")
 //    public void resumejob(@RequestParam(value="jobClassName")String jobClassName, @RequestParam(value="jobGroupName")String jobGroupName) throws Exception
 //    {
