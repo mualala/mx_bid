@@ -3,6 +3,8 @@
 <mapper namespace="com.meixin.bid.mappers.dao.BidDetailsDao" >
 
     <select id="queryOptimalBidDetail" resultType="com.meixin.bid.entity.BidDetails">
+    SELECT A.*, b1.end_time FROM
+    (
     SELECT * FROM (
       SELECT *, (
         SELECT count(DISTINCT price)
@@ -12,6 +14,8 @@
     FROM bid_details AS a
     WHERE a.bid_name=#{bidName} AND a.product_id=#{productId}
     ORDER BY rank) rs WHERE rs.uid=#{uid} ORDER BY rs.price ${order3}
+    ) A
+    INNER JOIN bidding b1 ON b1.name=A.bid_name AND b1.product_id=A.product_id
     LIMIT 0, 1;
     </select>
 

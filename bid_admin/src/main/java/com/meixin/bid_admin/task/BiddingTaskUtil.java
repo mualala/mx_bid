@@ -134,7 +134,7 @@ public class BiddingTaskUtil {
                 .build();
 
         Date resD = scheduler.rescheduleJob(oldTriggerKey, newTrigger); //重置
-        LOGGER.info("重置了{}竞标单,增加了{} /m延时", bidding.getName(), delay/1000/60);
+        LOGGER.debug("重置了{}竞标单,增加了{} /m延时", bidding.getName(), delay/1000/60);
 
         Map<String, Object> params = new HashMap<>();
         params.put("delayTime", delayTime / 1000);

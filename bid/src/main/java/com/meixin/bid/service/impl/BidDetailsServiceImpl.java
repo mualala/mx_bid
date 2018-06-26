@@ -137,34 +137,23 @@ public class BidDetailsServiceImpl implements BidDetailsService {
             result = SimpleResponse.OK(optimalPrice);
 
             // 向admin发送重置定时器消息（只有admin才能检查是否要重置,因为延时是在admin的jvm内存中）
-            System.err.println("delayUrl---->>>" + delayUrl);
-
-            Map<String, Object> reqBody = new HashMap<>();
-            reqBody.put("bidName", bidDetails.getBidName());
-            System.err.println("----->>>>>>>>>> " + bidDetails.getBidName());
-
-//            MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-//            headers.add("Content-Type", "application/x-www-form-urlencoded");
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity<Object> httpEntity = new HttpEntity<>(bidDetails.getBidName(), headers);
 
-            ListenableFuture<ResponseEntity> a = (ListenableFuture<ResponseEntity>) asyncRestTemplate.put(delayUrl + "/" + bidDetails.getBidName(), httpEntity);
+            ListenableFuture<ResponseEntity> re = (ListenableFuture<ResponseEntity>) asyncRestTemplate.put(delayUrl + "/" + bidDetails.getBidName(), httpEntity);
 
 //            asyncRestTemplate.exchange(delayUrl, HttpMethod.POST, httpHeaders, ResponseEntity.class);
 //            ListenableFuture<ResponseEntity<ResponseEntity>> res = asyncRestTemplate.postForEntity(delayUrl, httpEntity, ResponseEntity.class, bidDetails.getBidName());
-            a.addCallback(new ListenableFutureCallback<ResponseEntity>() {
+            re.addCallback(new ListenableFutureCallback<ResponseEntity>() {
                 //调用成功
                 @Override
-                public void onSuccess(ResponseEntity resp) {
-                    System.err.println("异步请求的响应结果---->>>" + resp.getBody());
-                }
+                public void onSuccess(ResponseEntity resp) {}
 
                 //调用失败
                 @Override
                 public void onFailure(Throwable t) {
-                    System.out.println("---------"+t.getMessage());
+                    LOGGER.error("竞标单延时请求失败,原因:{}", t.getMessage());
                 }
             });
         }else {

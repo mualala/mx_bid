@@ -83,8 +83,6 @@
                         </form>
                     </div>
 
-
-
                     <div class="col-sm-5">
                         <div class="container">
                             <h4>
@@ -233,13 +231,17 @@
                             if (resp.rank != null && resp.rank != '') {
                                 haha.rank = resp.rank
                             }
-
                             if (resp.price != null && resp.price != '') {
                                 haha.price = resp.price
                             }
-
                             if (resp.limitPrice != null && resp.limitPrice != '') {
                                 haha.limitPrice = resp.limitPrice
+                            }
+                            if (resp.endTime != null && resp.endTime != '') {
+                                haha.endTime = resp.endTime
+                                console.log(resp.endTime)
+                                console.log(haha.endTime)
+                                haha.computRemaindTime()
                             }
                         }
                         if (la) {
@@ -265,6 +267,7 @@
             computRemaindTime: function () {
                 var now = new Date()
                 var diff = new Date(haha.endTime) - now
+                console.log(haha.endTime)
                 if (diff <= 0) {
                     haha.remaindTime = '竞标已结束'
                 }else {
@@ -346,7 +349,6 @@
                                 // dataType: "json",
                                 data: price,
                                 success: function (resp) {
-                                    console.log(resp)
                                     var data = resp.data
                                     var code = resp.code
                                     var msg = resp.msg
@@ -361,6 +363,9 @@
                                         case 200:
                                             haha.rank = data.rank
                                             haha.limitPrice = data.limitPrice
+                                            haha.endTime = data.endTime
+                                            console.log(data.endTime)
+                                            console.log(haha.endTime)
                                             haha.computRemaindTime()
 
                                             haha.setPrice = ''

@@ -41,6 +41,9 @@ public class BidDetails {
     @Transient
     private Integer mark;
 
+    @Transient
+    private Timestamp endTime;
+
     public Integer getBidDetailId() {
         return bidDetailId;
     }
@@ -113,4 +116,11 @@ public class BidDetails {
         this.mark = mark;
     }
 
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
 }
