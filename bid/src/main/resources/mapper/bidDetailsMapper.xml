@@ -19,4 +19,38 @@
     LIMIT 0, 1;
     </select>
 
+    <select id="queryMaxOptimalBidDetail" resultType="com.meixin.bid.entity.BidDetails">
+    SELECT A.*, b1.end_time FROM
+    (
+    SELECT * FROM (
+      SELECT *, (
+        SELECT count(DISTINCT price)
+        FROM bid_details_max_rank_by_uid AS b
+        WHERE a.price ${order} b.price AND b.bid_name=#{bidName} AND b.product_id=#{productId}
+      ) + 1 AS rank
+    FROM bid_details_max_rank_by_uid AS a
+    WHERE a.bid_name=#{bidName} AND a.product_id=#{productId}
+    ORDER BY rank) rs WHERE rs.uid=#{uid}
+    ) A
+    INNER JOIN bidding b1 ON b1.name=A.bid_name AND b1.product_id=A.product_id
+    LIMIT 0, 1;
+    </select>
+
+    <select id="queryMinOptimalBidDetail" resultType="com.meixin.bid.entity.BidDetails">
+        SELECT A.*, b1.end_time FROM
+        (
+        SELECT * FROM (
+        SELECT *, (
+        SELECT count(DISTINCT price)
+        FROM bid_details_min_rank_by_uid AS b
+        WHERE a.price ${order} b.price AND b.bid_name=#{bidName} AND b.product_id=#{productId}
+        ) + 1 AS rank
+        FROM bid_details_min_rank_by_uid AS a
+        WHERE a.bid_name=#{bidName} AND a.product_id=#{productId}
+        ORDER BY rank) rs WHERE rs.uid=#{uid}
+        ) A
+        INNER JOIN bidding b1 ON b1.name=A.bid_name AND b1.product_id=A.product_id
+        LIMIT 0, 1;
+    </select>
+
 </mapper>

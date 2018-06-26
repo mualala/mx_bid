@@ -276,9 +276,15 @@
                     var min = Math.floor((diff / (60 * 1000)) % 60)
                     var sec = Math.floor((diff / 1000) % 60)
 
-                    day > 0
-                        ? haha.remaindTime = `${day}天`
-                        : haha.remaindTime = `${hour}小时 ${min}分 ${sec}秒`
+//                    day > 0
+//                        ? haha.remaindTime = `${day}天`
+//                        : haha.remaindTime = `${hour}小时 ${min}分 ${sec}秒`
+                    //上面的写法不兼容ie
+                    if (day > 0) {
+                        haha.remaindTime = day + '天'
+                    }else {
+                        haha.remaindTime = hour + '小时 ' + min + '分 ' + sec + '秒'
+                    }
                 }
             },
 

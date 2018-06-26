@@ -24,6 +24,26 @@ public interface BidDetailsDao extends IMapper<BidDetails> {
     BidDetails queryOptimalBidDetail(@Param("bidName") String bidName, @Param("productId") int productId,
                                      @Param("order") String order2, @Param("order3") String order3, @Param("uid") int uid);
 
+    /**
+     * @Desc:   招标最优
+     * @Author: yanghm
+     * @Param:
+     * @Date:   16:41 2018/6/26 0026
+     * @Return:
+     */
+    BidDetails queryMaxOptimalBidDetail(@Param("bidName") String bidName, @Param("productId") int productId,
+                                     @Param("order") String order, @Param("uid") int uid);
+    /**
+     * @Desc:   竞标最优
+     * @Author: yanghm
+     * @Param:
+     * @Date:   16:41 2018/6/26 0026
+     * @Return:
+     */
+
+    BidDetails queryMinOptimalBidDetail(@Param("bidName") String bidName, @Param("productId") int productId,
+                                     @Param("order") String order, @Param("uid") int uid);
+
     @Select("SELECT price FROM bid_details WHERE bid_name=#{bidName} AND product_id=#{productId} AND uid=${uid} ORDER BY price ${order} LIMIT 0, 1")
     Float limitPrice(@Param("bidName") String bidName, @Param("productId") int productId, @Param("uid") int uid, @Param("order") String order);
 

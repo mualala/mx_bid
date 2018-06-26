@@ -35,12 +35,8 @@ public class Supplier {
     @NotBlank
     private String companyName;
 
-    @NotNull
-    @NotBlank
     private String licenseNumber;
 
-    @NotNull
-    @NotBlank
     private String legal;
 
     @NotNull

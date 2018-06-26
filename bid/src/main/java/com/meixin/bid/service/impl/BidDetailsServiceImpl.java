@@ -46,22 +46,6 @@ public class BidDetailsServiceImpl implements BidDetailsService {
     @Autowired
     private BiddingDao biddingDao;
 
-
-
-    private String order(int mark) {
-        String order = "asc";
-        if (mark == 1) //招标
-            order = "desc";
-        return order;
-    }
-
-    private String order2(int mark) {
-        String order = "<";
-        if (mark == 2) //竞标
-            order = ">";
-        return order;
-    }
-
     //出价的错误类型
     private enum Price {
         REFRESH(1001, "不能出价! 请参考最高报价(已刷新)"),
@@ -103,7 +87,7 @@ public class BidDetailsServiceImpl implements BidDetailsService {
         int mark = bidDetails.getMark();
         int count = 0;
         float price = bidDetails.getPrice();
-        Float limitPrice = bidDetailsDao.limitPrice(bidDetails.getBidName(), bidDetails.getProductId(), bidDetails.getUid(), order(mark));
+        Float limitPrice = bidDetailsDao.limitPrice(bidDetails.getBidName(), bidDetails.getProductId(), bidDetails.getUid(), order2(mark));
         switch (mark) {
             case 1: //招标
                 if (limitPrice == null) { //第一次出价
@@ -172,10 +156,20 @@ public class BidDetailsServiceImpl implements BidDetailsService {
     @Override
     public BidDetails lastPrice(String bidName, int productId, int mark, int uid) {
         String order = order(mark);
-        String order2 = order2(mark);
-        BidDetails bidDetails = bidDetailsDao.queryOptimalBidDetail(bidName, productId, order2, order, uid);
+        BidDetails bidDetails = null;
+        switch (mark) {
+            case 1://招标
+                bidDetails = bidDetailsDao.queryMaxOptimalBidDetail(bidName, productId, order, uid);
+                break;
+            case 2:
+                bidDetails = bidDetailsDao.queryMinOptimalBidDetail(bidName, productId, order, uid);
+                break;
+            default: LOGGER.error("竞标单{}，产品{}，刷新最优出价失败，mark为{} 不存在", bidName, productId, mark);
+        }
+
+//        BidDetails bidDetails = bidDetailsDao.queryOptimalBidDetail(bidName, productId, order2, order, uid);
         //最高 或 最低报价
-        Float limitPrice = bidDetailsDao.limitPrice(bidName, productId, uid, order);
+        Float limitPrice = bidDetailsDao.limitPrice(bidName, productId, uid, order2(mark));
         if (limitPrice != null) {
             if (bidDetails == null) {
                 bidDetails = new BidDetails();
@@ -184,6 +178,20 @@ public class BidDetailsServiceImpl implements BidDetailsService {
             bidDetails.setLimitPrice(limitPrice);
         }
         return bidDetails;
+    }
+
+    private String order2(int mark) {
+        String order = "asc";
+        if (mark == 1) //招标
+            order = "desc";
+        return order;
+    }
+
+    private String order(int mark) {
+        String order = "<";//招标
+        if (mark == 2) //竞标
+            order = ">";
+        return order;
     }
 
 

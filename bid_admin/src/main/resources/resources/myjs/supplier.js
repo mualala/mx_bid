@@ -68,8 +68,9 @@ var supplier = {
         },
 
         checkInfo: function () {
-            if(!$('#supplierType option:first').is(':selected') && $('#username').val() != '' && $('#password').val() != '' && $('#supplierType').val() != '' && $('#companyName').val() != '' &&
-                $('#licenseNumber').val() != '' && $('#legal').val() != '' && $('#name').val() != '' && $('#phone').val() != '' &&
+            if(!$('#supplierType option:first').is(':selected') && $('#username').val() != '' && $('#password').val() != ''
+                && $('#supplierType').val() != '' && $('#companyName').val() != ''
+                && $('#name').val() != '' && $('#phone').val() != '' &&
                 $('#errorTip').hasClass('fa-check')) {
                 $('#submitInfo').removeClass('disabled');
             }else {
