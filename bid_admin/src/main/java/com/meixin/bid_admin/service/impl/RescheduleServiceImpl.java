@@ -45,8 +45,10 @@ public class RescheduleServiceImpl implements RescheduleService {
                 long now = System.currentTimeMillis();
                 long over = bidding.getEndTime().getTime();
                 long diff = over - now;
-                if (diff <= Utils.Delay.getDelay()) {//如果剩余时间 < 设定的延时时间，那么增加延时
-                    Map<String, Object> params = BiddingTaskUtil.rescheduleBidding(scheduler, bidding); //重置
+                long delay = Utils.Delay.getDelay();
+                if (diff > 0 && diff <= delay) {//如果剩余时间 <= 设定的延时时间，那么增加延时
+                    long addDelay = delay - diff;//固定延时
+                    Map<String, Object> params = BiddingTaskUtil.rescheduleBidding(scheduler, bidding, addDelay); //重置
 
                     //更新数据库延迟后的结束时间, mysql必须除以1000
 //                    biddingDao.updateDelayTime(delayTime / 1000, bidName, bidding.getUid());

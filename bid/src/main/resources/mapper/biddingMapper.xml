@@ -74,7 +74,7 @@
         <id column="type" property="type" jdbcType="INTEGER" />
         <id column="bid_desc" property="bidDesc" jdbcType="VARCHAR" />
         <id column="start_price" property="startPrice" jdbcType="FLOAT" />
-        <id column="step" property="step" jdbcType="INTEGER" />
+        <id column="step" property="step" jdbcType="FLOAT" />
         <id column="number" property="number" jdbcType="INTEGER" />
         <id column="end_delivery_date" property="endDeliveryDate" jdbcType="TIMESTAMP" />
         <id column="end_pay_date" property="endPayDate" jdbcType="TIMESTAMP" />
@@ -146,7 +146,7 @@
         <id column="pid" property="productId" jdbcType="INTEGER" />
         <id column="number" property="number" jdbcType="INTEGER" />
         <id column="start_price" property="startPrice" jdbcType="FLOAT" />
-        <id column="step" property="step" jdbcType="INTEGER" />
+        <id column="step" property="step" jdbcType="FLOAT" />
         <id column="end_delivery_date" property="endDeliveryDate" jdbcType="TIMESTAMP" />
         <id column="end_pay_date" property="endPayDate" jdbcType="TIMESTAMP" />
 

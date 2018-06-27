@@ -21,7 +21,7 @@
         </association>
         <association property="bidding" javaType="com.meixin.bid_admin.entity.Bidding">
             <result column="start_price" property="startPrice" jdbcType="FLOAT" />
-            <result column="step" property="step" jdbcType="INTEGER" />
+            <result column="step" property="step" jdbcType="FLOAT" />
             <result column="number" property="number" jdbcType="INTEGER" />
             <result column="mark" property="mark" jdbcType="INTEGER" />
             <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />

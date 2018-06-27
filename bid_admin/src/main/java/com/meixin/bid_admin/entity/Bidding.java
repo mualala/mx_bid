@@ -35,7 +35,7 @@ public class Bidding {
 
     private Float startPrice; //起拍价
 
-    private Integer step; //竞价阶梯(元)
+    private Float step; //竞价阶梯(元)
 
     @NotNull
     @Column(name = "end_delivery_date")
@@ -188,11 +188,11 @@ public class Bidding {
         this.startPrice = startPrice;
     }
 
-    public Integer getStep() {
+    public Float getStep() {
         return step;
     }
 
-    public void setStep(Integer step) {
+    public void setStep(Float step) {
         this.step = step;
     }
 

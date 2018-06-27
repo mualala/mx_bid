@@ -112,16 +112,18 @@ public class BiddingTaskUtil {
      * @Date:   13:30 2018/6/22 0022
      * @Return: delay time 延迟后的结束时间
      */
-    public static Map<String, Object> rescheduleBidding(Scheduler scheduler, Bidding bidding) throws SchedulerException {
+    public static Map<String, Object> rescheduleBidding(Scheduler scheduler, Bidding bidding, long addDelay) throws SchedulerException {
         String taskName = bidding.getTaskName();
         String groupId = bidding.getGroupId();
 
         // 计算新的结束时间
+        /*
         long delay = Utils.Delay.getDelay();//追加的时间
         long endTime = bidding.getEndTime().getTime();
 
         long delayTime = endTime + delay;//追加后的总延时时间
-        Date delayDate = new Date(delayTime);
+        */
+        Date delayDate = new Date(bidding.getEndTime().getTime() + addDelay);
 
         //gov doc: http://www.quartz-scheduler.org/documentation/quartz-2.2.x/cookbook/UpdateTrigger.html
 
@@ -134,10 +136,10 @@ public class BiddingTaskUtil {
                 .build();
 
         Date resD = scheduler.rescheduleJob(oldTriggerKey, newTrigger); //重置
-        LOGGER.debug("重置了{}竞标单,增加了{} /m延时", bidding.getName(), delay/1000/60);
+        LOGGER.debug("重置了{}竞标单,增加了{} /m延时", bidding.getName(), addDelay/1000/60);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("delayTime", delayTime / 1000);
+        params.put("delayTime", addDelay / 1000);
         params.put("groupId", newGroupId);
         return params;
     }

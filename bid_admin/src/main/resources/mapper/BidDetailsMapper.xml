@@ -105,7 +105,7 @@
         <association property="bidding" javaType="com.meixin.bid_admin.entity.Bidding">
             <result column="number" property="number" jdbcType="INTEGER" />
             <result column="start_price" property="startPrice" jdbcType="FLOAT" />
-            <result column="step" property="step" jdbcType="INTEGER" />
+            <result column="step" property="step" jdbcType="FLOAT" />
             <result column="end_delivery_date" property="endDeliveryDate" jdbcType="TIMESTAMP" />
             <result column="end_pay_date" property="endPayDate" jdbcType="TIMESTAMP" />
         </association>
@@ -211,7 +211,7 @@
             <result column="bi_uid" property="uid" jdbcType="INTEGER" />
             <result column="mark" property="mark" jdbcType="INTEGER" />
             <result column="start_price" property="startPrice" jdbcType="FLOAT" />
-            <result column="step" property="step" jdbcType="INTEGER" />
+            <result column="step" property="step" jdbcType="FLOAT" />
             <result column="number" property="number" jdbcType="INTEGER" />
             <result column="bid_desc" property="bidDesc" jdbcType="VARCHAR" />
             <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
