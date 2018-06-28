@@ -7,7 +7,7 @@ package com.meixin.bid_admin.web.dto;
  */
 public class BidDetailsCondition extends BasePageCondition {
 
-    private String username; //供应商名称
+    private String suName; //供应商名称
 
     private String bidName;
 
@@ -15,14 +15,14 @@ public class BidDetailsCondition extends BasePageCondition {
 
     private Float sum;
 
-    private String pName;
+    private String prodName;
 
-    public String getUsername() {
-        return username;
+    public String getSuName() {
+        return suName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSuName(String suName) {
+        this.suName = suName;
     }
 
     public String getBidName() {
@@ -49,12 +49,12 @@ public class BidDetailsCondition extends BasePageCondition {
         this.sum = sum;
     }
 
-    public String getpName() {
-        return pName;
+    public String getProdName() {
+        return prodName;
     }
 
-    public void setpName(String pName) {
-        this.pName = pName;
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
     }
 
 }

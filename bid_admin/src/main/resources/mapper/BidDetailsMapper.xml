@@ -243,8 +243,8 @@
         <where>
             <if test="uid != -1">B.bi_uid=#{uid}</if>
             <if test="bidName != null and bidName != ''">AND B.bid_name=#{bidName}</if>
-            <if test="pName != null and pName != ''">AND B.p_name=#{pName}</if>
-            <if test="username != null and username != ''">AND su.username=#{username}</if>
+            <if test="prodName != null and prodName != ''">AND B.p_name=#{prodName}</if>
+            <if test="suName != null and suName != ''">AND su.name=#{suName}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND B.create_time BETWEEN #{startDate} AND #{endDate}
             </if>
@@ -268,8 +268,8 @@
         <where>
             <if test="uid != -1">B.bi_uid=#{uid}</if>
             <if test="bidName != null and bidName != ''">AND B.bid_name=#{bidName}</if>
-            <if test="pName != null and pName != ''">AND B.p_name=#{pName}</if>
-            <if test="username != null and username != ''">AND su.username=#{username}</if>
+            <if test="prodName != null and prodName != ''">AND B.p_name=#{prodName}</if>
+            <if test="suName != null and suName != ''">AND su.name=#{suName}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND B.create_time BETWEEN #{startDate} AND #{endDate}
             </if>

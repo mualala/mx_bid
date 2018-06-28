@@ -403,7 +403,7 @@ var bidDetails = {
 
                     {field: 'product.name', title: '产品名称'},
                     {field: 'bidding.number', title: '产品数量'},
-                    {field: 'supplier.username', title: '投标人账号'},
+                    {field: 'supplier.username', title: '投标人账号', visible: false},
                     {field: 'supplier.name', title: '投标人名称'},
                     {field: 'price', title: '出价金额', sortable: true,
                         cellStyle: function (value, row, index, field) {
@@ -466,8 +466,8 @@ var bidDetails = {
                         sortOrder: params.sortOrder,
 
                         bidName: $("#bidName").val(),
-                        productId: $('#pName').val(),
-                        username: $('#username').val(),
+                        prodName: $('#prodName').val(),
+                        suName: $('#suName').val(),
                         startDate: $("#startDate").val(),
                         endDate: $("#endDate").val(),
                     };
@@ -486,8 +486,8 @@ var bidDetails = {
 
         resetInfo: function () {
             $('#bidName').val('')
-            $('#pName').val('')
-            $('#username').val('')
+            $('#prodName').val('')
+            $('#suName').val('')
             $('#startDate').val('')
             $('#endDate').val('')
         }

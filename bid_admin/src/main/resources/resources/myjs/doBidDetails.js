@@ -149,7 +149,7 @@ var doBidDetails = {
                     sortName: params.sortName,
                     sortOrder: params.sortOrder,
 
-                    username: $('#sName').val(),
+                    sName: $('#sName').val(),
                     bidName: $("#bidName").val(),
                     startDate: $("#startDate").val(),
                     endDate: $("#endDate").val(),
