@@ -64,9 +64,21 @@ var doBidDetails = {
 
                 {field: 'product.name', title: '产品名称'},
                 {field: 'bidding.number', title: '数量'},
-                {field: 'bidDetails.optimal', title: '最优出价'},
-                {field: 'bidDetails.price', title: '中标金额'},
-                {field: 'reason', title: '中标理由'},
+                {field: 'bidDetails.optimal', title: '最优出价',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: 'warning'};
+                    }
+                },
+                {field: 'bidDetails.price', title: '中标金额',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: 'success'};
+                    }
+                },
+                {field: 'reason', title: '中标理由',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: 'info'};
+                    }
+                },
                 {field: 'supplier.username', title: '中标人账号'},
                 {field: 'supplier.name', title: '中标人名称'},
                 {field: 'supplier.phone', title: '中标人电话'},

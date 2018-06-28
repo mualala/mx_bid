@@ -34,11 +34,11 @@
                 <!--<th><input type="checkbox"></th>-->
                 <th>操作</th>
                 <th>中标理由</th>
-                <th>序号</th>
-                <th>供应商账号</th>
                 <th>供应商名称</th>
-                <th>供应商电话</th>
+                <th>序号</th>
                 <th>最优出价</th>
+                <th>供应商账号</th>
+                <th>供应商电话</th>
                 <th>出价时间</th>
                 <th>公司名称</th>
                 <th>法人</th>
@@ -56,11 +56,11 @@
                 <td class="col-sm-3">
                     <textarea v-model="su.reason" class="form-control"></textarea>
                 </td>
-                <td>{{index + 1}}</td>
-                <td>{{su.username}}</td>
                 <td>{{su.name}}</td>
-                <td>{{su.phone}}</td>
+                <td>{{index + 1}}</td>
                 <td>{{su.optimal}}</td>
+                <td>{{su.username}}</td>
+                <td>{{su.phone}}</td>
                 <td class="col-sm-1">{{su.createTime}}</td>
                 <td class="col-sm-1">{{su.companyName}}</td>
                 <td>{{su.legal}}</td>

@@ -48,9 +48,10 @@ public class BidDetailsServiceImpl implements BidDetailsService {
 
     //出价的错误类型
     private enum Price {
-        REFRESH(1001, "不能出价! 请参考最高报价(已刷新)"),
-        NOT(1002, "不能出价! 竞标单名称不存在"),
-        OVER(1003, "不能出价! 竞标单已经结束，请关闭当前窗口并[刷新主页]");
+        REFRESH(1001, "不能出价,请参考最高报价(已刷新)"),
+        NOT(1002, "不能出价,竞标单名称不存在"),
+        OVER(1003, "不能出价,竞标单已经结束，请关闭当前窗口并[刷新主页]"),
+        DUPLICATE_PRICE(1004, "不能出价,已有相同出价");
 
         private int code;
         private String msg;
@@ -81,6 +82,13 @@ public class BidDetailsServiceImpl implements BidDetailsService {
             }
         }else {
             result = new SimpleResponse(Price.NOT.getCode(), Price.NOT.getMsg());
+            return result;
+        }
+
+        //是否出了重复价
+        BidDetails bd = bidDetailsDao.queryDuplicatPrice(bidDetails.getBidName(), bidDetails.getProductId(), bidDetails.getPrice());
+        if (bd != null) {
+            result = new SimpleResponse(Price.DUPLICATE_PRICE.getCode(), Price.DUPLICATE_PRICE.getMsg());
             return result;
         }
 

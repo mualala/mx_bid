@@ -15,7 +15,7 @@ public class BidDetailsCondition extends BasePageCondition {
 
     private Float sum;
 
-    private Integer productId;
+    private String pName;
 
     public String getUsername() {
         return username;
@@ -49,12 +49,12 @@ public class BidDetailsCondition extends BasePageCondition {
         this.sum = sum;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public String getpName() {
+        return pName;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setpName(String pName) {
+        this.pName = pName;
     }
 
 }

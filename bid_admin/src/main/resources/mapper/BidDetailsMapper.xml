@@ -180,6 +180,7 @@
         WHERE bid_name=#{bidName} AND product_id=${productId}
         GROUP BY uid
         ) A INNER JOIN supplier S ON A.uid=S.supplier_id
+        ORDER BY A.optimal DESC
     </select>
 
     <select id="allSupplierPriceMin" resultMap="allSupplierPriceOptimalMap">
@@ -189,6 +190,7 @@
         WHERE bid_name=#{bidName} AND product_id=${productId}
         GROUP BY uid
         ) A INNER JOIN supplier S ON A.uid=S.supplier_id
+        ORDER BY A.optimal ASC
     </select>
 
 
@@ -241,7 +243,7 @@
         <where>
             <if test="uid != -1">B.bi_uid=#{uid}</if>
             <if test="bidName != null and bidName != ''">AND B.bid_name=#{bidName}</if>
-            <if test="productId != null and productId != ''">AND B.product_id=#{productId}</if>
+            <if test="pName != null and pName != ''">AND B.p_name=#{pName}</if>
             <if test="username != null and username != ''">AND su.username=#{username}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND B.create_time BETWEEN #{startDate} AND #{endDate}
@@ -266,7 +268,7 @@
         <where>
             <if test="uid != -1">B.bi_uid=#{uid}</if>
             <if test="bidName != null and bidName != ''">AND B.bid_name=#{bidName}</if>
-            <if test="productId != null and productId != ''">AND B.product_id=#{productId}</if>
+            <if test="pName != null and pName != ''">AND B.p_name=#{pName}</if>
             <if test="username != null and username != ''">AND su.username=#{username}</if>
             <if test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
                 AND B.create_time BETWEEN #{startDate} AND #{endDate}

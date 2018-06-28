@@ -385,10 +385,7 @@ var bidDetails = {
                     },
                     {field: 'bidDetailId', title: 'bidDetailId', visible: false},
                     {field: 'productId', title: 'pid', visible: false},
-
                     {field: 'bidName', title: '竞标单名称'},
-                    {field: 'bidding.startPrice', title: '起拍价'},
-                    {field: 'bidding.step', title: '阶梯价'},
                     {
                         field: 'bidding.mark',
                         title: '标记',
@@ -403,6 +400,32 @@ var bidDetails = {
                             return markMsg
                         }
                     },
+
+                    {field: 'product.name', title: '产品名称'},
+                    {field: 'bidding.number', title: '产品数量'},
+                    {field: 'supplier.username', title: '投标人账号'},
+                    {field: 'supplier.name', title: '投标人名称'},
+                    {field: 'price', title: '出价金额', sortable: true,
+                        cellStyle: function (value, row, index, field) {
+                            return {classes: 'success'};
+                        }
+                    },
+                    {field: 'supplier.phone', title: '投标人电话'},
+                    {field: 'supplier.companyName', title: '公司名字'},
+                    {field: 'supplier.legal', title: '法人', visible: false},
+                    {
+                        field: 'createTime',
+                        title: '出价时间',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            if(value != null && value != '') {
+                                return utils.dateFormat.timeStampToDate(value);
+                            }
+                        }
+                    },
+
+                    {field: 'bidding.startPrice', title: '起拍价'},
+                    {field: 'bidding.step', title: '阶梯价'},
                     {
                         field: 'bidding.startTime',
                         title: '起标时间',
@@ -421,32 +444,13 @@ var bidDetails = {
                             }
                         }
                     },
-                    {field: 'bidding.bidDesc', title: '竞标单描述'},
+                    {field: 'bidding.bidDesc', title: '竞标单描述', visible: false},
 
-                    {field: 'productId', title: '产品ID'},
-                    {field: 'product.code', title: '产品编码'},
-                    {field: 'product.name', title: '产品名称'},
-                    {field: 'bidding.number', title: '数量'},
+                    {field: 'productId', title: '产品ID', visible: false},
+                    {field: 'product.code', title: '产品编码', visible: false},
                     {field: 'product.spec', title: '产品规格'},
                     {field: 'product.unit', title: '产品单位'},
-                    {field: 'product.productDesc', title: '产品描述'},
-
-                    {field: 'supplier.username', title: '投标人账号'},
-                    {field: 'supplier.name', title: '投标人名称'},
-                    {field: 'price', title: '出价金额', sortable: true,},
-                    {field: 'supplier.phone', title: '投标人电话'},
-                    {field: 'supplier.companyName', title: '公司名字'},
-                    {field: 'supplier.legal', title: '法人'},
-                    {
-                        field: 'createTime',
-                        title: '出价时间',
-                        sortable: true,
-                        formatter: function (value, row, index) {
-                            if(value != null && value != '') {
-                                return utils.dateFormat.timeStampToDate(value);
-                            }
-                        }
-                    },
+                    {field: 'product.productDesc', title: '产品描述', visible: false},
                 ],
 
                 //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
@@ -462,7 +466,7 @@ var bidDetails = {
                         sortOrder: params.sortOrder,
 
                         bidName: $("#bidName").val(),
-                        productId: $('#productId').val(),
+                        productId: $('#pName').val(),
                         username: $('#username').val(),
                         startDate: $("#startDate").val(),
                         endDate: $("#endDate").val(),
@@ -482,7 +486,7 @@ var bidDetails = {
 
         resetInfo: function () {
             $('#bidName').val('')
-            $('#productId').val('')
+            $('#pName').val('')
             $('#username').val('')
             $('#startDate').val('')
             $('#endDate').val('')

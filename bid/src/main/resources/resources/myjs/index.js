@@ -39,7 +39,7 @@ var app = new Vue({
         isSubmit: true, //不能提交
         loginFormToggle: sessionStorage.getItem('loginForm'), //false:显示登录form   true:显示登录成功的信息
 
-
+        timer: null,//主页数据定时刷新
     },
     router: router,
     computed: {
@@ -105,6 +105,13 @@ var app = new Vue({
             });
         },
 
+        autoRefreshReport: function () {
+            app.timer = setInterval(function () {
+                report.initBidding(0, null)
+                report.initBidding(1, null)
+                report.initBidding(2, null)
+            }, 3500);
+        },
 
         //必须禁掉form默认的submit
         disableFormSubmit: function () {
@@ -115,6 +122,7 @@ var app = new Vue({
         report.initBidding(0, null)
         report.initBidding(1, null)
         report.initBidding(2, null)
+        // app.autoRefreshReport()
 
         report.initBidding(0, 0)
         report.initBidding(1, 1)

@@ -13,6 +13,9 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface BidDetailsDao extends IMapper<BidDetails> {
 
+    @Select("select * from bid_details where bid_name=#{bidName} and product_id=${productId} and price=${price} limit 0, 1")
+    BidDetails queryDuplicatPrice(@Param("bidName") String bidName, @Param("productId") int productId, @Param("price") float price);
+
 //    @Select("SELECT * FROM bid_details WHERE uid=#{uid} AND bid_name=#{bidName} AND product_id=#{productId} ORDER BY price DESC LIMIT 0, 1")
     /**
      * @Desc:   查询供应商的最高或最低报价 得到排名
