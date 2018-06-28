@@ -46,13 +46,21 @@ var admin = {
                         title: '权限',
                         formatter: function (value, row, index) {
                             if(value != null && value != '') {
-                                var msg = ''
-                                if (value.match('ROLE_ADMIN')) msg = '超级管理员'
-                                if (value.match('ROLE_CHECK')) msg=  '采购和审核'
-                                if (value.match('ROLE_PROD')) msg = '产品管理'
-                                if (value.match('ROLE_USER')) msg = '采购'
-                                if (value.match('ROLE_CHECK') && value.match('ROLE_PROD')) msg = '产品管理和审核'
-                                return msg
+                                if (value.match('ROLE_ADMIN')) {
+                                    return '超级管理员'
+                                }
+                                if (value.match('ROLE_CHECK') && value.match('ROLE_PROD')) {
+                                    return '产品管理和审核'
+                                }
+                                if (value.match('ROLE_CHECK')) {
+                                    return '采购和审核'
+                                }
+                                if (value.match('ROLE_PROD')) {
+                                    return '产品管理'
+                                }
+                                if (value.match('ROLE_USER')) {
+                                    return '采购'
+                                }
                             }
                         }
                     },

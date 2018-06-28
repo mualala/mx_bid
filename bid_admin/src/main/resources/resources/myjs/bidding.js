@@ -158,7 +158,7 @@ var bidding = {
     suppliers: {
         supplierTypeNames: function (select_obj, selectId) {
             $.ajax({
-                url: "/supplierType/supplierTypeNameList",
+                url: "/bidding/supplierTypeNameList",
                 type: "get",
                 // contentType: "application/x-www-form-urlencoded",
                 // dataType: "json",
@@ -189,7 +189,7 @@ var bidding = {
         initSuppliers: function () {
             $('#getSuppliers').bootstrapTable('destroy').bootstrapTable({
                 method: 'post',
-                url: '/supplier/supplierReport',
+                url: '/bidding/supplierReport',
                 height: "350",
                 striped: false,//不显示斑马线
                 clickToSelect: true,//点击行即可选中单选/复选框

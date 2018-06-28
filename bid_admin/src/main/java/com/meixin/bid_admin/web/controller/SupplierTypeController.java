@@ -76,7 +76,7 @@ public class SupplierTypeController {
     }
 
     @PutMapping("/{supplierTypeId}/one")
-    public ResponseEntity putProduct(@PathVariable(name = "supplierTypeId", required = true) int supplierTypeId,
+    public ResponseEntity putSupplier(@PathVariable(name = "supplierTypeId", required = true) int supplierTypeId,
                                      SupplierType supplierType,
                                      HttpSession session) {
         supplierType.setSupplierTypeId(supplierTypeId);
@@ -88,7 +88,7 @@ public class SupplierTypeController {
     }
 
     @GetMapping("/supplierTypeNameList")
-    public ResponseEntity productTypeNameList(HttpSession session) {
+    public ResponseEntity supplierTypeNameList(HttpSession session) {
         List<SupplierType> supplierTypeNameList = supplierTypeService.getSupplierTypeNames(Utils.uidFromSession(session));
         return ResponseEntity.ok(supplierTypeNameList);
     }

@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/admin/**").hasRole("ADMIN")
             .antMatchers("/checkBidding/**").hasRole("CHECK")
             .antMatchers("/product/**", "/productType/**").hasRole("PROD")
+            .antMatchers("/supplier/**", "/supplierType/**").hasRole("PROD")
 //                .antMatchers("/supplier/**").hasRole("")
 
             // 任何尚未匹配的URL只需要验证用户即可访问

@@ -3,15 +3,14 @@ package com.meixin.bid_admin.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.meixin.bid_admin.entity.BiddingSupplier;
 import com.meixin.bid_admin.entity.ProductType;
+import com.meixin.bid_admin.entity.SupplierType;
 import com.meixin.bid_admin.init.RoleType;
-import com.meixin.bid_admin.service.ProductService;
-import com.meixin.bid_admin.service.ProductTypeService;
-import com.meixin.bid_admin.service.SimpleTaskService;
+import com.meixin.bid_admin.service.*;
 import com.meixin.bid_admin.web.dto.BiddingCondition;
 import com.meixin.bid_admin.entity.Bidding;
-import com.meixin.bid_admin.service.BiddingService;
 import com.meixin.bid_admin.task.BiddingTaskUtil;
 import com.meixin.bid_admin.web.dto.ProductCondition;
+import com.meixin.bid_admin.web.dto.SupplierCondition;
 import com.meixin.bid_admin.web.support.SimpleResponse;
 import com.meixin.bid_admin.web.support.Utils;
 import org.quartz.*;
@@ -50,6 +49,13 @@ public class BiddingController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private SupplierTypeService supplierTypeService;
+
+    @Autowired
+    private SupplierService supplierService;
+
 
     @GetMapping("/{name}/unique")
     public ResponseEntity checkNameIsUnique(@PathVariable(name = "name") String name) {
@@ -130,6 +136,7 @@ public class BiddingController {
 
 
 
+
     @GetMapping("/productTypeNameList")
     public ResponseEntity productTypeNameList(HttpSession session) {
         List<ProductType> productTypeNameList = productTypeService.getProductTypeNames(Utils.uidFromSession(session));
@@ -141,6 +148,20 @@ public class BiddingController {
         productCondition.setUid(Utils.uidFromSession(session));
         JSONObject result = productService.productReport(productCondition);
         return result;
+    }
+
+
+    @PostMapping("/supplierReport")
+    public JSONObject supplierReport(SupplierCondition supplierCondition, HttpSession session) {
+        supplierCondition.setUid(Utils.uidFromSession(session));
+        JSONObject result = supplierService.supplierReport(supplierCondition);
+        return result;
+    }
+
+    @GetMapping("/supplierTypeNameList")
+    public ResponseEntity supplierTypeNameList(HttpSession session) {
+        List<SupplierType> supplierTypeNameList = supplierTypeService.getSupplierTypeNames(Utils.uidFromSession(session));
+        return ResponseEntity.ok(supplierTypeNameList);
     }
 
 }
