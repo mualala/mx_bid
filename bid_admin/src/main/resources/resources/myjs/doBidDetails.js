@@ -61,46 +61,6 @@ var doBidDetails = {
                 {field: 'winBidId', title: 'winBidId', visible: false},
                 {field: 'productId', title: 'pid', visible: false},
                 {field: 'bidName', title: '竞标单名称', sortable: true},
-
-                {field: 'product.name', title: '产品名称'},
-                {field: 'bidding.number', title: '数量'},
-                {field: 'bidDetails.optimal', title: '最优出价',
-                    cellStyle: function (value, row, index, field) {
-                        return {classes: 'warning'};
-                    }
-                },
-                {field: 'bidDetails.price', title: '中标金额',
-                    cellStyle: function (value, row, index, field) {
-                        return {classes: 'success'};
-                    }
-                },
-                {field: 'reason', title: '中标理由',
-                    cellStyle: function (value, row, index, field) {
-                        return {classes: 'info'};
-                    }
-                },
-                {field: 'supplier.username', title: '中标人账号'},
-                {field: 'supplier.name', title: '中标人名称'},
-                {field: 'supplier.phone', title: '中标人电话'},
-                {field: 'supplier.companyName', title: '公司名字'},
-                {field: 'supplier.legal', title: '法人'},
-                {
-                    field: 'bidDetails.createTime',
-                    title: '出价时间',
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        if(value != null && value != '') {
-                            return utils.dateFormat.timeStampToDate(value);
-                        }
-                    }
-                },
-
-                {field: 'product.code', title: '产品编码', visible: false},
-
-                {field: 'product.spec', title: '产品规格'},
-                {field: 'product.unit', title: '产品单位'},
-                {field: 'product.productDesc', title: '产品描述'},
-
                 {
                     field: 'bidding.mark',
                     title: '标记',
@@ -115,6 +75,45 @@ var doBidDetails = {
                         return markMsg
                     }
                 },
+
+                {field: 'product.name', title: '产品名称'},
+                {field: 'bidding.number', title: '数量'},
+                {field: 'supplier.username', title: '中标人账号', visible: false},
+                {field: 'supplier.name', title: '中标人名称'},
+                {field: 'bidDetails.optimal', title: '最优出价', sortable: true,
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: 'warning'};
+                    }
+                },
+                {field: 'bidDetails.price', title: '中标金额', sortable: true,
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: 'success'};
+                    }
+                },
+                {field: 'reason', title: '中标理由',
+                    cellStyle: function (value, row, index, field) {
+                        return {classes: 'info'};
+                    }
+                },
+                {
+                    field: 'bidDetails.createTime',
+                    title: '出价时间',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if(value != null && value != '') {
+                            return utils.dateFormat.timeStampToDate(value);
+                        }
+                    }
+                },
+                {field: 'supplier.phone', title: '中标人电话'},
+                {field: 'supplier.companyName', title: '公司名字'},
+                {field: 'supplier.legal', title: '法人', visible: false},
+
+                {field: 'product.code', title: '产品编码', visible: false},
+                {field: 'product.spec', title: '产品规格'},
+                {field: 'product.unit', title: '产品单位'},
+                {field: 'product.productDesc', title: '产品描述', visible: false},
+
                 {field: 'bidding.startPrice', title: '起拍价'},
                 {field: 'bidding.step', title: '阶梯价'},
                 {
@@ -135,7 +134,7 @@ var doBidDetails = {
                         }
                     }
                 },
-                {field: 'bidding.bidDesc', title: '标单描述'},
+                {field: 'bidding.bidDesc', title: '标单描述', visible: false},
             ],
 
             //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
@@ -150,7 +149,7 @@ var doBidDetails = {
                     sortName: params.sortName,
                     sortOrder: params.sortOrder,
 
-                    username: $('#username').val(),
+                    username: $('#sName').val(),
                     bidName: $("#bidName").val(),
                     startDate: $("#startDate").val(),
                     endDate: $("#endDate").val(),
@@ -169,7 +168,7 @@ var doBidDetails = {
     },
 
     resetInfo: function () {
-        $('#username').val('')
+        $('#sName').val('')
         $('#bidName').val('')
         $('#startDate').val('')
         $('#endDate').val('')

@@ -78,10 +78,12 @@
                 AND C.create_time BETWEEN #{startDate} AND #{endDate}
             </if>
             <if test="bidName != null and bidName != ''">AND C.bid_name=#{bidName}</if>
-            <if test="username != null and username != ''">AND su.username=#{username}</if>
+            <if test="sName != null and sName != ''">AND su.name=#{sName}</if>
         </where>
         <choose>
             <when test="sortName != null and sortName=='bidName'">ORDER BY C.bid_name ${sortOrder}</when>
+            <when test="sortName != null and sortName=='bidDetails.optimal'">ORDER BY C.optimal ${sortOrder}</when>
+            <when test="sortName != null and sortName=='bidDetails.price'">ORDER BY C.price ${sortOrder}</when>
             <when test="sortName != null and sortName=='bidDetails.createTime'">ORDER BY C.create_time ${sortOrder}</when>
         </choose>
         limit #{start}, #{size}
@@ -122,7 +124,7 @@
                 AND C.create_time BETWEEN #{startDate} AND #{endDate}
             </if>
             <if test="bidName != null and bidName != ''">AND C.bid_name=#{bidName}</if>
-            <if test="username != null and username != ''">AND su.username=#{username}</if>
+            <if test="sName != null and sName != ''">AND su.name=#{sName}</if>
         </where>
     </select>
 
