@@ -20,7 +20,7 @@ public class AdminDataInitializer {
     private final Logger LOGGER = LoggerFactory.getLogger(AdminDataInitializer.class);
 
     private final String USER_NAME = "root";
-    private final String PASSWORD = "1234";
+    private final String PASSWORD = "bid_admin@root`123456`";
 
     @Autowired
     private AdminDao adminDao;
@@ -40,7 +40,7 @@ public class AdminDataInitializer {
             admin.setUsername(USER_NAME);
             admin.setPassword(passwordEncoder.encode(PASSWORD));
             admin.setName("root");
-            admin.addRoles(RoleType.ROLE_ADMIN.name(), RoleType.ROLE_CHECK.name(), RoleType.ROLE_PROD.name());
+            admin.addRoles(RoleType.ROLE_ADMIN.name(), RoleType.ROLE_CHECK.name(), RoleType.ROLE_PROD.name(), RoleType.ROLE_USER.name());
             admin.setCreateTime(new Timestamp(System.currentTimeMillis()));
             adminDao.insertSelective(admin);
 

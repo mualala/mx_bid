@@ -195,7 +195,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-xs-3 control-label">用户权限: </label>
-                        <div class="col-xs-3">
+                        <div class="col-xs-9">
                             <ul style="list-style-type: none">
                                 <li>
                                     <input type="checkbox" id="checkAuth" value="1">
@@ -204,6 +204,10 @@
                                 <li>
                                     <input type="checkbox" id="prodAuth" value="1">
                                     <label for="prodAuth">产品管理</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="userAuth" value="1">
+                                    <label for="userAuth">采购员权限</label>
                                 </li>
                             </ul>
                         </div>
@@ -266,12 +270,14 @@
             var row = rows[0]
             if (row.role.match('ROLE_CHECK')) $('#checkAuth').prop('checked', true)
             if (row.role.match('ROLE_PROD')) $('#prodAuth').prop('checked', true)
+            if (row.role.match('ROLE_USER')) $('#userAuth').prop('checked', true)
         }
     })
     $('#modifyUserModal').on('hidden.bs.modal', function () {
         $('#m_name_dis').removeAttr('disabled')
         $('#checkAuth').prop('checked', false)
         $('#prodAuth').prop('checked', false)
+        $('#userAuth').prop('checked', false)
         $('#m_password').val('')
     })
 

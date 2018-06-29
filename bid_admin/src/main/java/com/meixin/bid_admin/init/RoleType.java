@@ -12,4 +12,6 @@ public enum RoleType {
     ROLE_CHECK,  //竞标单审核权限
     ROLE_PROD    //产品管理权限
 
+
+
 }

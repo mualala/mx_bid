@@ -355,9 +355,9 @@ var bidDetails = {
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded',
                 pagination: true,//启动分页
-                pageSize: 10,//每页显示的记录数
+                pageSize: 15,//每页显示的记录数
                 pageNumber: 1,//当前第几页
-                pageList: [10, 20, 50, 100, 500, 5000, 50000],//记录数可选列表
+                pageList: [15, 20, 50, 100, 500, 5000, 50000],//记录数可选列表
                 search: true,//是否启用查询,是客户端client才有效
                 searchOnEnterKey: true,//按回车触发搜索方法，否则自动触发搜索方法
                 showColumns: true,//显示下拉框勾选要显示的列
@@ -405,7 +405,7 @@ var bidDetails = {
                     {field: 'bidding.number', title: '产品数量'},
                     {field: 'supplier.username', title: '投标人账号', visible: false},
                     {field: 'supplier.name', title: '投标人名称'},
-                    {field: 'price', title: '出价金额', sortable: true,
+                    {field: 'price', title: '出价金额',
                         cellStyle: function (value, row, index, field) {
                             return {classes: 'success'};
                         }

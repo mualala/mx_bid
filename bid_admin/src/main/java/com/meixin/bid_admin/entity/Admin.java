@@ -48,13 +48,18 @@ public class Admin implements UserDetails {
     @Transient
     private int prodAuth; //前端的 product 权限
 
+    @Transient
+    private int userAuth;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        String[] rol = this.role.split(",");
-        for (String r : rol) {
-            auths.add(new SimpleGrantedAuthority(r));
+        if (this.role != null && !this.role.isEmpty()) {
+            String[] rol = this.role.split(",");
+            for (String r : rol) {
+                auths.add(new SimpleGrantedAuthority(r));
+            }
         }
         return auths;
     }
@@ -165,6 +170,14 @@ public class Admin implements UserDetails {
         this.prodAuth = prodAuth;
     }
 
+    public int getUserAuth() {
+        return userAuth;
+    }
+
+    public void setUserAuth(int userAuth) {
+        this.userAuth = userAuth;
+    }
+
     /**
      * @Desc:   添加角色
      * @Author: yanghm
@@ -188,25 +201,6 @@ public class Admin implements UserDetails {
             }
         }
         setRole(sb.toString());
-    }
-
-    /**
-     * @Desc:   移除指定角色
-     * @Author: yanghm
-     * @Param:
-     * @Date:   10:36 2018/6/22 0022
-     * @Return:
-     */
-    public void removeRoles(String ...roles) {
-        if (roles != null) {
-            for (String r : roles) {
-                if (this.role.contains(r)) {
-                    int len = r.length();
-                    if (!r.contains(",")) len = len + 1;
-                    setRole(this.role.substring(len));
-                }
-            }
-        }
     }
 
 }

@@ -80,22 +80,21 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int updateUserInfo(Admin admin) throws Exception {
         try {
-            Admin originalAdmin = checkName(admin.getUsername());
             admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 
-            admin.addRoles(originalAdmin.getRole()); //先添加原有的权限
-            if (admin.getCheckAuth() == 1 && !originalAdmin.getRole().contains(RoleType.ROLE_CHECK.name()))
+            if (admin.getCheckAuth() == 1)
                 admin.addRoles(RoleType.ROLE_CHECK.name());
 
-            if (admin.getProdAuth() == 1 && !originalAdmin.getRole().contains(RoleType.ROLE_PROD.name())) {
+            if (admin.getProdAuth() == 1)
                 admin.addRoles(RoleType.ROLE_PROD.name());
-                admin.removeRoles(RoleType.ROLE_USER.name());
-            }
+
+            if (admin.getUserAuth() == 1)
+                admin.addRoles(RoleType.ROLE_USER.name());
 
             int count = adminDao.updateByPrimaryKeySelective(admin);
             return count;
         }catch (Exception e) {
-            throw new Exception("用户名冲突");
+            throw new Exception("用户不存在");
         }
     }
 

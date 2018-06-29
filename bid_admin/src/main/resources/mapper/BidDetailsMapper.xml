@@ -249,8 +249,10 @@
                 AND B.create_time BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
-        <if test="sortName != null and sortName == 'price'">ORDER BY B.price ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'createTime'">ORDER BY B.create_time ${sortOrder}</if>
+        ORDER BY
+        CASE WHEN B.mark=1 THEN B.price END desc,
+        CASE WHEN B.mark=2 THEN B.price END asc
+        <if test="sortName != null and sortName == 'createTime'">, B.create_time ${sortOrder}</if>
         limit #{start}, #{size}
     </select>
 

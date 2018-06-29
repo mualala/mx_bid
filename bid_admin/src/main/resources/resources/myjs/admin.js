@@ -49,17 +49,29 @@ var admin = {
                                 if (value.match('ROLE_ADMIN')) {
                                     return '超级管理员'
                                 }
-                                if (value.match('ROLE_CHECK') && value.match('ROLE_PROD')) {
-                                    return '产品管理和审核'
+                                if (value.match('ROLE_CHECK') && value.match('ROLE_PROD') && value.match('ROLE_USER')) {
+                                    return '产品管理|审核|采购员'
                                 }
+
+                                if (value.match('ROLE_PROD') && value.match('ROLE_CHECK')) {
+                                    return '产品管理|审核'
+                                }
+                                if (value.match('ROLE_PROD') && value.match('ROLE_USER')) {
+                                    return '产品管理|采购员'
+                                }
+
+                                if (value.match('ROLE_CHECK') && value.match('ROLE_USER')) {
+                                    return '审核|采购员'
+                                }
+
                                 if (value.match('ROLE_CHECK')) {
-                                    return '采购和审核'
+                                    return '审核'
                                 }
                                 if (value.match('ROLE_PROD')) {
                                     return '产品管理'
                                 }
                                 if (value.match('ROLE_USER')) {
-                                    return '采购'
+                                    return '采购员'
                                 }
                             }
                         }
@@ -208,6 +220,7 @@ var admin = {
                     };
                     if ($('#checkAuth').is(':checked')) userInfo.checkAuth = $('#checkAuth').val()
                     if ($('#prodAuth').is(':checked')) userInfo.prodAuth = $('#prodAuth').val()
+                    if ($('#userAuth').is(':checked')) userInfo.userAuth = $('#userAuth').val()
 
                     if (userInfo.name == 'root') {
                         layer.alert('不能修改 root 名称', {title: '提示框', icon: 0})

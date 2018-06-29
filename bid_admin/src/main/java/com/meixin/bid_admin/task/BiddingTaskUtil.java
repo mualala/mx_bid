@@ -127,7 +127,6 @@ public class BiddingTaskUtil {
         Date delayDate = new Date(delayTime);
 
         //gov doc: http://www.quartz-scheduler.org/documentation/quartz-2.2.x/cookbook/UpdateTrigger.html
-
         TriggerKey oldTriggerKey = TriggerKey.triggerKey(taskName, groupId);
 
         String newGroupId = Utils.ID.taskGroupId(String.valueOf(bidding.getUid()));

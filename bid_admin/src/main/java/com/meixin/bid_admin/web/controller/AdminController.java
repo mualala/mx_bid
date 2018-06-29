@@ -76,7 +76,7 @@ public class AdminController {
     }
 
     @PutMapping("/one")
-    public ResponseEntity putProduct(Admin admin) {
+    public ResponseEntity putAdmin(Admin admin) {
         admin.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         int count = 0;
         try {
