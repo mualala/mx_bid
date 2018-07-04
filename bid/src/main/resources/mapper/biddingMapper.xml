@@ -106,7 +106,7 @@
     SELECT
     b1.name,
     count(0) count,
-    b1.product_id, b1.mark, b1.start_time, b1.end_time, b1.end_delivery_date, b1.end_pay_date, b1.bid_desc
+    b1.product_id, b1.mark, b1.status, b1.start_time, b1.end_time, b1.end_delivery_date, b1.end_pay_date, b1.bid_desc
     FROM bidding b1
     WHERE b1.name IN
     (

@@ -179,6 +179,21 @@ var report = {
                         }
                     }
                 },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        var markMsg = ''
+                        switch (value) {
+                            case 0: markMsg = '发布状态'; break;
+                            case 1: markMsg = '正在竞标'; break;
+                            case 2: markMsg = '结束'; break;
+                            case 3: markMsg = '审核'; break;
+                        }
+                        return markMsg
+                    }
+                },
                 {field: 'count', title: '包含的产品(个)', sortable: true},
                 {
                     field: 'startTime',
@@ -200,21 +215,6 @@ var report = {
                             case 0: markMsg = '异常标记..'; break;
                             case 1: markMsg = '招标'; break;
                             case 2: markMsg = '竞标'; break;
-                        }
-                        return markMsg
-                    }
-                },
-                {
-                    field: 'status',
-                    title: '状态',
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        var markMsg = ''
-                        switch (value) {
-                            case 0: markMsg = '发布状态'; break;
-                            case 1: markMsg = '正在竞标'; break;
-                            case 2: markMsg = '结束'; break;
-                            case 3: markMsg = '审核'; break;
                         }
                         return markMsg
                     }
