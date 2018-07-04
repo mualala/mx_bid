@@ -168,7 +168,7 @@
         </association>
     </resultMap>
 
-    <select id="queryMyBiddingPriceDetails" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultMap="queryMyBiddingPriceDetailsMap">
+    <select id="queryMyBiddingMaxPriceDetails" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultMap="queryMyBiddingPriceDetailsMap">
     SELECT C.*, p1.name p_name, p1.spec, p1.unit, p1.code FROM
     (
     SELECT B.*, b1.name, b1.mark, b1.product_id pid, b1.number, b1.start_price, b1.step, b1.end_delivery_date, b1.end_pay_date FROM
@@ -185,10 +185,36 @@
     @r:=1) AS rank,
     @pid:=product_id,
     @P:=price
-    FROM bid_details, (SELECT @pid:=NULL, @P:=NULL, @r:=0) r
-    <choose>
-        <when test="mark != null and mark == 1">ORDER BY price DESC </when>
-    </choose>
+    FROM bid_details_max_rank_by_uid, (SELECT @pid:=NULL, @P:=NULL, @r:=0) r
+    ORDER BY bid_name, price DESC
+    ) A
+    WHERE A.uid=${suid}
+    ) B
+    RIGHT JOIN bidding b1 ON b1.name=B.bid_name AND b1.product_id=B.product_id
+    ) C
+    LEFT JOIN product p1 ON p1.product_id=C.pid
+    WHERE C.name=#{name}
+    </select>
+
+    <select id="queryMyBiddingMinPriceDetails" parameterType="com.meixin.bid.web.dto.BiddingCondition" resultMap="queryMyBiddingPriceDetailsMap">
+    SELECT C.*, p1.name p_name, p1.spec, p1.unit, p1.code FROM
+    (
+    SELECT B.*, b1.name, b1.mark, b1.product_id pid, b1.number, b1.start_price, b1.step, b1.end_delivery_date, b1.end_pay_date FROM
+    (
+    SELECT * FROM
+    (
+    SELECT * ,
+    IF(@pid=product_id,
+    CASE
+    WHEN @P=price THEN @r
+    WHEN @P:=price THEN @r:=@r+1
+    ELSE 1
+    END,
+    @r:=1) AS rank,
+    @pid:=product_id,
+    @P:=price
+    FROM bid_details_min_rank_by_uid, (SELECT @pid:=NULL, @P:=NULL, @r:=0) r
+    ORDER BY bid_name, price ASC
     ) A
     WHERE A.uid=${suid}
     ) B

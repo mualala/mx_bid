@@ -42,6 +42,7 @@ public interface BiddingDao extends IMapper<Bidding> {
      * @Date:   16:02 2018/6/20 0020
      * @Return:
      */
-    List<Bidding> queryMyBiddingPriceDetails(BiddingCondition biddingCondition);
+    List<Bidding> queryMyBiddingMaxPriceDetails(BiddingCondition biddingCondition);
+    List<Bidding> queryMyBiddingMinPriceDetails(BiddingCondition biddingCondition);
 
 }

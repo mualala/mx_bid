@@ -6,6 +6,8 @@ import com.meixin.bid.mappers.dao.BiddingDao;
 import com.meixin.bid.mappers.dao.BiddingSupplierDao;
 import com.meixin.bid.service.BiddingService;
 import com.meixin.bid.web.dto.BiddingCondition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @Service
 public class BiddingServiceImpl implements BiddingService {
+    private final Logger LOGGER = LoggerFactory.getLogger(BiddingServiceImpl.class);
 
     @Autowired
     private BiddingDao biddingDao;
@@ -56,7 +59,13 @@ public class BiddingServiceImpl implements BiddingService {
 
     @Override
     public List<Bidding> myBiddingDetails(BiddingCondition biddingCondition) {
-        List<Bidding> myBiddingPriceDetails = biddingDao.queryMyBiddingPriceDetails(biddingCondition);
+        List<Bidding> myBiddingPriceDetails = null;
+        int mark = biddingCondition.getMark();
+        switch (mark) {
+            case 1: myBiddingPriceDetails = biddingDao.queryMyBiddingMaxPriceDetails(biddingCondition); break;
+            case 2: myBiddingPriceDetails = biddingDao.queryMyBiddingMinPriceDetails(biddingCondition); break;
+            default: LOGGER.error("供应商{} 查询自己参与的竞标产品时，竞标单标志mark={} 错误", biddingCondition.getSuid(), biddingCondition.getMark());
+        }
         return myBiddingPriceDetails;
     }
 
