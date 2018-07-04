@@ -41,14 +41,13 @@
             </if>
         </where>
         GROUP BY B.name
-        <if test="sortName != null and sortName == 'name'">ORDER BY B.name ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'mark'">ORDER BY B.mark ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'type'">ORDER BY B.type ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'count'">ORDER BY count ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'startTime'">ORDER BY B.start_time ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'endTime'">ORDER BY B.end_time ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'createTime'">ORDER BY B.create_time ${sortOrder}</if>
-        <if test="sortName != null and sortName == 'updateTime'">ORDER BY B.update_time ${sortOrder}</if>
+        ORDER BY B.create_time DESC
+        <if test="sortName != null and sortName == 'name'">, B.name ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'mark'">, B.mark ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'type'">, B.type ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'count'">, count ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'startTime'">, B.start_time ${sortOrder}</if>
+        <if test="sortName != null and sortName == 'endTime'">, B.end_time ${sortOrder}</if>
         limit #{start}, #{size}
     </select>
 
@@ -114,14 +113,13 @@
     SELECT bid_name FROM bid_details WHERE uid=${suid} GROUP BY bid_name
     ) AND b1.type=0
     GROUP BY b1.name
-    <if test="sortName != null and sortName == 'name'">ORDER BY b1.name ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'mark'">ORDER BY b1.mark ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'type'">ORDER BY b1.type ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'count'">ORDER BY count ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'startTime'">ORDER BY b1.start_time ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'endTime'">ORDER BY b1.end_time ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'createTime'">ORDER BY b1.create_time ${sortOrder}</if>
-    <if test="sortName != null and sortName == 'updateTime'">ORDER BY b1.update_time ${sortOrder}</if>
+    ORDER BY b1.create_time DESC
+    <if test="sortName != null and sortName == 'name'">, b1.name ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'mark'">, b1.mark ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'type'">, b1.type ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'count'">, count ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'startTime'">, b1.start_time ${sortOrder}</if>
+    <if test="sortName != null and sortName == 'endTime'">, b1.end_time ${sortOrder}</if>
     limit #{start}, #{size}
     </select>
 
