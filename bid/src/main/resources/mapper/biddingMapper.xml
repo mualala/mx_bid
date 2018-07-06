@@ -184,6 +184,7 @@
     @pid:=product_id,
     @P:=price
     FROM bid_details_max_rank_by_uid, (SELECT @pid:=NULL, @P:=NULL, @r:=0) r
+    WHERE bid_name=#{name}
     ORDER BY bid_name, price DESC
     ) A
     WHERE A.uid=${suid}
@@ -212,6 +213,7 @@
     @pid:=product_id,
     @P:=price
     FROM bid_details_min_rank_by_uid, (SELECT @pid:=NULL, @P:=NULL, @r:=0) r
+    WHERE bid_name=#{name}
     ORDER BY bid_name, price ASC
     ) A
     WHERE A.uid=${suid}

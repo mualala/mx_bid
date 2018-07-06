@@ -61,7 +61,10 @@ public class BiddingController {
         biddingCondition.setUid(Utils.uidFromSession(session));
         biddingCondition.setSuid(Utils.suidFromSession(session));
         List<Bidding> result = biddingService.myBiddingDetails(biddingCondition);
-        return ResponseEntity.ok(result);
+        JSONObject data = new JSONObject();
+        data.put("rows", result);
+        data.put("total", result.size());
+        return ResponseEntity.ok(data);
     }
 
 }

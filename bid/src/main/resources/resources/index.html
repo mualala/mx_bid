@@ -123,10 +123,193 @@
         </div>
     </div>
 
+    <!-- 查看产品详情 和出价的模态框 -->
+    <div class="modal fade" id="prodAndPriceDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width: 100%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span
+                            class="sr-only">关闭</span></button>
+                    <h3 class="modal-title">产品详情 </h3>
+                </div>
+                <div class="modal-body">
+                    <!-- 出价模块 -->
+                    <div class="animated fadeInRight" v-if="showTop">
+                        <div class="panel panel-success">
+                            <div class="panel-heading"><strong>选择的出价产品</strong></div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" data-show-columns="true" data-mobile-responsive="true">
+                                        <thead class="thead-default">
+                                        <tr>
+                                            <!--<th>产品编码</th>-->
+                                            <th>产品名称</th>
+                                            <th>产品数量</th>
+                                            <th>产品规格</th>
+                                            <th>产品单位</th>
+                                            <th>起拍价(元)</th>
+                                            <th>竞价阶梯(元)</th>
+                                            <th>交货期限</th>
+                                            <th>付款期限</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <!--<td>{{oneProduct.code}}</td>-->
+                                            <td>{{oneProduct.name}}</td>
+                                            <td>{{oneProduct.number}}</td>
+                                            <td>{{oneProduct.spec}}</td>
+                                            <td>{{oneProduct.unit}}</td>
+                                            <td class="col-sm-1">{{oneProduct.maxUnitPrice}}</td>
+                                            <td class="col-sm-1">{{oneProduct.step}}</td>
+                                            <td class="col-sm-2">
+                                                {{oneProduct.endDeliveryDate}}
+                                            </td>
+                                            <td class="col-sm-2">
+                                                {{oneProduct.endPayDate}}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <form class="form-horizontal" role="form" v-on:submit.prevent="disableFormSubmit">
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">剩余时间:</label>
+                                                <label class="col-xs-8 control-label"><p class="pull-left">{{remaindTime}}</p></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">您的出价排名:</label>
+                                                <label class="col-xs-8 control-label"><p class="pull-left">{{rank}}</p></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">{{limitPriceTip}}</label>
+                                                <label class="col-xs-8 control-label"><p class="pull-left">{{limitPrice}}</p></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">请出价:</label>
+                                                <div class="col-xs-8">
+                                                    <input v-model="setPrice" type="text" class="form-control" placeholder="0.00" required="">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="container">
+                                            <h4>
+                                                <span class="help-block m-b-none" style="color: indianred"><i class="fa fa-info-circle"></i>{{mainTip}}</span>
+                                            </h4>
+                                            <p>{{tip1}}</p>
+                                            <p>{{tip2}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-sm-6">
+                                    <button @click="offer" type="button" class="btn btn-xs btn-primary" ><i class="fa fa-gavel" aria-hidden="true"></i>出价</button>
+                                    <button @click="refreshInfo(2)" type="button" class="btn btn-xs btn-default" ><i class="fa fa-refresh" aria-hidden="true"></i>手动刷新</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+
+                    <!-- 产品详情 -->
+                    <div class="animated fadeInUp">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">竞标产品</div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed table-hover" data-show-columns="true" data-mobile-responsive="true">
+                                        <thead class="thead-default">
+                                        <tr>
+                                            <th v-if="showOptsion"><strong>操作</strong></th>
+                                            <th>序号</th>
+                                            <!--<th>产品编码</th>-->
+                                            <th>产品名称</th>
+                                            <th>产品数量</th>
+                                            <th>产品规格</th>
+                                            <th>产品单位</th>
+                                            <th>起拍价(元)</th>
+                                            <th>竞价阶梯(元)</th>
+                                            <th>交货期限</th>
+                                            <th>付款期限</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(product, index) in productList">
+                                            <td class="col-sm-1" v-if="showOptsion" @click="clickPriceOpt(index)"><a><strong>出价</strong></a></td>
+                                            <td>{{index + 1}}</td>
+                                            <!--<td>{{product.code}}</td>-->
+                                            <td>{{product.name}}</td>
+                                            <td>{{product.number}}</td>
+                                            <td>{{product.spec}}</td>
+                                            <td>{{product.unit}}</td>
+                                            <td class="col-sm-1">{{product.maxUnitPrice}}</td>
+                                            <td class="col-sm-1">{{product.step}}</td>
+                                            <td class="col-sm-2">
+                                                {{product.endDeliveryDate}}
+                                            </td>
+                                            <td class="col-sm-2">
+                                                {{product.endPayDate}}
+                                            </td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- 定义所有的模态框 -->
 <div id="modals">
+    <!-- 查看我的项目 出价详情的模态框 -->
+    <div class="modal fade" id="myProdDetailModal" tabindex="-1">
+        <div class="modal-dialog" style="width: 100%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" id="x">&times;</span><span
+                            class="sr-only">关闭</span></button>
+                    <h3 class="modal-title">我的项目 出价详情 </h3>
+                </div>
+                <div class="modal-body">
+                    <table id="myProductDetailInfo" class="table table-bordered table-hover" data-show-columns="true">
+                        <thead class="thead-default">
+                        <tr>
+                            <!--<th>序号</th>-->
+                            <!--<th>产品编码</th>-->
+                            <th data-field="name">产品名称</th>
+
+                            <th data-field="price">我的报价</th>
+                            <th data-field="rank">排名</th>
+
+                            <th data-field="number">产品数量</th>
+                            <th data-field="createTime">出价时间</th>
+                            <th data-field="spec">产品规格</th>
+                            <th data-field="unit">产品单位</th>
+                            <th data-field="maxUnitPrice">起拍价(元)</th>
+                            <th data-field="step">竞价阶梯(元)</th>
+                            <th data-field="endDeliveryDate">交货期限</th>
+                            <th data-field="endPayDate">付款期限</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 修改用户账户的模态框 -->
     <div class="modal fade" id="modifyPwdModal" tabindex="-1">
         <div class="modal-dialog">
@@ -300,18 +483,37 @@
     var key = setInterval(function(){
         var now = (new Date()).getTime()
         $('#time').html('今天是:  ' + utils.dateFormat.timeStampToDate(now))
-    }, 1030);
+    }, 1020);
 //    clearInterval(key);
 
 //    $('#m_username').val(utils.storage.getSession('username'))
 
+    $('#myProdDetailModal').on('show.bs.modal', function () {
+        report.myProductDetal.initProductDetails()
+    })
+
+    //************************************----------------------------------
+    $('#prodAndPriceDetailModal').on('show.bs.modal', function () {
+        app.showProductOrPrice()
+    })
+    $('#prodAndPriceDetailModal').on('hidden.bs.modal', function () {
+        app.showTop = false
+        app.showOptsion = false
+
+        clearInterval(app.timer)
+        app.timer = null
+
+        app.clearProductList()
+    })
+    //************************************----------------------------------
+
     //模态框拖动
-    $(document).on("show.bs.modal", ".modal", function(){
-        $(this).draggable({
-            handle: ".modal-header"   //只能点击头部拖动
-        });
-        $(this).css("overflow", "hidden"); //防止出现滚动条，出现的话，你会把滚动条一起拖着走的
-    });
+//    $(document).on("show.bs.modal", ".modal", function(){
+//        $(this).draggable({
+//            handle: ".modal-header"   //只能点击头部拖动
+//        });
+//        $(this).css("overflow", "hidden"); //防止出现滚动条，出现的话，你会把滚动条一起拖着走的
+//    });
 
     //modal完全关闭时
     $('#modifyPwdModal').on('show.bs.modal', function () {
@@ -334,7 +536,6 @@
     })
 
     $('#m_password01').blur(function () {
-        console.log(11111)
         if ($('#m_password01').val() == '') {
             $('#modifyPWDTip').html('原始密码不能为空 !');
             $('#modifyPWDTip').attr('class', 'fa fa-times')
@@ -376,7 +577,6 @@
     })
 
     $('#m_password02').blur(function () {
-        console.log(22222222)
         if ($('#password02').val() == '') {
             $('#modifyPWDTip02').html('密码不能为空 !');
             $('#modifyPWDTip02').attr('class', 'fa fa-times')
