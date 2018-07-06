@@ -84,6 +84,8 @@
                 layer.alert('失败! 时间不能为空', {title: '提示框', icon: 0});
             }else if(val <= 0) {
                 layer.alert('失败! 时间不能小于0', {title: '提示框', icon: 0});
+            }else if(String(val).indexOf('.') > -1) {
+                layer.alert('失败! 时间不能有小数位', {title: '提示框', icon: 0});
             }else {
                 $.ajax({
                     url: "/admin/delay",
