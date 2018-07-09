@@ -21,7 +21,6 @@ public class RescheduleController {
     //produces = "application/json;charset=utf-8"
     @PutMapping("/{bidName}")
     public ResponseEntity reschedule(@PathVariable("bidName") String bidName) {
-        System.err.println("22222222");
         ResponseEntity result = rescheduleService.reschedule(bidName);
         return result;
     }

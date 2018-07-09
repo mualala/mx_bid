@@ -416,7 +416,7 @@ var bidDetails = {
                     {
                         field: 'createTime',
                         title: '出价时间',
-                        sortable: true,
+                        // sortable: true,
                         formatter: function (value, row, index) {
                             if(value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);

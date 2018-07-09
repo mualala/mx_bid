@@ -250,9 +250,9 @@
             </if>
         </where>
         ORDER BY
+        B.create_time DESC,
         CASE WHEN B.mark=1 THEN B.price END desc,
         CASE WHEN B.mark=2 THEN B.price END asc
-        <if test="sortName != null and sortName == 'createTime'">, B.create_time ${sortOrder}</if>
         limit #{start}, #{size}
     </select>
 

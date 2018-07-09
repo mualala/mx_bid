@@ -71,6 +71,9 @@ public class Bidding {
     @Transient
     private BidDetails bidDetails;
 
+    @Transient
+    private long remaindTime;
+
     /* 用于接收前端的日期数据 */
     @Transient
     @NotNull
@@ -297,6 +300,14 @@ public class Bidding {
 
     public void setBidDetails(BidDetails bidDetails) {
         this.bidDetails = bidDetails;
+    }
+
+    public long getRemaindTime() {
+        return remaindTime;
+    }
+
+    public void setRemaindTime(long remaindTime) {
+        this.remaindTime = remaindTime;
     }
 
     /* 用于接收前端的日期数据 */

@@ -122,13 +122,8 @@ var report = {
             },
 
             onClickCell: function (field, value, row, $element) {
-                // utils.storage.delSession('bidName') //先清除缓存
                 utils.storage.setSession('bidName', value)
-
-
                 $("#prodAndPriceDetailModal").modal("toggle");
-                console.log(1111)
-
                 // if(field == 'name') {
                 //     layer.open({
                 //         type: 2,

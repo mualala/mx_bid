@@ -6,6 +6,7 @@ import com.meixin.bid.mappers.dao.BiddingDao;
 import com.meixin.bid.mappers.dao.BiddingSupplierDao;
 import com.meixin.bid.service.BiddingService;
 import com.meixin.bid.web.dto.BiddingCondition;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,12 @@ public class BiddingServiceImpl implements BiddingService {
     @Override
     public List<Bidding> getProductsByBiddingName(String name, int uid) {
         List<Bidding> biddings = biddingDao.queryProductsByBiddingName(name, uid);
+        if (!CollectionUtils.isEmpty(biddings)) {
+            long remaindTime = biddings.get(0).getEndTime().getTime() - System.currentTimeMillis();
+            for (Bidding bi : biddings) {
+                bi.setRemaindTime(remaindTime);
+            }
+        }
         return biddings;
     }
 

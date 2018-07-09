@@ -178,12 +178,19 @@ public class BidDetailsServiceImpl implements BidDetailsService {
 //        BidDetails bidDetails = bidDetailsDao.queryOptimalBidDetail(bidName, productId, order2, order, uid);
         //最高 或 最低报价
         Float limitPrice = bidDetailsDao.limitPrice(bidName, productId, uid, order2(mark));
-        if (limitPrice != null) {
-            if (bidDetails == null) {
-                bidDetails = new BidDetails();
+        if (bidDetails == null) {
+            bidDetails = new BidDetails();
+            Bidding bi = biddingDao.queryByName(bidName);
+            long remaindTime = bi.getEndTime().getTime() - System.currentTimeMillis();
+            bidDetails.setEndTime(bi.getEndTime());
+            bidDetails.setRemaindTime(remaindTime);
 //                bidDetails.setRank(1);
+        }else {
+            if (limitPrice != null) {
+                long remaindTime = bidDetails.getEndTime().getTime() - System.currentTimeMillis();
+                bidDetails.setRemaindTime(remaindTime);
+                bidDetails.setLimitPrice(limitPrice);
             }
-            bidDetails.setLimitPrice(limitPrice);
         }
         return bidDetails;
     }

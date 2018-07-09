@@ -58,6 +58,7 @@ var app = new Vue({
 
         remaindTime: '',
         endTime: '',
+        respRemaindTime: 0,
 
         rank: '暂无数据',
         setPrice: '',
@@ -129,14 +130,15 @@ var app = new Vue({
             });
         },
 
+        /*
         autoRefreshReport: function () {
             app.timer = setInterval(function () {
                 report.initBidding(0, null)
                 report.initBidding(1, null)
                 report.initBidding(2, null)
-                console.log('88888888888888888888888888888')
             }, 3500);
         },
+        */
 
         //必须禁掉form默认的submit
         disableFormSubmit: function () {
@@ -155,7 +157,7 @@ var app = new Vue({
         autoRefresh: function () {
             app.timer = setInterval(function () {
                 app.refreshInfo(1)
-            }, 3500);
+            }, 5000);
         },
 
         //1=自动刷新  2=点击手动刷新
@@ -174,23 +176,26 @@ var app = new Vue({
                 // dataType: "json",
                 data: params,
                 success: function (resp) {
-                    if (resp == '' || resp == null) {
-                        app.rank = '暂无数据'
-                        app.limitPrice = '暂无数据'
+                    if (resp.rank != null && resp.rank != '') {
+                        app.rank = resp.rank
                     }else {
-                        if (resp.rank != null && resp.rank != '') {
-                            app.rank = resp.rank
-                        }
-                        if (resp.price != null && resp.price != '') {
-                            app.price = resp.price
-                        }
-                        if (resp.limitPrice != null && resp.limitPrice != '') {
-                            app.limitPrice = resp.limitPrice
-                        }
-                        if (resp.endTime != null && resp.endTime != '') {
-                            app.endTime = resp.endTime
-                            app.computRemaindTime()
-                        }
+                        app.rank = '暂无数据'
+                    }
+
+                    if (resp.price != null && resp.price != '') {
+                        app.price = resp.price
+                    }
+
+                    if (resp.limitPrice != null && resp.limitPrice != '') {
+                        app.limitPrice = resp.limitPrice
+                    }else {
+                        app.limitPrice = '暂无数据'
+                    }
+
+                    if (resp.endTime != null && resp.endTime != '') {
+                        app.endTime = resp.endTime
+                        app.respRemaindTime = resp.remaindTime
+                        app.computRemaindTime()
                     }
                     if (la) {
                         app.setPrice = ''
@@ -213,8 +218,9 @@ var app = new Vue({
 
         //计算剩余时间
         computRemaindTime: function () {
-            var now = new Date()
-            var diff = new Date(app.endTime) - now
+            // var now = new Date()
+            // var diff = new Date(app.endTime) - now
+            var diff = app.respRemaindTime
             if (diff <= 0) {
                 app.remaindTime = '竞标已结束'
             }else {
@@ -351,7 +357,6 @@ var app = new Vue({
         //显示产品详情或出价
         showProductOrPrice: function () {
             var name = sessionStorage.getItem('bidName')
-            console.log("name--------------------------------="+name)
             if (name != undefined) {
                 $.ajax({
                     url: "/bidding/" + name + "/bidding",
@@ -361,6 +366,7 @@ var app = new Vue({
                             app.showOptsion = true
 //                        app.remaindTime = app.dateDiffFormat(resp[0].endTime)
                             app.endTime = resp[0].endTime
+                            app.respRemaindTime = resp[0].remaindTime
 
                             app.mark = resp[0].mark
                             if (app.mark == 1) {
@@ -377,7 +383,6 @@ var app = new Vue({
 //                            app.tip1 = '标记错误 不能出价'
                             }
                         }
-                        console.log("--------- "+resp)
                         for (var i in resp) {
                             var prod = {}
                             var bid = resp[i]
