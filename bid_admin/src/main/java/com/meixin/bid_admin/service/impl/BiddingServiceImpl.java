@@ -110,8 +110,8 @@ public class BiddingServiceImpl implements BiddingService {
         params.put("names", nameList);
         params.put("uid", uid);
 
-        int count = biddingDao.deleteBiddings(params);
         biddingSupplierDao.deleteSus(params);//删除 约束的供应商
+        int count = biddingDao.deleteBiddings(params);
         return count;
     }
 

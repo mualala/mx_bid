@@ -158,7 +158,7 @@ var app = new Vue({
             if (app.timer === null) {
                 app.timer = setInterval(function () {
                     app.refreshInfo(1)
-                }, 5000);
+                }, 6000);
             }
         },
 
@@ -428,7 +428,6 @@ var app = new Vue({
             report.initBidding(1, 2)
 
             report.initMyBidding()
-
             app.showName = sessionStorage.getItem('companyName')
         }
     },
@@ -446,6 +445,7 @@ var app = new Vue({
 
             report.initMyBidding()
         }
+
 
         //***************************************************
 

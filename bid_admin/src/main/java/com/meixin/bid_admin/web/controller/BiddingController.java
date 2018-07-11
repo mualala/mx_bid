@@ -101,7 +101,7 @@ public class BiddingController {
     }
 
     @PutMapping("/{names}/release")
-    public ResponseEntity putProduct(@PathVariable(name = "names", required = true) String names, HttpSession session) {
+    public ResponseEntity biddingRelease(@PathVariable(name = "names", required = true) String names, HttpSession session) {
         int count = biddingService.biddingRelease(names, Utils.uidFromSession(session));
         return ResponseEntity.ok(count);
     }

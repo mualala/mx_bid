@@ -179,7 +179,7 @@
 
     <update id="releaseBiddings" parameterType="map">
         UPDATE bidding
-        SET type=0
+        SET type=0, status=3
         <where>
             name in
             <foreach collection="names" item="name" index="index" open="(" close=")" separator=",">
