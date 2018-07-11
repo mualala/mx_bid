@@ -155,9 +155,11 @@ var app = new Vue({
         },
 
         autoRefresh: function () {
-            app.timer = setInterval(function () {
-                app.refreshInfo(1)
-            }, 5000);
+            if (app.timer === null) {
+                app.timer = setInterval(function () {
+                    app.refreshInfo(1)
+                }, 5000);
+            }
         },
 
         //1=自动刷新  2=点击手动刷新

@@ -26,7 +26,6 @@ public class AdminAuthenticationFailurHandler implements AuthenticationFailureHa
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         LOGGER.error("登录失败,用户ID:{} 用户名:{}", "未知", request.getParameter("username"));
-
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=UTF-8");
         SimpleResponse simpleResponse = new SimpleResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
