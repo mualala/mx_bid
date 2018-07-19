@@ -64,18 +64,22 @@ public class SupplierController {
     }
 
     @PostMapping("/supplierReport")
-    public JSONObject productReport(SupplierCondition supplierCondition, HttpSession session) {
+    public JSONObject supplierReport(SupplierCondition supplierCondition, HttpSession session) {
         supplierCondition.setUid(Utils.uidFromSession(session));
         JSONObject result = supplierService.supplierReport(supplierCondition);
         return result;
     }
 
+    //删除供应商
+    // 传统的做法 ip:port/supplier/delete  body携带id
+    // 不统一、明确，可能不同的人有不同的写法，比如：ip:port/supplier/deleteSupplier
     @DeleteMapping("/{ids}/supplier")
     public ResponseEntity deleteProduct(@PathVariable(name = "ids", required = true) String ids, HttpSession session) {
         int count = supplierService.deleteSuppliers(ids, Utils.uidFromSession(session));
         return ResponseEntity.ok(count);
     }
 
+    // 更新供应商信息
     @PutMapping("/{supplierId}/one")
     public ResponseEntity putProduct(@PathVariable(name = "supplierId", required = true) int supplierId,
                                      Supplier supplier,

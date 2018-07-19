@@ -73,11 +73,11 @@
                                 <label class="col-sm-2 control-label">标记:</label>
                                 <div class="col-sm-1">
                                     <input type="radio" id="come" value="1" v-model="mark">
-                                    <label for="come">招标</label>
+                                    <label for="come">招标</label><i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                 </div>
                                 <div class="col-sm-1">
                                     <input type="radio" id="to" value="2" v-model="mark">
-                                    <label for="to">竞标</label>
+                                    <label for="to">竞标</label><i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
                                 </div>
                                 <span class="mark">*</span>
                             </div>
@@ -249,7 +249,7 @@
                     <td class="col-sm-1"><input v-model="addProduct.number" type="number" class="form-control" /></td>
                     <td>{{addProduct.unit}}</td>
                     <td class="col-sm-1"><input v-model="addProduct.maxUnitPrice" type="number" class="form-control" /></td>
-                    <td class="col-sm-1"><input v-model="addProduct.step" type="number" class="form-control" /></td>
+                    <td class="col-sm-1"><input v-model="addProduct.defaultGradient" type="number" class="form-control" /></td>
                     <td class="col-sm-2">
                         <input v-model="addProduct.endDeliveryDate"
                                id="endDeliveryDate"
@@ -534,7 +534,7 @@
                         var nowDate = new Date();
                         for (var j in haha.biddings) {
                             var biddingCheck = haha.biddings[j]
-                            if(biddingCheck.number < 1 || biddingCheck.startPrice < 1 || biddingCheck.step < 0 ||
+                            if(biddingCheck.number < 1 || biddingCheck.startPrice < 0 || biddingCheck.step < 0 ||
                                 biddingCheck.recStartTime >= biddingCheck.recEndTime ||
                                 Date.parse(biddingCheck.recStartTime) < nowDate || Date.parse(biddingCheck.recEndTime) < nowDate
                             ) {
@@ -544,6 +544,8 @@
                             }
                         }
 
+                        console.log('isSubmit='+isSubmit)
+                        console.log('!haha.nameTipOptions.disabled='+!haha.nameTipOptions.disabled)
                         if (isSubmit && !haha.nameTipOptions.disabled) {
                             $.ajax({
                                 url: "/bidding",
