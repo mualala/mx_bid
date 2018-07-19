@@ -249,7 +249,7 @@
                     <td class="col-sm-1"><input v-model="addProduct.number" type="number" class="form-control" /></td>
                     <td>{{addProduct.unit}}</td>
                     <td class="col-sm-1"><input v-model="addProduct.maxUnitPrice" type="number" class="form-control" /></td>
-                    <td class="col-sm-1"><input v-model="addProduct.defaultGradient" type="number" class="form-control" /></td>
+                    <td class="col-sm-1"><input v-model="addProduct.step" type="number" class="form-control" /></td>
                     <td class="col-sm-2">
                         <input v-model="addProduct.endDeliveryDate"
                                id="endDeliveryDate"
@@ -544,8 +544,6 @@
                             }
                         }
 
-                        console.log('isSubmit='+isSubmit)
-                        console.log('!haha.nameTipOptions.disabled='+!haha.nameTipOptions.disabled)
                         if (isSubmit && !haha.nameTipOptions.disabled) {
                             $.ajax({
                                 url: "/bidding",

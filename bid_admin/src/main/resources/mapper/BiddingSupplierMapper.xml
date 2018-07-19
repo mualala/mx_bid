@@ -11,6 +11,7 @@
             <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
             <result column="name" property="name" jdbcType="VARCHAR" />
             <result column="username" property="username" jdbcType="VARCHAR" />
+            <result column="phone" property="phone" jdbcType="VARCHAR" />
             <result column="company_name" property="companyName" jdbcType="VARCHAR" />
             <result column="legal" property="legal" jdbcType="VARCHAR" />
             <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />

@@ -122,7 +122,7 @@ var bidding = {
                         }
                     }
                     if (!isDuplicat) {
-                        bidding.productDatas.push(row)
+                        bidding.products.convertProdAndPush(new Array(row))
                     }
                 },
                 onUncheck: function (row, tr) {
@@ -140,18 +140,31 @@ var bidding = {
                     bidding.productDatas.splice(0, bidding.productDatas.length)
 
                     for(var i in rows) {
-                        rows[i].number = 0
-                        rows[i].step = 0 //竞价阶梯
-                        rows[i].endDeliveryDate = ''
-                        rows[i].endPayDate = ''
-                        bidding.productDatas.push(rows[i])
+                        bidding.products.convertProdAndPush(rows[i])
                     }
                 },
                 onUncheckAll: function (rows) {
                     bidding.productDatas.splice(0, bidding.productDatas.length)
                 }
             });
-        }
+        },
+        convertProdAndPush: function (rows) {
+            for(var i in rows) {
+                var produ = {}
+                produ.number = 0
+
+                produ.productId = rows[i].productId
+                produ.name = rows[i].name
+                produ.spec = rows[i].spec
+                produ.unit = rows[i].unit
+                produ.maxUnitPrice = rows[i].maxUnitPrice
+                produ.step = rows[i].defaultGradient
+                produ.productDesc = rows[i].productDesc
+
+                bidding.productDatas.push(produ)
+                produ = {}
+            }
+        },
     },
 
     //添加供应商 模块
