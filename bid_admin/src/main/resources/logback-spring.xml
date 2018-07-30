@@ -7,6 +7,10 @@
         <!--<appender-ref ref="FILE"/>-->
     <!--</logger>-->
 
+    <!--
+    D:/logs/bid/bid_admin
+    /home/meixin/logs/bid_admin
+     -->
     <property name="LOG_HOME" value="D:/logs/bid/bid_admin" />
     <property name="CUSTOM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%5level] [%thread] %logger{0}.%method - %msg%n"/>
 
@@ -47,7 +51,7 @@
     </appender>
 
     <!-- mybatis打印sql语句 -->
-    <logger name="com.meixin.bid_admin.mappers.dao" level="DEBUG"></logger>
+    <!--<logger name="com.meixin.bid_admin.mappers.dao" level="DEBUG"></logger>-->
 
     <root level="info">
         <appender-ref ref="consoleLog" />

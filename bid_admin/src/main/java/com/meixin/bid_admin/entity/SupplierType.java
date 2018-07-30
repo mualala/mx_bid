@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  * @Date： 09:03 2018/5/22 0022
  */
 @Entity
-@Table(name = "Supplier_type")
+@Table(name = "supplier_type")
 public class SupplierType {
 
     @Id

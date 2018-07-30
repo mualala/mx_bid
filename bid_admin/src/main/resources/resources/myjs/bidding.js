@@ -138,10 +138,7 @@ var bidding = {
                 onCheckAll: function (rows) {
                     //先清空所有元素
                     bidding.productDatas.splice(0, bidding.productDatas.length)
-
-                    for(var i in rows) {
-                        bidding.products.convertProdAndPush(rows[i])
-                    }
+                    bidding.products.convertProdAndPush(rows)
                 },
                 onUncheckAll: function (rows) {
                     bidding.productDatas.splice(0, bidding.productDatas.length)
@@ -153,6 +150,7 @@ var bidding = {
                 var produ = {}
                 produ.number = 0
 
+                produ.productType = rows[i].productType.name
                 produ.productId = rows[i].productId
                 produ.name = rows[i].name
                 produ.spec = rows[i].spec

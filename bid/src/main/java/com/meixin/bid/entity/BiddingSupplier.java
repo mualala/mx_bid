@@ -20,6 +20,7 @@ public class BiddingSupplier {
 
     private Integer suid; //供应商id
 
+    @Transient
     private Supplier supplier;
 
     public Integer getBiddingSupplierId() {

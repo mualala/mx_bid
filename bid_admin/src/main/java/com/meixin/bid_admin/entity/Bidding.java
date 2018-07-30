@@ -23,58 +23,41 @@ public class Bidding {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Transient
     private String originalName; //修改竞标单数据时用
-
     private String name; //标单名称
-
     private Integer productId; //产品id
-
     private Integer number; //参与投标产品的数量
-
     private Float startPrice; //起拍价
-
     private Float step; //竞价阶梯(元)
-
     @NotNull
     @Column(name = "end_delivery_date")
     private Timestamp endDeliveryDate; //交货期限
-
     @NotNull
     @Column(name = "end_pay_date")
     private Timestamp endPayDate; //付款期限
-
     private Integer mark; //1=招标（公司卖）   2=竞标（公司买）
-
     private Integer status = 0; //标单状态 0：发布状态  1：正在竞标中  2：结束  3:审核
-
     private Integer type; //类别 1:草稿 2:垃圾箱
-
     private String bidDesc; //详细信息
-
+//    @Column(name = "start_time")
     private Timestamp startTime; //启标日期
-
+//    @Column(name = "end_time")
     private Timestamp endTime; //竞标单截止日期
-
+//    @Column(name = "create_time")
     private Timestamp createTime;
-
+//    @Column(name = "update_time")
     private Timestamp updateTime;
 
     private Integer uid; //admin用户id
-
     private Integer finish = 0; // 选择中标完成状态 1:完成
-
     private String taskName; //竞标单triggerKey的name
-
     private String groupId; //竞标单triggerKey的group
 
     @Transient
     private Integer count;
-
     @Transient
     private Product product;
-
     @Transient
     private String recSuppliers;
 //    private List<BiddingSupplier> biddingSupplier;
@@ -84,17 +67,14 @@ public class Bidding {
     @NotNull
     @NotBlank
     private String recEndDeliveryDate;
-
     @Transient
     @NotNull
     @NotBlank
     private String recEndPayDate;
-
     @Transient
     @NotNull
     @NotBlank
     private String recStartTime;
-
     @Transient
     @NotNull
     @NotBlank
