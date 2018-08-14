@@ -71,9 +71,7 @@ public class BidDetailsServiceImpl implements BidDetailsService {
     @Override
     public SimpleResponse price(BidDetails bidDetails) {
         SimpleResponse result = null;
-
         Bidding bidding = biddingDao.queryByNameAndPid(bidDetails.getBidName(), bidDetails.getProductId());
-
         //判断竞标单是否结束
         if (bidding != null) {
             if (bidding.getStatus() == 2) { //竞标单已经结束

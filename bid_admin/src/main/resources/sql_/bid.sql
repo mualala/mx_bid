@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-07-30 17:27:22
+Date: 2018-08-14 10:32:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,12 +24,12 @@ CREATE TABLE `bid_details` (
   `uid` int(11) DEFAULT NULL COMMENT '供应商id',
   `bid_name` varchar(255) NOT NULL DEFAULT '' COMMENT '标单id',
   `product_id` int(11) DEFAULT NULL COMMENT '产品id',
-  `price` float(13,3) DEFAULT NULL COMMENT '出的价格',
+  `price` float(15,3) DEFAULT NULL COMMENT '出的价格',
   `create_time` timestamp NULL DEFAULT NULL COMMENT '抢标时间',
   PRIMARY KEY (`bid_detail_id`),
   KEY `bid_name` (`bid_name`),
   CONSTRAINT `bid_details_ibfk_1` FOREIGN KEY (`bid_name`) REFERENCES `bidding` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=385 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for bidding
@@ -62,7 +62,7 @@ CREATE TABLE `bidding` (
   KEY `name` (`name`),
   CONSTRAINT `bid_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
   CONSTRAINT `bid_uid` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for bidding_supplier
@@ -75,7 +75,7 @@ CREATE TABLE `bidding_supplier` (
   PRIMARY KEY (`bidding_supplier_id`),
   KEY `bid_name` (`bid_name`),
   CONSTRAINT `bidding_supplier_ibfk_1` FOREIGN KEY (`bid_name`) REFERENCES `bidding` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for news
@@ -106,7 +106,7 @@ CREATE TABLE `product` (
   `unit` varchar(255) DEFAULT NULL COMMENT '产品单位',
   `max_unit_price` float(13,2) DEFAULT NULL COMMENT '最高单价',
   `default_gradient` varchar(255) DEFAULT NULL COMMENT '缺省梯度',
-  `product_desc` varchar(255) DEFAULT NULL COMMENT '产品描述',
+  `product_desc` varchar(1500) DEFAULT NULL COMMENT '产品描述',
   `create_time` timestamp NULL DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   `uid` int(11) DEFAULT NULL COMMENT '采购员id',
@@ -129,7 +129,7 @@ CREATE TABLE `product_type` (
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`product_type_id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for QRTZ_BLOB_TRIGGERS
@@ -364,7 +364,7 @@ CREATE TABLE `sys_user` (
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for win_bid

@@ -24,12 +24,4 @@ public class BidApplication {
 		SpringApplication.run(BidApplication.class, args);
 	}
 
-	@GetMapping("/aa")
-	public ResponseEntity sessionInvalid() {
-		System.err.println("11111111");
-		ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:8082/test-rest", String.class);
-		System.err.println(JSONObject.toJSONString(responseEntity));
-		return responseEntity;
-	}
-
 }
