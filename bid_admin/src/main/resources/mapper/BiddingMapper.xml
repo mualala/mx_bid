@@ -163,6 +163,7 @@
             <result column="spec" property="spec" jdbcType="VARCHAR" />
             <result column="unit" property="unit" jdbcType="VARCHAR" />
             <result column="code" property="code" jdbcType="VARCHAR" />
+            <result column="product_desc" property="productDesc" jdbcType="VARCHAR" />
         </association>
     </resultMap>
 
@@ -171,7 +172,7 @@
           B.id, B.name,B.mark, B.product_id, B.status, B.type, B.bid_desc, B.start_price, B.step, B.number,
           B.end_delivery_date, B.end_pay_date,
           B.start_time, B.end_time, B.create_time, B.update_time,
-          P.product_id, P.name p_name, P.spec, P.unit, P.code
+          P.product_id, P.name p_name, P.spec, P.unit, P.code, P.product_desc
         FROM bidding B
         INNER JOIN product P ON P.product_id=B.product_id
         WHERE B.name=#{name}

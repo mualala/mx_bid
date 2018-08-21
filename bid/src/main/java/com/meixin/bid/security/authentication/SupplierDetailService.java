@@ -28,8 +28,6 @@ public class SupplierDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        logger.info("login username="+username  );
-
         Supplier supplier = supplierDao.queryByUsername(username);
         if(supplier == null)
             throw new UsernameNotFoundException("用户名不存在");

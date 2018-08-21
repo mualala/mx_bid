@@ -89,6 +89,7 @@
                     <th>竞价阶梯(元)</th>
                     <th>交货期限</th>
                     <th>付款期限</th>
+                    <th>产品描述</th>
                     <!--<th>操作</th>-->
                 </tr>
                 </thead>
@@ -109,6 +110,7 @@
                     <td class="col-sm-2">
                         {{addProduct.endPayDate}}
                     </td>
+                    <td>{{addProduct.productDesc}}</td>
                     <!--<td><div class="btn btn-danger" @click="deleteOne(index)"><i class="fa fa-times" aria-hidden="true"></i>删除</div></td>-->
                 </tr>
                 </tbody>
@@ -178,6 +180,7 @@
                         product.step = bid.step
                         product.endDeliveryDate = utils.dateFormat.timeStampToDate(bid.endDeliveryDate)
                         product.endPayDate = utils.dateFormat.timeStampToDate(bid.endPayDate)
+                        product.productDesc = bid.product.productDesc
                         haha.addProducts.push(product)
 //                        bidding.productDatas.push(product)
                         product = {}
