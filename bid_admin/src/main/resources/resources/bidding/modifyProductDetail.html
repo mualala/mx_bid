@@ -70,6 +70,19 @@
                                 </i>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">标记:</label>
+                                <div class="col-sm-1">
+                                    <input type="radio" id="come" value="1" v-model="mark">
+                                    <label for="come">招标</label><i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="radio" id="to" value="2" v-model="mark">
+                                    <label for="to">竞标</label><i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                                </div>
+                                <span class="mark">*</span>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">竞标单开启时间:</label>
                                 <div class="col-sm-3">
                                     <input v-model="startTime"
@@ -383,6 +396,7 @@
             initName: '',
 
             name: '',
+            mark: 0,
             startTime: '',
             endTime: '',
             bidDesc: '',
@@ -495,6 +509,7 @@
 
                             bidding.originalName = haha.initName
                             bidding.name = haha.name
+                            bidding.mark = haha.mark
                             bidding.recStartTime = haha.startTime
                             bidding.recEndTime = haha.endTime
                             bidding.bidDesc = haha.bidDesc
@@ -601,6 +616,7 @@
                         var oneBid = biddings[0]
                         haha.initName = oneBid.name
                         haha.name = oneBid.name
+                        haha.mark = oneBid.mark
                         haha.startTime = utils.dateFormat.timeStampToDate(oneBid.startTime)
                         haha.endTime = utils.dateFormat.timeStampToDate(oneBid.endTime)
                         haha.bidDesc = oneBid.bidDesc
