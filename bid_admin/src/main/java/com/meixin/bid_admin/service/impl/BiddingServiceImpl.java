@@ -179,7 +179,6 @@ public class BiddingServiceImpl implements BiddingService {
             for (Bidding bidding : biddingList) {
                 if (count > 0 && bidding.getType() == 0) {//不是草稿
                     String uid = String.valueOf(bidding.getUid());
-                    System.err.println("scheduler--->>>" + scheduler);
                     BiddingTaskUtil.startBiddingTask(scheduler, bidding.getName(), uid, bidding.getStartTime().toString(), biddingDao);
                     BiddingTaskUtil.endBiddingTask(scheduler, bidding.getName(), uid, bidding.getEndTime().toString(), biddingDao);
                 }
