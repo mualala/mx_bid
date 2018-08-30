@@ -61,10 +61,14 @@ public class BiddingTaskUtil {
         setBiddingTask(scheduler, name, group, time, TaskType.END_MARK, biddingDao);
     }
 
+    private static String fmtGroupId(String groupId) {
+        return (groupName != null) ? (groupName + "-" + groupId) : groupId;
+    }
+
     //开启定时器
     private static void setBiddingTask(Scheduler scheduler, String name, String group, String time, TaskType taskType, BiddingDao biddingDao) {
         String taskName = taskType.taskName(name);
-        String groupId = Utils.ID.taskGroupId(group);
+        String groupId = Utils.ID.taskGroupId(fmtGroupId(group));
         try {
             Class jobClazz = null;
             switch (taskType) {
@@ -135,7 +139,8 @@ public class BiddingTaskUtil {
         //gov doc: http://www.quartz-scheduler.org/documentation/quartz-2.2.x/cookbook/UpdateTrigger.html
         TriggerKey oldTriggerKey = TriggerKey.triggerKey(taskName, groupId);
 
-        String newGroupId = Utils.ID.taskGroupId(String.valueOf(bidding.getUid()));
+        String uid = String.valueOf(bidding.getUid());
+        String newGroupId = Utils.ID.taskGroupId(fmtGroupId(uid));
         Trigger newTrigger = TriggerBuilder.newTrigger()
                 .withIdentity(taskName, newGroupId)
                 .startAt(delayDate)
