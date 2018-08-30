@@ -18,12 +18,12 @@ public class MySchedulerListener implements SchedulerListener {
 
     @Override
     public void jobScheduled(Trigger trigger) {
-        System.err.println("jobScheduled");
+//        System.err.println("jobScheduled");
     }
 
     @Override
     public void jobUnscheduled(TriggerKey triggerKey) {
-        System.err.println("Schedule jobUnscheduled");
+//        System.err.println("Schedule jobUnscheduled");
     }
 
     @Override
@@ -35,37 +35,37 @@ public class MySchedulerListener implements SchedulerListener {
 //
 //        int count = biddingDao.setBidStatus(bidName, uid, 2);
 //
-        System.err.println("Schedule triggerFinalized,竞标单结束更新了 +" );
+//        System.err.println("Schedule triggerFinalized,竞标单结束更新了 +" );
     }
 
     @Override
     public void triggerPaused(TriggerKey triggerKey) {
-        System.err.println("Schedule triggerPaused");
+//        System.err.println("Schedule triggerPaused");
     }
 
     @Override
     public void triggersPaused(String s) {
-        System.err.println("Schedule triggersPaused");
+//        System.err.println("Schedule triggersPaused");
     }
 
     @Override
     public void triggerResumed(TriggerKey triggerKey) {
-        System.err.println("Schedule triggerResumed");
+//        System.err.println("Schedule triggerResumed");
     }
 
     @Override
     public void triggersResumed(String s) {
-        System.err.println("Schedule triggersResumed");
+//        System.err.println("Schedule triggersResumed");
     }
 
     @Override
     public void jobAdded(JobDetail jobDetail) {
-        System.err.println("Schedule jobAdded");
+//        System.err.println("Schedule jobAdded");
     }
 
     @Override
     public void jobDeleted(JobKey jobKey) {
-        System.err.println("Schedule jobDeleted");
+//        System.err.println("Schedule jobDeleted");
     }
 
     @Override

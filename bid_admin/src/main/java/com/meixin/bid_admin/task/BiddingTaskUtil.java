@@ -5,9 +5,12 @@ import com.meixin.bid_admin.mappers.dao.BiddingDao;
 import com.meixin.bid_admin.task.job.EndBiddingJob;
 import com.meixin.bid_admin.task.job.StartBiddingJob;
 import com.meixin.bid_admin.web.support.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -21,10 +24,12 @@ import java.util.Map;
  * @Author： yanghm
  * @Date： 11:33 2018/5/29 0029
  */
+@Component
 public class BiddingTaskUtil {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(BiddingTaskUtil.class);
+
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static String groupName;
 
     private enum TaskType {
         START_MARK("START-"), // 开启
@@ -42,7 +47,8 @@ public class BiddingTaskUtil {
 
         //设置task的name
         public String taskName(String name) {
-            return getMark().concat(name);
+            String realTaskName = (groupName != null) ? (groupName + "-") : "";
+            return realTaskName.concat(getMark().concat(name));
         }
 
     }
@@ -144,4 +150,8 @@ public class BiddingTaskUtil {
         return params;
     }
 
+    @Value("${group-name}")
+    public void setGroupName(String groupName) {
+        BiddingTaskUtil.groupName = groupName;
+    }
 }
