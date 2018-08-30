@@ -11,7 +11,7 @@
     D:/logs/bid/bid_admin
     /home/meixin/logs/bid_admin
      -->
-    <property name="LOG_HOME" value="/home/meixin/logs/bid_admin" />
+    <property name="LOG_HOME" value="/home/meixin/logs/hongao/bid_admin" />
     <property name="CUSTOM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%5level] [%thread] %logger{0}.%method - %msg%n"/>
 
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
