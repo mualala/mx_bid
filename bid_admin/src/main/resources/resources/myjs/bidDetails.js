@@ -77,7 +77,7 @@ var bidDetails = {
                     {field: 'name', title: '竞标单名称', sortable: true,
                         formatter: function (value, row, index) {
                             if(value != null && value != '') {
-                                return '<a>' + value + '</a>'
+                                return '<button class="btn btn-info btn-block lead">' + value + '</button>'
                             }
                         }
                     },

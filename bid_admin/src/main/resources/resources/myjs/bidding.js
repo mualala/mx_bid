@@ -4,7 +4,7 @@
 var bidding = {
 
     supplierDatas: [],//创建竞标单添加的供应商列表
-    productDatas:[],//创建竞标单添加的产品列表
+    productDatas: [],//创建竞标单添加的产品列表
 
     selectedBiddings: [], //草稿要操作的竞标单数据
     // dustbinBiddins: [], //垃圾箱操作的竞标单数据
@@ -38,7 +38,7 @@ var bidding = {
                 singleSelect: false,//多选
                 // exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx'],  //导出文件类型
                 // uniqueId: "id", //每一行的唯一标识，一般为主键列
-                pagination:true,
+                pagination: true,
                 // editable: false,
                 sidePagination: 'server',//服务器端请求
 
@@ -58,7 +58,7 @@ var bidding = {
                         title: '创建时间',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                                 // return '<img src="' + value + '" class="img-rounded" alt="no pic" onclick="javascript:window.open(this.src);"></img>';
                             }
@@ -69,7 +69,7 @@ var bidding = {
                         title: '最后修改时间',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                                 // return '<img src="' + value + '" class="img-rounded" alt="no pic" onclick="javascript:window.open(this.src);"></img>';
                             }
@@ -113,7 +113,7 @@ var bidding = {
                     var isDuplicat = false //非重复
                     for (var i in bidding.productDatas) {
                         var product = bidding.productDatas[i]
-                        if(row.productId == product.productId) {
+                        if (row.productId == product.productId) {
                             isDuplicat = true
                             layer.alert(
                                 '已添加过该产品 !',
@@ -128,7 +128,7 @@ var bidding = {
                 onUncheck: function (row, tr) {
                     for (var i in bidding.productDatas) {
                         var product = bidding.productDatas[i]
-                        if(row.productId == product.productId) {
+                        if (row.productId == product.productId) {
                             bidding.productDatas.splice(i, 1)
                         }
                     }
@@ -146,7 +146,7 @@ var bidding = {
             });
         },
         convertProdAndPush: function (rows) {
-            for(var i in rows) {
+            for (var i in rows) {
                 var produ = {}
                 produ.number = 0
 
@@ -179,9 +179,9 @@ var bidding = {
                         var option;
                         var supplierTypeId = resp[index].supplierTypeId;
                         var name = resp[index].name;
-                        if(selectId != null && selectId == supplierTypeId) {
+                        if (selectId != null && selectId == supplierTypeId) {
                             option = $("<option selected>").val(supplierTypeId).text(resp[index].name);
-                        }else {
+                        } else {
                             option = $("<option>").val(supplierTypeId).text(resp[index].name);
                         }
                         select_obj.append(option);
@@ -195,8 +195,8 @@ var bidding = {
                     );
                 }
             });
-        }, 
-        
+        },
+
         initSuppliers: function () {
             $('#getSuppliers').bootstrapTable('destroy').bootstrapTable({
                 method: 'post',
@@ -221,9 +221,9 @@ var bidding = {
                 showToggle: true,//显示 切换试图（table/card）按钮
                 toolbar: '#supplierBlockTool',
                 singleSelect: false,//多选
-                exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],  //导出文件类型
+                exportTypes: ['csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],  //导出文件类型
                 // uniqueId: "id", //每一行的唯一标识，一般为主键列
-                pagination:true,
+                pagination: true,
                 // editable: false,
                 sidePagination: 'server',//服务器端请求
 
@@ -249,7 +249,7 @@ var bidding = {
                         title: '创建时间',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                                 // return '<img src="' + value + '" class="img-rounded" alt="no pic" onclick="javascript:window.open(this.src);"></img>';
                             }
@@ -260,7 +260,7 @@ var bidding = {
                         title: '最后修改时间',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                                 // return '<img src="' + value + '" class="img-rounded" alt="no pic" onclick="javascript:window.open(this.src);"></img>';
                             }
@@ -300,7 +300,7 @@ var bidding = {
                     var isDuplicat = false //非重复
                     for (var i in bidding.supplierDatas) {
                         var su = bidding.supplierDatas[i]
-                        if(row.supplierId == su.supplierId) {
+                        if (row.supplierId == su.supplierId) {
                             isDuplicat = true
                             layer.alert(
                                 '已添加过该供应商 !',
@@ -315,7 +315,7 @@ var bidding = {
                 onUncheck: function (row, tr) {
                     for (var i in bidding.supplierDatas) {
                         var su = bidding.supplierDatas[i]
-                        if(row.supplierId == su.supplierId) {
+                        if (row.supplierId == su.supplierId) {
                             bidding.supplierDatas.splice(i, 1)
                         }
                     }
@@ -325,7 +325,7 @@ var bidding = {
                     //先清空所有元素
                     bidding.supplierDatas.slice(0, bidding.supplierDatas.length)
 
-                    for(var i in rows) {
+                    for (var i in rows) {
                         bidding.supplierDatas.push(rows[i])
                     }
                 },
@@ -361,9 +361,9 @@ var bidding = {
                 showToggle: true,//显示 切换试图（table/card）按钮
                 toolbar: '#biddingBlockTool',
                 singleSelect: false,//多选
-                exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx'],  //导出文件类型
+                exportTypes: ['csv', 'txt', 'sql', 'doc', 'excel', 'xlsx'],  //导出文件类型
                 // uniqueId: "id", //每一行的唯一标识，一般为主键列
-                pagination:true,
+                pagination: true,
                 // editable: false,
                 sidePagination: 'server',//服务器端请求
 
@@ -377,19 +377,32 @@ var bidding = {
                         formatter: function (value, row, index) {
                             var typeMsg = ''
                             switch (value) {
-                                case 0: typeMsg = '竞标单'; break;
-                                case 1: typeMsg = '草稿'; break;
-                                case 2: typeMsg = '垃圾箱'; break;
+                                case 0:
+                                    typeMsg = '竞标单';
+                                    break;
+                                case 1:
+                                    typeMsg = '草稿';
+                                    break;
+                                case 2:
+                                    typeMsg = '垃圾箱';
+                                    break;
                             }
                             return typeMsg
                         }
                     },
-                    {field: 'name', title: '竞标单名称', sortable: true,
+                    {
+                        field: 'name', title: '竞标单名称', sortable: true, align: 'center',
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
-                                return '<a>' + value + '</a>'
+                            if (value != null && value != '') {
+                                return '<button class="btn btn-info btn-block lead">' + value + '</button>'
                             }
-                        }
+                        },
+                        // cellStyle: function (value, row, index, field) {
+                        //     return {
+                        //         // classes: 'btn btn-block',
+                        //         css: {"font-weight": "bold"}
+                        //     };
+                        // }
                     },
                     {
                         field: 'mark',
@@ -398,9 +411,15 @@ var bidding = {
                         formatter: function (value, row, index) {
                             var markMsg = ''
                             switch (value) {
-                                case 0: markMsg = '异常标记..'; break;
-                                case 1: markMsg = '招标'; break;
-                                case 2: markMsg = '竞标'; break;
+                                case 0:
+                                    markMsg = '异常标记..';
+                                    break;
+                                case 1:
+                                    markMsg = '招标';
+                                    break;
+                                case 2:
+                                    markMsg = '竞标';
+                                    break;
                             }
                             return markMsg
                         }
@@ -411,7 +430,7 @@ var bidding = {
                         title: '启标日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -421,7 +440,7 @@ var bidding = {
                         title: '竞标单截止日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -432,10 +451,18 @@ var bidding = {
                         formatter: function (value, row, index) {
                             var statusMsg = ''
                             switch (value) {
-                                case 0: statusMsg = '已发布'; break;
-                                case 1: statusMsg = '正在竞标中'; break;
-                                case 2: statusMsg = '已结束'; break;
-                                case 3: statusMsg = '待审核'; break;
+                                case 0:
+                                    statusMsg = '已发布';
+                                    break;
+                                case 1:
+                                    statusMsg = '正在竞标中';
+                                    break;
+                                case 2:
+                                    statusMsg = '已结束';
+                                    break;
+                                case 3:
+                                    statusMsg = '待审核';
+                                    break;
                             }
                             return statusMsg
                         }
@@ -446,7 +473,7 @@ var bidding = {
                         title: '竞标单创建日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -456,7 +483,7 @@ var bidding = {
                         title: '竞标单更新日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -474,17 +501,17 @@ var bidding = {
                         ho.queryCondition.pageSize = params.pageSize
                         ho.queryCondition.sortName = params.sortName
                         ho.queryCondition.sortOrder = params.sortOrder
-                        if(type == 0 || type == 1 || type == 2) ho.queryCondition.type = type
+                        if (type == 0 || type == 1 || type == 2) ho.queryCondition.type = type
                         if (status == 0 || status == 1 || status == 2 || status == 3) ho.queryCondition.status = status
                         return ho.queryCondition
-                    }else {
+                    } else {
                         var param = {
                             pageNumber: params.pageNumber,
                             pageSize: params.pageSize,
                             sortName: params.sortName,
                             sortOrder: params.sortOrder,
                         }
-                        if(type == 0 || type == 1 || type == 2) param.type = type
+                        if (type == 0 || type == 1 || type == 2) param.type = type
                         if (status == 0 || status == 1 || status == 2 || status == 3) param.status = status
                         return param
                     }
@@ -502,7 +529,7 @@ var bidding = {
                     // utils.storage.delSession('bidName') //先清除缓存
                     utils.storage.setSession('bidName', value)
 
-                    if(field == 'name') {
+                    if (field == 'name') {
                         var content = type == 0 ? 'seeProductDetail.html' : 'modifyProductDetail.html'
                         //iframe层-父子操作
                         layer.open({
@@ -523,14 +550,14 @@ var bidding = {
                 onUncheck: function (row, tr) {
                     for (var i in bidding.selectedBiddings) {
                         var bidName = bidding.selectedBiddings[i]
-                        if(row.name == bidName) {
+                        if (row.name == bidName) {
                             bidding.selectedBiddings.splice(i, 1)
                         }
                     }
 
                     for (var i in bidding.checkBiddings) {
                         var bidName = bidding.checkBiddings[i]
-                        if(row.name == bidName) {
+                        if (row.name == bidName) {
                             bidding.checkBiddings.splice(i, 1)
                         }
                     }
@@ -542,7 +569,7 @@ var bidding = {
                     bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
                     bidding.checkBiddings.splice(0, bidding.checkBiddings.length)
 
-                    for(var i in rows) {
+                    for (var i in rows) {
                         bidding.selectedBiddings.push(rows[i].name)
                         bidding.checkBiddings.push(rows[i].name)
                     }
@@ -578,9 +605,9 @@ var bidding = {
                 showToggle: true,//显示 切换试图（table/card）按钮
                 toolbar: '#biddingBlockTool',
                 singleSelect: false,//多选
-                exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx'],  //导出文件类型
+                exportTypes: ['csv', 'txt', 'sql', 'doc', 'excel', 'xlsx'],  //导出文件类型
                 // uniqueId: "id", //每一行的唯一标识，一般为主键列
-                pagination:true,
+                pagination: true,
                 // editable: false,
                 sidePagination: 'server',//服务器端请求
 
@@ -594,16 +621,23 @@ var bidding = {
                         formatter: function (value, row, index) {
                             var typeMsg = ''
                             switch (value) {
-                                case 0: typeMsg = '竞标单'; break;
-                                case 1: typeMsg = '草稿'; break;
-                                case 2: typeMsg = '垃圾箱'; break;
+                                case 0:
+                                    typeMsg = '竞标单';
+                                    break;
+                                case 1:
+                                    typeMsg = '草稿';
+                                    break;
+                                case 2:
+                                    typeMsg = '垃圾箱';
+                                    break;
                             }
                             return typeMsg
                         }
                     },
-                    {field: 'name', title: '竞标单名称', sortable: true,
+                    {
+                        field: 'name', title: '竞标单名称', sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return '<a>' + value + '</a>'
                             }
                         }
@@ -615,9 +649,15 @@ var bidding = {
                         formatter: function (value, row, index) {
                             var markMsg = ''
                             switch (value) {
-                                case 0: markMsg = '异常标记..'; break;
-                                case 1: markMsg = '招标'; break;
-                                case 2: markMsg = '竞标'; break;
+                                case 0:
+                                    markMsg = '异常标记..';
+                                    break;
+                                case 1:
+                                    markMsg = '招标';
+                                    break;
+                                case 2:
+                                    markMsg = '竞标';
+                                    break;
                             }
                             return markMsg
                         }
@@ -628,7 +668,7 @@ var bidding = {
                         title: '启标日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -638,7 +678,7 @@ var bidding = {
                         title: '竞标单截止日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -649,10 +689,18 @@ var bidding = {
                         formatter: function (value, row, index) {
                             var statusMsg = ''
                             switch (value) {
-                                case 0: statusMsg = '已发布'; break;
-                                case 1: statusMsg = '正在竞标中'; break;
-                                case 2: statusMsg = '已结束'; break;
-                                case 3: statusMsg = '待审核'; break;
+                                case 0:
+                                    statusMsg = '已发布';
+                                    break;
+                                case 1:
+                                    statusMsg = '正在竞标中';
+                                    break;
+                                case 2:
+                                    statusMsg = '已结束';
+                                    break;
+                                case 3:
+                                    statusMsg = '待审核';
+                                    break;
                             }
                             return statusMsg
                         }
@@ -663,7 +711,7 @@ var bidding = {
                         title: '竞标单创建日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -673,7 +721,7 @@ var bidding = {
                         title: '竞标单更新日期',
                         sortable: true,
                         formatter: function (value, row, index) {
-                            if(value != null && value != '') {
+                            if (value != null && value != '') {
                                 return utils.dateFormat.timeStampToDate(value);
                             }
                         }
@@ -691,17 +739,17 @@ var bidding = {
                         ho.queryCondition.pageSize = params.pageSize
                         ho.queryCondition.sortName = params.sortName
                         ho.queryCondition.sortOrder = params.sortOrder
-                        if(type == 0 || type == 1 || type == 2) ho.queryCondition.type = type
+                        if (type == 0 || type == 1 || type == 2) ho.queryCondition.type = type
                         if (status == 0 || status == 1 || status == 2 || status == 3) ho.queryCondition.status = status
                         return ho.queryCondition
-                    }else {
+                    } else {
                         var param = {
                             pageNumber: params.pageNumber,
                             pageSize: params.pageSize,
                             sortName: params.sortName,
                             sortOrder: params.sortOrder,
                         }
-                        if(type == 0 || type == 1 || type == 2) param.type = type
+                        if (type == 0 || type == 1 || type == 2) param.type = type
                         if (status == 0 || status == 1 || status == 2 || status == 3) param.status = status
                         return param
                     }
@@ -719,7 +767,7 @@ var bidding = {
                     // utils.storage.delSession('bidName') //先清除缓存
                     utils.storage.setSession('bidName', value)
 
-                    if(field == 'name') {
+                    if (field == 'name') {
                         var content = type == 0 ? '/bidding/seeProductDetail.html' : '/bidding/modifyProductDetail.html'
                         //iframe层-父子操作
                         layer.open({
@@ -740,14 +788,14 @@ var bidding = {
                 onUncheck: function (row, tr) {
                     for (var i in bidding.selectedBiddings) {
                         var bidName = bidding.selectedBiddings[i]
-                        if(row.name == bidName) {
+                        if (row.name == bidName) {
                             bidding.selectedBiddings.splice(i, 1)
                         }
                     }
 
                     for (var i in bidding.checkBiddings) {
                         var bidName = bidding.checkBiddings[i]
-                        if(row.name == bidName) {
+                        if (row.name == bidName) {
                             bidding.checkBiddings.splice(i, 1)
                         }
                     }
@@ -759,7 +807,7 @@ var bidding = {
                     bidding.selectedBiddings.splice(0, bidding.selectedBiddings.length)
                     bidding.checkBiddings.splice(0, bidding.checkBiddings.length)
 
-                    for(var i in rows) {
+                    for (var i in rows) {
                         bidding.selectedBiddings.push(rows[i].name)
                         bidding.checkBiddings.push(rows[i].name)
                     }
@@ -774,12 +822,12 @@ var bidding = {
         //删除竞标单
         deleteBid: function () {
             var len = bidding.selectedBiddings.length
-            if(len > 0) {
+            if (len > 0) {
                 layer.confirm('确定删除选中的 [ ' + len + ' ] 个竞标单吗 ?', {
-                        btn: ['删除','再考虑一下~~'] //按钮
-                    }, function() {
+                        btn: ['删除', '再考虑一下~~'] //按钮
+                    }, function () {
                         var names = '';
-                        for(var index in bidding.selectedBiddings) {
+                        for (var index in bidding.selectedBiddings) {
                             names = bidding.selectedBiddings[index] + '-' + names;
                         }
                         $.ajax({
@@ -796,15 +844,16 @@ var bidding = {
                                 var status = xhr.status;
                                 layer.alert(
                                     '',
-                                    {title: '提示框', icon: 0,
-                                        content: '<h3>删除草稿失败,状态码 [ '+ status +'] </h3><h5>原因: ' + xhr.responseJSON.msg + '</h5>'
+                                    {
+                                        title: '提示框', icon: 0,
+                                        content: '<h3>删除草稿失败,状态码 [ ' + status + '] </h3><h5>原因: ' + xhr.responseJSON.msg + '</h5>'
                                     }
                                 );
                             }
                         });
                     }
                 );
-            }else {
+            } else {
                 layer.alert(
                     '请选择要删除的竞标单 !',
                     {title: '提示框', icon: 0}
@@ -822,9 +871,9 @@ var bidding = {
                     var option;
                     var productTypeId = resp[index].productTypeId;
                     var name = resp[index].name;
-                    if(selectId != null && selectId == productTypeId) {
+                    if (selectId != null && selectId == productTypeId) {
                         option = $("<option selected>").val(resp[index].productTypeId).text(resp[index].name);
-                    }else {
+                    } else {
                         option = $("<option>").val(resp[index].productTypeId).text(resp[index].name);
                     }
                     select_obj.append(option);
@@ -842,8 +891,8 @@ var bidding = {
 
     deleteAll: function () {
         layer.confirm('确定删除全部竞标产品吗 ?', {
-                btn: ['全部删除','再考虑一下~~'] //按钮
-            }, function(){
+                btn: ['全部删除', '再考虑一下~~'] //按钮
+            }, function () {
                 layer.msg('删除成功 !', {icon: 1});
                 bidding.productDatas.splice(0, bidding.productDatas.length)
             }
