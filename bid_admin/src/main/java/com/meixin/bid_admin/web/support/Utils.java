@@ -33,12 +33,6 @@ public class Utils {
         }
     }
 
-    public static void main(String[] args) {
-
-        String a = "a".concat("-b");
-        System.err.println(a);
-    }
-
     public static String UUID() {
         return UUID.randomUUID().toString().replace("-", "");
     }
