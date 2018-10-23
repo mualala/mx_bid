@@ -36,6 +36,9 @@ class AdminAuthenticationSuccessHandler implements AuthenticationSuccessHandler 
         sessionStore.storeAttribute(webRequest, "uid",
                 admin.getRole().contains("ROLE_ADMIN") ? -1 : admin.getUid());
 
+        sessionStore.storeAttribute(webRequest, "ischeck",
+                admin.getRole().contains("ROLE_CHECK") ? true : false);
+
         LOGGER.info("登录成功,用户ID:{} 用户名:{}", admin.getUid(), admin.getUsername());
 
         response.setContentType("application/json;charset=UTF-8");

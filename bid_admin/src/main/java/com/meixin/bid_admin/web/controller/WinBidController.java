@@ -47,6 +47,12 @@ public class WinBidController {
     @PostMapping("/doBidDetailsReport")
     public JSONObject bidDetailsReport(WinBidCondition condition, HttpSession session) {
         condition.setUid(Utils.uidFromSession(session));
+        // 审核权限可以看所有的中标结果
+        boolean ischeck = (boolean) session.getAttribute("ischeck");
+        if (ischeck) {
+            condition.setUid(-1);
+        }
+
         JSONObject result = winBidService.doBidDetailsReport(condition);
         return result;
     }
