@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-08-14 10:32:12
+Date: 2018-11-06 09:40:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `bid_details` (
   PRIMARY KEY (`bid_detail_id`),
   KEY `bid_name` (`bid_name`),
   CONSTRAINT `bid_details_ibfk_1` FOREIGN KEY (`bid_name`) REFERENCES `bidding` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for bidding
@@ -54,15 +54,15 @@ CREATE TABLE `bidding` (
   `update_time` timestamp NULL DEFAULT NULL,
   `uid` int(11) DEFAULT NULL COMMENT '后台系统用户id',
   `finish` int(3) DEFAULT '0' COMMENT '选择中标完成状态 1:完成',
-  `task_name` varchar(255) DEFAULT '',
-  `group_id` varchar(50) DEFAULT '',
+  `task_name` varchar(500) DEFAULT '',
+  `group_id` varchar(500) DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `bid_uid` (`uid`),
   KEY `bid_product_id` (`product_id`),
   KEY `name` (`name`),
   CONSTRAINT `bid_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
   CONSTRAINT `bid_uid` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for bidding_supplier
@@ -75,7 +75,7 @@ CREATE TABLE `bidding_supplier` (
   PRIMARY KEY (`bidding_supplier_id`),
   KEY `bid_name` (`bid_name`),
   CONSTRAINT `bidding_supplier_ibfk_1` FOREIGN KEY (`bid_name`) REFERENCES `bidding` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for news
@@ -115,7 +115,7 @@ CREATE TABLE `product` (
   KEY `product_type_id` (`product_type_id`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`product_type_id`) REFERENCES `product_type` (`product_type_id`),
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for product_type
@@ -334,7 +334,7 @@ CREATE TABLE `supplier` (
   KEY `uid` (`uid`),
   CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`supplier_type_id`) REFERENCES `supplier_type` (`supplier_type_id`),
   CONSTRAINT `supplier_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for supplier_type
@@ -348,7 +348,7 @@ CREATE TABLE `supplier_type` (
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`supplier_type_id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for sys_user
