@@ -81,7 +81,7 @@ public class SupplierController {
 
     // 更新供应商信息
     @PutMapping("/{supplierId}/one")
-    public ResponseEntity putProduct(@PathVariable(name = "supplierId", required = true) int supplierId,
+    public ResponseEntity putSupplier(@PathVariable(name = "supplierId", required = true) int supplierId,
                                      Supplier supplier,
                                      HttpSession session) {
         supplier.setSupplierId(supplierId);
@@ -89,6 +89,14 @@ public class SupplierController {
         supplier.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
         int count = supplierService.updateSupplierInfo(supplier);
+        return ResponseEntity.ok(count);
+    }
+
+    // 只更新供应商密码
+    @PutMapping("/{supplierId}/password")
+    public ResponseEntity putSupplierPassword(@PathVariable(name = "supplierId", required = true) int supplierId,
+                                     @RequestParam(name = "password", required = true) String password) {
+        int count= supplierService.updateSupplierPassword(supplierId, password);
         return ResponseEntity.ok(count);
     }
 

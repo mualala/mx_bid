@@ -268,7 +268,55 @@ var supplier = {
                     $('#companyDesc').val(rowValue.companyDesc);
                 }
             },
-
+            toggleUpdatePassword: function () {
+                var rows = $("#supplierReport").bootstrapTable('getAllSelections');
+                if(rows.length == 0) {
+                    layer.alert(
+                        '请选择要修改的供应商 !',
+                        {title: '提示框', icon: 0}
+                    );
+                }else if (rows.length > 1) {
+                    layer.alert(
+                        '一次只能修改一个供应商 !',
+                        {title: '提示框', icon: 0}
+                    );
+                }else {
+                    $('#modifyPasswordModal').modal('toggle');
+                    $('#comName').val(rows[0].companyName);
+                }
+            },
+            submitNewPassword: function () {
+                var rows = $("#supplierReport").bootstrapTable('getAllSelections');
+                var newPassword = $('#newPassword').val();
+                var reNewPassword = $('#reNewPassword').val();
+                if (newPassword === '') {
+                    layer.alert('新密码不能为空!', {title: '提示框', icon: 0});
+                    return
+                }
+                if (newPassword !== reNewPassword) {
+                    layer.alert('两次重复密码不对，请检查!', {title: '提示框', icon: 0});
+                    return
+                }
+                $.ajax({
+                    url: "/supplier/" + rows[0].supplierId + "/password",
+                    type: "put",
+                    contentType: "application/x-www-form-urlencoded",
+                    dataType: "json",
+                    data: {"password": newPassword},
+                    success: function (count) {
+                        layer.msg('成功修改 [ ' + count + ' ] 个供应商密码', {icon: 1});
+                        $('#newPassword').val('');
+                        $('#reNewPassword').val('');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var status = xhr.status;
+                        layer.alert(
+                            '修改供应商密码失败,状态码 [ ' + status + ' ]',
+                            {title: '提示框', icon: 0}
+                        );
+                    }
+                });
+            },
             submit: function () {
                 var supplierInfo = {
                     supplierTypeId: $('#supplierType02 option:selected').val(),

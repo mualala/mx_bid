@@ -29,4 +29,5 @@ public interface SupplierService {
 
     int updateSupplierInfo(Supplier supplier);
 
+    int updateSupplierPassword(int sid, String password);
 }

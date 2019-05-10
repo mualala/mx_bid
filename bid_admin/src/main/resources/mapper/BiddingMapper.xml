@@ -131,7 +131,7 @@
     <delete id="deleteBiddings">
         DELETE FROM bidding
         <where>
-            status=0 AND name in
+            status=4 AND name in
             <foreach collection="names" item="name" index="index" open="(" close=")" separator=",">
                 #{name}
             </foreach>
@@ -215,7 +215,7 @@
 
     <update id="saveToDraft" parameterType="map">
         UPDATE bidding
-        SET type=1,status=0
+        SET type=1,status=4
         <where>
             name in
             <foreach collection="names" item="name" index="index" open="(" close=")" separator=",">

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.security.RolesAllowed;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +74,15 @@ public class SupplierServiceImpl implements SupplierService {
     public int updateSupplierInfo(Supplier supplier) {
         int count = supplierDao.updateByPrimaryKeySelective(supplier);
         return count;
+    }
+
+    @Override
+    public int updateSupplierPassword(int sid, String password) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("sid", sid);
+        params.put("newPassword", passwordEncoder.encode(password));
+        params.put("updateTime", new Timestamp(System.currentTimeMillis()));
+        return supplierDao.updateSupplierPassword(params);
     }
 
 }

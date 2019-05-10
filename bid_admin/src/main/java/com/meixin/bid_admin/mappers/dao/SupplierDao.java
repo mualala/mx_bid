@@ -46,4 +46,11 @@ public interface SupplierDao extends IMapper<Supplier> {
      */
     int deleteSuppliers(Map<String, Object> params);
 
+    /**
+     * 更新供应商密码
+     * @param params
+     * @return
+     */
+    int updateSupplierPassword(Map<String, Object> params);
+
 }

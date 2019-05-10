@@ -73,7 +73,11 @@ public class BiddingController {
             try {
                 bid.parseAndSetAllTime();
                 bid.setUid(Utils.uidFromSession(session));
-                bid.setStatus(3);//待审核
+                if (bid.getType() == 1) { // 草稿
+                    bid.setStatus(4);
+                }else {
+                    bid.setStatus(3);//待审核
+                }
             } catch (ParseException e) {
                 LOGGER.error(e.getMessage(), e);
                 return new ResponseEntity(SimpleResponse.ERROR(e.getMessage(), 0), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -125,6 +129,7 @@ public class BiddingController {
                 bid.parseAndSetAllTime();
                 bid.setUid(Utils.uidFromSession(session));
                 bid.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+                bid.setStatus(4);
             }
         } catch (ParseException e) {
             LOGGER.error(e.getMessage(), e);

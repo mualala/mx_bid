@@ -68,5 +68,11 @@
             </foreach>
         </where>
     </delete>
+    
+    <update id="updateSupplierPassword">
+        UPDATE supplier
+        SET password=#{newPassword}, update_time=#{updateTime}
+        WHERE supplier_id=${sid}
+    </update>
 
 </mapper>
